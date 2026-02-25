@@ -4,40 +4,51 @@ import { StyleSheet, Text, View, Button, ActivityIndicator, Image } from 'react-
 import {CameraView, useCameraPermissions} from 'expo-camera';
 
 export default function App() {
-  const [Permission, setPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
-  
+  const [permission, requestPermission] = useCameraPermissions();
+
   useEffect(() => {
-    if (!Permission) setPermission();
-  }, [Permission]);
+    if (!permission) return;
+    if (!permission.granted) requestPermission();
+  }, [permission]);
 
-  async function fetchProduct(productCode) {
-    setLoading(true);
-    setError(null);
-    setProduct(null);
+  useEffect(() => {
+    pingAPI();
+  }, []);
 
-    const url = 
-    `https://world.openfoodfacts.net/api/v2/product/${encodeURIComponent(productCode)}` + 
-    `?fields=product_name,brands,image_front_small_url,nutriments&lang=en`;
+  const API_BASE = "http://192.168.0.91:5050";
 
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-
-      if(data?.status === 1 && data?.product) {
-        setProduct(data.product);
-      } else {
-        setError('Product not found');
-      }
-    } catch (e) {
-      setError("Network error");
-    } finally {
-      setLoading(false);
-    }
+  async function pingAPI() {
+    const res = await fetch(`${API_BASE}/health`);
+    const data = await res.json();
+    console.log(data);
   }
+
+
+async function fetchProduct(productCode) {
+  setLoading(true);
+  setError(null);
+  setProduct(null);
+
+  try {
+    const res = await fetch(`${API_BASE}/product/${encodeURIComponent(productCode)}`);
+    const data = await res.json();
+
+    if (res.ok) {
+      setProduct(data);
+    } else {
+      setError(data?.error ?? "Not found");
+    }
+  } catch (e) {
+    console.log(e);
+    setError("Network error");
+  } finally {
+    setLoading(false);
+  }
+}
   
   const handleScan = ({data}) => {
     if(scanned) return;
@@ -45,8 +56,8 @@ export default function App() {
     fetchProduct(data);
   };
 
-  if(!Permission) return <Text>Requesting for camera permission</Text>
-  if(!Permission.granted) return <Text>No access to camera</Text>
+  if(!permission) return <Text>Requesting for camera permission</Text>
+  if(!permission.granted) return <Text>No access to camera</Text>
 
   return (
     <View style={{flex: 1, padding: 20}}>
@@ -64,7 +75,11 @@ export default function App() {
       {scanned && (
         <Button
           title="Scan again"
-          onPress={() => setScanned(false)}
+          onPress={() => {
+            setScanned(false)
+            setProduct(null)
+            setError(null)
+          }}
         />
       )}
       {loading && <ActivityIndicator />}
@@ -74,7 +89,7 @@ export default function App() {
         <View style={{marginTop: 20}}>
           <Text style={{fontSize: 18}}>Product Name: {product.product_name ?? "Unknown"}</Text>
           <Text style={{fontSize: 18}}>Brand: {product.brands ?? "Unknown"}</Text>
-          <Text style={{fontSize: 18}}>Nutriments: {product.nutriments ?? "Unknown"}</Text>
+          <Text>Calories (kcal): {product.nutriments?.["energy-kcal_100g"] ?? "Unknown"}</Text>
 
           {product.image_front_small_url ? (
             <Image
