@@ -90,6 +90,17 @@ async function fetchProduct(productCode) {
           <Text style={{fontSize: 18}}>Product Name: {product.product_name ?? "Unknown"}</Text>
           <Text style={{fontSize: 18}}>Brand: {product.brands ?? "Unknown"}</Text>
           <Text>Calories (kcal): {product.nutriments?.["energy-kcal_100g"] ?? "Unknown"}</Text>
+          <Text>Proteins (g): {product.nutriments?.["proteins_100g"] ?? "Unknown"}</Text>
+          <Text>Fats (g): {product.nutriments?.["fat_100g"] ?? "Unknown"}</Text>
+          <Text>Carbohydrates (g): {product.nutriments?.["carbohydrates_100g"] ?? "Unknown"}</Text>
+          <Text>Energy (kcal): {product.nutriments?.["energy-kcal_100g"] ?? "Unknown"}</Text>
+          <Text>Sugars (g): {product.nutriments?.["sugars_100g"] ?? "Unknown"}</Text>
+          <Text>Salt (g): {product.nutriments?.["salt_100g"] ?? "Unknown"}</Text>
+          <Text>Cholesterol (mg): {product.nutriments?.["cholesterol_100g"] ?? "Unknown"}</Text>
+          <Text>Fiber (g): {product.nutriments?.["fiber_100g"] ?? "Unknown"}</Text>
+          <Text>Vitamin C (mg): {product.nutriments?.["vitamin-c_100g"] ?? "Unknown"}</Text>
+          <Text>Iron (mg): {product.nutriments?.["iron_100g"] ?? "Unknown"}</Text>
+          <Text>Calcium (mg): {product.nutriments?.["calcium_100g"] ?? "Unknown"}</Text>
 
           {product.image_front_small_url ? (
             <Image
