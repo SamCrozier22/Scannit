@@ -86,9 +86,9 @@ async function fetchProduct(productCode) {
       {error && <Text style={{color: 'red'}}>{error}</Text>}
 
       {product && (
-        <View style={{marginTop: 20}}>
-          <Text style={{fontSize: 18}}>Product Name: {product.product_name ?? "Unknown"}</Text>
-          <Text style={{fontSize: 18}}>Brand: {product.brands ?? "Unknown"}</Text>
+        <View style={styles.ProductInfo}>
+          <Text style={styles.TitleText}>Product Name: {product.product_name ?? "Unknown"}</Text>
+          <Text style={styles.TitleText}>Brand: {product.brands ?? "Unknown"}</Text>
           {product.nutriments?.["energy-kcal_100g"] ? (
             <Text>Calories (kcal): {product.nutriments?.["energy-kcal_100g"]}</Text>
           ) : null}
@@ -161,5 +161,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: 'green',
-  }
+  },
+  ProductInfo: {
+    marginTop: 20,
+    backgroundColor: '#bcf9abff',
+    padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  TitleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
 });
