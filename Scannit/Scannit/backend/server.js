@@ -22,10 +22,11 @@ app.get('/health', (req, res) => {
 })
 app.get('/product/:barcode', async (req, res) => {
     const { barcode } = req.params;
-
+    const fields = 
+        'fields=product_name,brands,image_front_small_url,nutriments,nutrition_grades,packaging_tags,brand_tags,countries_tags,manufacturing_places'
      const url = 
     `https://world.openfoodfacts.net/api/v2/product/${encodeURIComponent(barcode)}` + 
-    `?fields=product_name,brands,image_front_small_url,nutriments&lang=en`;
+    `?${fields}&lang=en`;
 
     try {
         const r = await fetch(url);

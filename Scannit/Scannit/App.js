@@ -19,7 +19,7 @@ export default function App() {
     pingAPI();
   }, []);
 
-  const API_BASE = "http://192.168.0.91:5050";
+  const API_BASE = "http://172.23.145.215:5050";
 
   async function pingAPI() {
     const res = await fetch(`${API_BASE}/health`);
@@ -89,19 +89,55 @@ async function fetchProduct(productCode) {
         <View style={{marginTop: 20}}>
           <Text style={{fontSize: 18}}>Product Name: {product.product_name ?? "Unknown"}</Text>
           <Text style={{fontSize: 18}}>Brand: {product.brands ?? "Unknown"}</Text>
-          <Text>Calories (kcal): {product.nutriments?.["energy-kcal_100g"] ?? "Unknown"}</Text>
-          <Text>Proteins (g): {product.nutriments?.["proteins_100g"] ?? "Unknown"}</Text>
-          <Text>Fats (g): {product.nutriments?.["fat_100g"] ?? "Unknown"}</Text>
-          <Text>Carbohydrates (g): {product.nutriments?.["carbohydrates_100g"] ?? "Unknown"}</Text>
-          <Text>Energy (kcal): {product.nutriments?.["energy-kcal_100g"] ?? "Unknown"}</Text>
-          <Text>Sugars (g): {product.nutriments?.["sugars_100g"] ?? "Unknown"}</Text>
-          <Text>Salt (g): {product.nutriments?.["salt_100g"] ?? "Unknown"}</Text>
-          <Text>Cholesterol (mg): {product.nutriments?.["cholesterol_100g"] ?? "Unknown"}</Text>
-          <Text>Fiber (g): {product.nutriments?.["fiber_100g"] ?? "Unknown"}</Text>
-          <Text>Vitamin C (mg): {product.nutriments?.["vitamin-c_100g"] ?? "Unknown"}</Text>
-          <Text>Iron (mg): {product.nutriments?.["iron_100g"] ?? "Unknown"}</Text>
-          <Text>Calcium (mg): {product.nutriments?.["calcium_100g"] ?? "Unknown"}</Text>
-
+          {product.nutriments?.["energy-kcal_100g"] ? (
+            <Text>Calories (kcal): {product.nutriments?.["energy-kcal_100g"]}</Text>
+          ) : null}
+          {product.nutriments?.["proteins_100g"] ? (
+            <Text>Proteins (g): {product.nutriments?.["proteins_100g"]}</Text>
+          ) : null}
+          {product.nutriments?.["fat_100g"] ? (
+            <Text>Fats (g): {product.nutriments?.["fat_100g"]}</Text>
+          ) : null}
+          {product.nutriments?.["carbohydrates_100g"] ? (
+            <Text>Carbohydrates (g): {product.nutriments?.["carbohydrates_100g"]}</Text>
+          ) : null}
+          {product.nutriments?.["energy-kcal_100g"] ? (
+            <Text>Energy (kcal): {product.nutriments?.["energy-kcal_100g"]}</Text>
+          ) : null}
+          {product.nutriments?.["sugars_100g"] ? (
+            <Text>Sugars (g): {product.nutriments?.["sugars_100g"]}</Text>
+          ) : null}
+          {product.nutriments?.["salt_100g"] ? (
+            <Text>Salt (g): {product.nutriments?.["salt_100g"]}</Text>
+          ) : null}
+          {product.nutriments?.["cholesterol_100g"] ? (
+            <Text>Cholesterol (mg): {product.nutriments?.["cholesterol_100g"]}</Text>
+          ) : null}
+          {product.nutriments?.["fiber_100g"] ? (
+            <Text>Fiber (g): {product.nutriments?.["fiber_100g"]}</Text>
+          ) : null}
+          {product.nutriments?.["saturated-fat_100g"] ? (
+            <Text>Saturated Fat (g): {product.nutriments?.["saturated-fat_100g"]}</Text>
+          ) : null}
+          {product.nutriments?.["saturated-fat_100g"] && (
+            product.nutriments?.["saturated-fat_100g"] > 5 && (
+            <Text style={{color: 'red'}}>High saturated fat content</Text>
+          )
+          )}
+          {product.nutriments?.["saturated-fat_100g"] && (
+            product.nutriments?.["saturated-fat_100g"] > 10 && (
+            <Text style={{color: 'red'}}>High saturated fat content</Text>
+          )
+          )}
+          {product.ecoscore_grade ? (
+            <Text>Environment Grade: {product.ecoscore_grade}</Text>
+          ) : null}
+          {product.ecoscore_score ? (
+            <Text>Environment Score: {product.ecoscore_score}</Text>
+          ) : null}
+          {product.packaging_text ? (
+            <Text>Packaging Text: {product.packaging_text}</Text>
+          ) : null}
           {product.image_front_small_url ? (
             <Image
               source={{uri: product.image_front_small_url}}
