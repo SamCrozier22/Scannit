@@ -19,7 +19,7 @@ export default function App() {
     pingAPI();
   }, []);
 
-  const API_BASE = "http://172.23.145.215:5050";
+  const API_BASE = "https://grazegood.onrender.com";
 
   async function pingAPI() {
     const res = await fetch(`${API_BASE}/health`);
