@@ -65,8 +65,12 @@ app.post("/save", async (req, res) => {
       return res.status(400).json({ error: "savedBy and barcode are required" });
     }
 
-    const saved = await SavedProduct.findOneAndUpdate(
-      { savedBy, barcode },
+    const existing = await SavedProduct.findOne({ savedBy, barcode });
+    if (existing) {
+      return res.status(400).json({ error: "Product already saved" });
+    }
+
+    const saved = await SavedProduct.create(
       {
         savedBy,
         barcode,
@@ -77,11 +81,6 @@ app.post("/save", async (req, res) => {
         ecoScoreGrade: eco?.ecoScoreGrade ?? null,
         ecoReason: eco?.ecoReason ?? null,
       },
-      {
-        new: true,
-        upsert: true,
-        setDefaultsOnInsert: true,
-      }
     );
 
     return res.json(saved);

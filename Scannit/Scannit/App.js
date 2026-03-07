@@ -201,7 +201,7 @@ async function fetchProduct(productCode) {
           <Button
           title={saving ? "Saving..." : "Save Product"}
           onPress={saveProduct}
-          disabled={saving}
+          disabled={saving || saveMessage === "Product already saved"}
           />
           {saveMessage && (
             <Text style={{marginTop: 10}}>{saveMessage}</Text>
