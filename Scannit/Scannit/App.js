@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, ActivityIndicator, Image } from 'react-native';
 import {CameraView, useCameraPermissions} from 'expo-camera';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
   const [scanned, setScanned] = useState(false);
@@ -10,14 +11,24 @@ export default function App() {
   const [error, setError] = useState(null);
   const [permission, requestPermission] = useCameraPermissions();
 
+  const [lastBarcode, setLastBarcode] = useState(null);
+  const [savedBy, setSavedBy] = useState(null);
+  const [saveMessage, setSaveMessage] = useState(null);
+  const [saving, setSaving] = useState(false);
+
   useEffect(() => {
     if (!permission) return;
     if (!permission.granted) requestPermission();
   }, [permission]);
 
-  useEffect(() => {
-    pingAPI();
-  }, []);
+useEffect(() => {
+  pingAPI();
+
+  (async () => {
+    const id = await DeviceId();
+    setSavedBy(id);
+  })();
+}, []);
 
   const API_BASE = "https://grazegood.onrender.com";
 
@@ -27,6 +38,54 @@ export default function App() {
     console.log(data);
   }
 
+  async function DeviceId() {
+    const existing = await AsyncStorage.getItem("deviceId");
+    if(existing) return existing;
+
+    const newId = `device-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    await AsyncStorage.setItem("deviceId", newId);
+    return newId;
+  }
+
+  async function saveProduct() {
+    if(!product || !lastBarcode || !savedBy) {
+      setSaveMessage("Missing required fields");
+      return;
+    }
+    setSaving(true);
+    setSaveMessage(null);
+    
+    try {
+      const res = await fetch(`${API_BASE}/save`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          savedBy,
+          barcode: lastBarcode,
+          productName: product.product_name ?? null,
+          brands: product.brands ?? null,
+          imageUrl: product.image_front_small_url ?? null,
+          eco: null,
+        })
+      })
+
+      const data = await res.json();
+
+      if(res.ok) {
+        setSaveMessage("Product saved");
+        console.log("Saved: ", data);
+      } else {
+        setSaveMessage(data?.error ?? "Failed to save product");
+      }
+    } catch(e) {
+      console.log("Save Error: ",e);
+      setSaveMessage("Network error");
+    } finally {
+      setSaving(false);
+    }
+  }
 
 async function fetchProduct(productCode) {
   setLoading(true);
@@ -53,6 +112,8 @@ async function fetchProduct(productCode) {
   const handleScan = ({data}) => {
     if(scanned) return;
     setScanned(true);
+    setLastBarcode(data);
+    setSaveMessage(null);
     fetchProduct(data);
   };
 
@@ -79,6 +140,7 @@ async function fetchProduct(productCode) {
             setScanned(false)
             setProduct(null)
             setError(null)
+            setSaveMessage(null)
           }}
         />
       )}
@@ -129,21 +191,21 @@ async function fetchProduct(productCode) {
             <Text style={{color: 'red'}}>High saturated fat content</Text>
           )
           )}
-          {product.ecoscore_grade ? (
-            <Text>Environment Grade: {product.ecoscore_grade}</Text>
-          ) : null}
-          {product.ecoscore_score ? (
-            <Text>Environment Score: {product.ecoscore_score}</Text>
-          ) : null}
-          {product.packaging_text ? (
-            <Text>Packaging Text: {product.packaging_text}</Text>
-          ) : null}
+
           {product.image_front_small_url ? (
             <Image
               source={{uri: product.image_front_small_url}}
               style={{width: 200, height: 200}}
             />
           ) : null}
+          <Button
+          title={saving ? "Saving..." : "Save Product"}
+          onPress={saveProduct}
+          disabled={saving}
+          />
+          {saveMessage && (
+            <Text style={{marginTop: 10}}>{saveMessage}</Text>
+          )}
         </View>
       )}
     </View>

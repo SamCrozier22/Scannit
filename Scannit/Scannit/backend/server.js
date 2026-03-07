@@ -1,10 +1,24 @@
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+
+const SavedProduct = require("./Models/Product");
+
+const mongoose = require("mongoose");
+
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => {
+        console.log("Connected to MongoDB");
+    })
+    .catch((error) => {
+        console.error("Error connecting to MongoDB:", error);
+    });
 
 app.use((req, _res, next) => {
   console.log("REQ:", req.method, req.url);
@@ -37,6 +51,40 @@ app.get("/product/:barcode", async (req, res) => {
       return res.json(data.product);
     }
     return res.status(404).json({ error: "Product not found" });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.post("/save", async (req, res) => {
+  try {
+    const { savedBy, barcode, productName, brands, imageUrl, eco } = req.body;
+
+    if (!savedBy || !barcode) {
+      return res.status(400).json({ error: "savedBy and barcode are required" });
+    }
+
+    const saved = await SavedProduct.findOneAndUpdate(
+      { savedBy, barcode },
+      {
+        savedBy,
+        barcode,
+        product_name: productName ?? null,
+        brands: brands ?? null,
+        imageUrl: imageUrl ?? null,
+        ecoScore: eco?.ecoScore ?? null,
+        ecoScoreGrade: eco?.ecoScoreGrade ?? null,
+        ecoReason: eco?.ecoReason ?? null,
+      },
+      {
+        new: true,
+        upsert: true,
+        setDefaultsOnInsert: true,
+      }
+    );
+
+    return res.json(saved);
   } catch (e) {
     console.error(e);
     return res.status(500).json({ error: "Server error" });
