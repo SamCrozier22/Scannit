@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const { Schema, model } = mongoose;
 
@@ -24,7 +25,17 @@ async function createUser(username, password, firstName, lastName, email) {
         if(userExists) {
             throw new Error("User already exists");
         }
-        const newUser = await userData.create(username, password, firstName, lastName, email);
+
+        const hashed = await bcrypt.hash(password, 10);
+        password = hashed;
+
+        const newUser = await userData.create({
+            username, 
+            password, 
+            firstName, 
+            lastName, 
+            email
+        });
         return newUser;
     } catch (e) {
         throw e
