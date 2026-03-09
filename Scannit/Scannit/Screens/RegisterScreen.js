@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import { useState } from "react";
 
-export default function RegisterScreen() {
+export default function RegisterScreen( { navigation } ) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -38,6 +38,7 @@ export default function RegisterScreen() {
 
       if(res.ok) {
         Alert.alert("Registration successful");
+        navigation.navigate("Home");
       } else {
         Alert.alert("Error: ",data?.error ?? "Registration failed");
       }
