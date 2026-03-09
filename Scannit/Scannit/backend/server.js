@@ -7,6 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const {createUser} = require("./Models/User");
 
 const SavedProduct = require("./Models/Product");
 
@@ -95,7 +96,23 @@ app.post("/login", async (req, res) => {
 })
 
 app.post("/register", async (req, res) => {
+  try {
+    const { username, password, firstName, lastName, email } = req.body;
 
+  const user = await createUser(username, password, firstName, lastName, email);
+    res.json({
+      message: "User created",
+      user: {
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email
+      }
+    });
+    } catch (e) {
+      console.log("Registration Error:", e);
+      Alert.alert("Error", "Network error while registering");
+    }
 })
 
 const PORT = process.env.PORT || 5050;
