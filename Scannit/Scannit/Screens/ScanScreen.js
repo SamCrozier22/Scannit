@@ -26,8 +26,8 @@ useEffect(() => {
   pingAPI();
 
   (async () => {
-    const id = await DeviceId();
-    setSavedBy(id);
+    const username = await AsyncStorage.getItem("username");
+    setSavedBy(username);
   })();
 }, []);
 

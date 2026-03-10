@@ -7,7 +7,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const {createUser} = require("./Models/User");
+const bcrypt = require("bcryptjs");
+const {createUser, userData} = require("./Models/User");
 
 const SavedProduct = require("./Models/Product");
 
@@ -92,7 +93,37 @@ app.post("/save", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
+  try {
+    const {username, password} = req.body;
+    
+    if(!username || !password) {
+      return res.status(400).json({ error: "Username and password are required" });
+    }
+    const user = await userData.findOne({username});
 
+    if(!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    
+    const validPassword = await bcrypt.compare(password, user.password);
+
+    if(!validPassword) {
+      return res.status(401).json({ error: "Invalid password" });
+    }
+
+    return res.json({
+      message: "Login successful",
+      user: {
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email
+      }
+    })
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ error: "Server error" });
+  }
 })
 
 app.post("/register", async (req, res) => {

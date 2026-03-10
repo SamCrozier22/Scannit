@@ -36,11 +36,12 @@ export default function RegisterScreen( { navigation } ) {
 
       const data = await res.json();
 
-      if(res.ok) {
-        Alert.alert("Registration successful");
-        navigation.navigate("Home");
+      if (res.ok) {
+        Alert.alert("Success", "Registration successful", [
+          { text: "Continue", onPress: () => navigation.navigate("Login") }
+        ]);
       } else {
-        Alert.alert("Error: ",data?.error ?? "Registration failed");
+        Alert.alert("Error", data?.error ?? "Registration failed");
       }
     } catch (e) {
       console.log("Registration Error:", e);
