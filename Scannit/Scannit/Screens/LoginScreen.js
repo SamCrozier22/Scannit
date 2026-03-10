@@ -37,10 +37,11 @@ export default function LoginScreen({ navigation, setUser }) {
       });
 
       const data = await res.json();
+      console.log("LOGIN RESPONSE:", data);
 
       if (res.ok) {
-        await AsyncStorage.setItem("username", data.username);
-        setUser(data.username);
+        await AsyncStorage.setItem("username", data.user.username);
+        setUser(data.user.username);
       } else {
         Alert.alert("Login failed", data?.error ?? "Login failed");
       }
@@ -90,7 +91,9 @@ export default function LoginScreen({ navigation, setUser }) {
 
 const styles = StyleSheet.create({
   container: {
-    
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
 
