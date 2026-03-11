@@ -4,6 +4,8 @@ require("dotenv").config();
 
 const app = express();
 
+const calculateEcoScore = require("./EcoScoring");
+
 app.use(cors());
 app.use(express.json());
 
@@ -49,7 +51,8 @@ app.get("/product/:barcode", async (req, res) => {
     const r = await fetch(url);
     const data = await r.json();
 
-    if (data?.status === 1 && data?.product) {
+      if (data?.status === 1 && data?.product) {
+          const eco = calculateEcoScore(data.product);
       return res.json(data.product);
     }
     return res.status(404).json({ error: "Product not found" });
