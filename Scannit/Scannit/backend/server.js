@@ -24,6 +24,17 @@ mongoose.connect(process.env.MONGODB_URI)
         console.error("Error connecting to MongoDB:", error);
     });
 
+
+    async function fetchWithRetry(url, options = {}, retries = 2, delayMs = 1000) {
+      const response = await fetch(url, options);
+
+      if (response.status === 504 && retries > 0) {
+        await new Promise(resolve => setTimeout(resolve, delayMs));
+        return fetchWithRetry(url, options, retries - 1, delayMs);
+      }
+
+      return response;
+    }
 app.use((req, _res, next) => {
   console.log("REQ:", req.method, req.url);
   next();
@@ -44,11 +55,11 @@ app.get("/product/:barcode", async (req, res) => {
     "product_name,brands,image_front_small_url,nutriments,nutrition_grades,packaging_tags,brand_tags,countries_tags,manufacturing_places";
 
   const url =
-    `https://world.openfoodfacts.net/api/v2/product/${encodeURIComponent(barcode)}` +
+    `https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(barcode)}` +
     `?fields=${fields}&lang=en`;
 
   try {
-    const r = await fetch(url, {
+    const r = await fetchWithRetry(url, {
       headers: {
         Accept: "application/json",
         "User-Agent": "Scannit/1.0"
