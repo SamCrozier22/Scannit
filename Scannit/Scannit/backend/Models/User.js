@@ -10,6 +10,7 @@ const UserSchema = new Schema(
         firstName: {type: String, required: true, trim: true},
         lastName: {type: String, required: true, trim: true},
         email: {type: String, required: true, unique: true, trim: true},
+        savedBarcodes: {type: [String], default: [], trim: true},
     },
     {timestamps: true}
 );
@@ -34,7 +35,8 @@ async function createUser(username, password, firstName, lastName, email) {
             password, 
             firstName, 
             lastName, 
-            email
+            email,
+            savedBarcodes: [],
         });
         return newUser;
     } catch (e) {
