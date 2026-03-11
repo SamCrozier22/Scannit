@@ -1,7 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\assets",
+    "\\backend",
+    "\\backend\\Models",
+    "\\navigation",
+    "\\Screens"
   ],
-  "SelectedNode": "\\App.js",
+  "SelectedNode": "\\backend\\EcoScoring.js",
   "PreviewInSolutionExplorer": false
 }
