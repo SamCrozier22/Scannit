@@ -70,7 +70,7 @@ useEffect(() => {
           productName: product.product_name ?? null,
           brands: product.brands ?? null,
           imageUrl: product.image_front_small_url ?? null,
-          eco: null,
+          eco: ecoScore ?? null,
         })
       })
 

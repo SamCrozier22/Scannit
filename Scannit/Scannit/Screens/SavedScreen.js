@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ActivityIndicator, Image, Flatlist } from "react-native";
+import { View, Text, ActivityIndicator, Image, FlatList } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState, useEffect } from "react";
 
@@ -11,7 +11,7 @@ export default function SavedScreen() {
 
   useEffect(() => {
     loadProducts();
-  })
+  }, [])
   async function loadProducts() {
     try {
       const username = await AsyncStorage.getItem("username");
@@ -33,15 +33,15 @@ export default function SavedScreen() {
   }
   return (
     <View style={{ flex: 1, padding: 20 }}>
-      <Flatlist
+      <FlatList
         data={products}
         keyExtractor={(item) => item.barcode}
         renderItem={({ item }) => (
           <View style={{marginBottom: 20}}>
             <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-              {item.name ?? "Unknown Product"}
+              {item.product_name ?? "Unknown Product"}
             </Text>
-            <Text>{item.brand}</Text>
+            <Text>{item.brands}</Text>
             {item.imageUrl && (
               <Image
                 source={{ uri: item.imageUrl }}
