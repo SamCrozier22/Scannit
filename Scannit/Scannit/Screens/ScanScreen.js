@@ -100,6 +100,7 @@ async function fetchProduct(productCode) {
 
     if (res.ok) {
       setProduct(data);
+      setEcoScore(data.eco?.ecoScore ?? null);
     } else {
       setError(data?.error ?? "Not found");
     }

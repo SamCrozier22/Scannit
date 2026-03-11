@@ -58,9 +58,15 @@ app.get("/product/:barcode", async (req, res) => {
         eco,
       });
     }
+console.log("Scanning barcode:", barcode);
+console.log("OFF status:", data?.status);
+console.log("Has product:", !!data?.product);
+console.log("Packaging tags:", data?.product?.packaging_tags);
+
     return res.status(404).json({ error: "Product not found" });
   } catch (e) {
     console.error(e);
+    console.error("PRODUCT ROUTE ERROR:", e);
     return res.status(500).json({ error: "Server error" });
   }
 });
