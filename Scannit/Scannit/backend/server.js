@@ -12,7 +12,7 @@ app.use(express.json());
 const bcrypt = require("bcryptjs");
 const {createUser, userData} = require("./Models/User");
 
-const SavedProduct = require("./Models/Product");
+const Product = require("./Models/Product");
 
 const mongoose = require("mongoose");
 
@@ -104,36 +104,66 @@ app.get("/product/:barcode", async (req, res) => {
 
 app.post("/save", async (req, res) => {
   try {
-    const { savedBy, barcode, productName, brands, imageUrl, eco } = req.body;
+    const {savedBy, barcode,productName, brands, imageUrl, eco} = req.body;
 
-    if (!savedBy || !barcode) {
-      return res.status(400).json({ error: "savedBy and barcode are required" });
-    }
-
-    const existing = await SavedProduct.findOne({ savedBy, barcode });
-    if (existing) {
-      return res.status(400).json({ error: "Product already saved" });
-    }
-
-    const saved = await SavedProduct.create(
+    const product = await Product.findOneAndUpdate(
+      {barcode},
       {
-        savedBy,
         barcode,
         product_name: productName ?? null,
         brands: brands ?? null,
         imageUrl: imageUrl ?? null,
-        ecoScore: eco?.ecoScore ?? null,
-        ecoScoreGrade: eco?.ecoScoreGrade ?? null,
-        ecoReason: eco?.ecoReason ?? null,
+        ecoScore: eco ?? null,
       },
+      {
+        new: true,
+        upsert: true,
+        setDefaultsOnInsert: true,
+      }
+    )
+
+    const updateUser = await userData.findOneAndUpdate(
+      {username: savedBy},
+      {
+        $addToSet: {savedBarcodes: barcode}
+      },
+      { new: true }
     );
 
-    return res.json(saved);
+    if(!updateUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.json({ 
+      message: "Product saved",
+      product,
+      savedBarcodes: updateUser.savedBarcodes,
+    });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ error: "Server error" });
   }
 });
+
+app.get("/saved/:username", async (req, res) => {
+  try {
+    const {username} = req.params;
+    const user = await userData.findOne({username});
+
+    if(!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const savedProducts = await Product.find({
+      barcode: {$in: user.savedBarcodes}
+    })
+
+    res.json(savedProducts);
+
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ error: "Server error" });
+  }
+})
 
 app.post("/login", async (req, res) => {
   try {

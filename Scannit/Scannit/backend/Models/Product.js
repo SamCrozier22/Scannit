@@ -2,18 +2,46 @@ const mongoose = require("mongoose");
 
 const { Schema, model } = mongoose;
 
-const SavedProductSchema = new Schema(
+const ProductSchema = new Schema(
   {
-    barcode: { type: String, required: true },
-    product_name: { type: String, default: null },
-    brands: { type: String, default: null },
-    imageUrl: { type: String, default: null },
-
-    ecoScore: { type: Number, default: null },
-    ecoScoreGrade: { type: String, default: null },
-    ecoReason: { type: String, default: null },
+    barcode: { 
+      type: String, 
+      required: true, 
+      index: true, 
+      unique: true, 
+      trim: true
+    },
+    product_name: { 
+      type: String, 
+      default: null,
+      trim: true
+    },
+    brands: { 
+      type: String, 
+      default: null,
+      trim: true
+    },
+    imageUrl: { 
+      type: String, 
+      default: null,
+      trim: true
+    },
+    ecoScore: { 
+      type: Number, 
+      default: null,
+    },
+    ecoScoreGrade: { 
+      type: String, 
+      default: null,
+      trim: true
+    },
+    ecoReason: { 
+      type: String, 
+      default: null,
+      trim: true
+    },
   },
   { timestamps: true }
 );
 
-module.exports = model("SavedProduct", SavedProductSchema);
+module.exports = model("Product", ProductSchema);
