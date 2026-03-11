@@ -113,7 +113,9 @@ app.post("/save", async (req, res) => {
         product_name: productName ?? null,
         brands: brands ?? null,
         imageUrl: imageUrl ?? null,
-        ecoScore: eco ?? null,
+        ecoScore: eco?.ecoScore ?? null,
+        ecoScoreGrade: eco?.grade ?? null,
+        ecoReason: eco?.ecoReason ?? null
       },
       {
         new: true,

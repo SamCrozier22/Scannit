@@ -51,7 +51,20 @@ export default function SavedScreen() {
             <Text>Eco Score: {item.ecoScore ?? "N/A"}</Text>
           </View>
         )}
+        ListEmptyComponent={() => (
+          <Text style={styles.falseText}>No saved products</Text>
+        )}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  falseText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "red",
+    textAlign: "center",
+    justifyContent: "center",
+  },
+})
