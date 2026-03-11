@@ -1,18 +1,27 @@
-import React from "react";
+import React, {useCallback} from "react";
 import { View, Text, ActivityIndicator, Image, FlatList, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState, useEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function SavedScreen() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   const API_BASE = "https://grazegood.onrender.com";
 
-  useEffect(() => {
-    loadProducts();
+  useFocusEffect(() => {
+    useCallback(() => {
+      loadProducts();      
+    })
   }, [])
-  async function loadProducts() {
+  async function loadProducts( isRefreshing = false) {
+    if(isRefreshing) {
+      setRefreshing(false);
+    } else {
+      setLoading(true);
+    }
     try {
       const username = await AsyncStorage.getItem("username");
       const res = await fetch(`${API_BASE}/saved/${username}`);
@@ -21,7 +30,11 @@ export default function SavedScreen() {
     } catch(e) {
       console.log("Error loading saved Products", e)
     } finally {
-      setLoading(false);
+      if(isRefreshing) {
+        setRefreshing(false);
+      } else {
+        setLoading(false);
+      }
     }
   }
   if(loading) {
@@ -36,6 +49,8 @@ export default function SavedScreen() {
       <FlatList
         data={products}
         keyExtractor={(item) => item.barcode}
+        refreshing={refreshing}
+        onRefresh={() => loadProducts(true)}
         renderItem={({ item }) => (
           <View style={{marginBottom: 20}}>
             <Text style={{ fontSize: 16, fontWeight: "bold" }}>
