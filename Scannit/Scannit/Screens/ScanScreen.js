@@ -12,6 +12,7 @@ export default function ScanScreen() {
   const [error, setError] = useState(null);
   const [permission, requestPermission] = useCameraPermissions();
   const [ecoScore, setEcoScore] = useState(null);
+  const [ecoReason, setEcoReason] = useState(null);
 
   const [lastBarcode, setLastBarcode] = useState(null);
   const [savedBy, setSavedBy] = useState(null);
@@ -101,6 +102,7 @@ async function fetchProduct(productCode) {
     if (res.ok) {
       setProduct(data);
       setEcoScore(data.eco?.ecoScore ?? null);
+      setEcoReason(data.eco?.ecoReason ?? null);
     } else {
       setError(data?.error ?? "Not found");
     }
@@ -144,6 +146,8 @@ async function fetchProduct(productCode) {
             setProduct(null)
             setError(null)
             setSaveMessage(null)
+            setEcoScore(null)
+            setEcoReason(null)
           }}
         />
       )}

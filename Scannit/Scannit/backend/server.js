@@ -24,6 +24,17 @@ mongoose.connect(process.env.MONGODB_URI)
         console.error("Error connecting to MongoDB:", error);
     });
 
+
+    async function fetchWithRetry(url, options = {}, retries = 2, delayMs = 1000) {
+      const response = await fetch(url, options);
+
+      if (response.status === 504 && retries > 0) {
+        await new Promise(resolve => setTimeout(resolve, delayMs));
+        return fetchWithRetry(url, options, retries - 1, delayMs);
+      }
+
+      return response;
+    }
 app.use((req, _res, next) => {
   console.log("REQ:", req.method, req.url);
   next();
@@ -44,28 +55,48 @@ app.get("/product/:barcode", async (req, res) => {
     "product_name,brands,image_front_small_url,nutriments,nutrition_grades,packaging_tags,brand_tags,countries_tags,manufacturing_places";
 
   const url =
-    `https://world.openfoodfacts.net/api/v2/product/${encodeURIComponent(barcode)}` +
-    `?fields=${encodeURIComponent(fields)}&lang=en`;
+    `https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(barcode)}` +
+    `?fields=${fields}&lang=en`;
 
   try {
-    const r = await fetch(url);
-    const data = await r.json();
+    const r = await fetchWithRetry(url, {
+      headers: {
+        Accept: "application/json",
+        "User-Agent": "Scannit/1.0"
+      }
+    });
 
-      if (data?.status === 1 && data?.product) {
-          const eco = calculateEcoScore(data.product);
+    const contentType = r.headers.get("content-type") || "";
+    const bodyText = await r.text();
+
+    console.log("OFF status:", r.status);
+    console.log("OFF content-type:", contentType);
+    console.log("OFF body preview:", bodyText.slice(0, 300));
+
+    if (r.status === 504) {
+      return res.status(504).json({
+        error: "Open Food Facts is temporarily unavailable. Please try again."
+      });
+    }
+
+    if (!contentType.includes("application/json")) {
+      return res.status(502).json({
+        error: "Unexpected response from Open Food Facts"
+      });
+    }
+
+    const data = JSON.parse(bodyText);
+
+    if (data?.status === 1 && data?.product) {
+      const eco = calculateEcoScore(data.product);
       return res.json({
         ...data.product,
         eco,
       });
     }
-console.log("Scanning barcode:", barcode);
-console.log("OFF status:", data?.status);
-console.log("Has product:", !!data?.product);
-console.log("Packaging tags:", data?.product?.packaging_tags);
 
     return res.status(404).json({ error: "Product not found" });
   } catch (e) {
-    console.error(e);
     console.error("PRODUCT ROUTE ERROR:", e);
     return res.status(500).json({ error: "Server error" });
   }
@@ -154,7 +185,7 @@ app.post("/register", async (req, res) => {
     });
     } catch (e) {
       console.log("Registration Error:", e);
-      Alert.alert("Error", "Network error while registering");
+      return res.status(500).json({ error: "Server error" });
     }
 })
 
