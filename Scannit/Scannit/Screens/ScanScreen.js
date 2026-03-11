@@ -70,7 +70,11 @@ useEffect(() => {
           productName: product.product_name ?? null,
           brands: product.brands ?? null,
           imageUrl: product.image_front_small_url ?? null,
-          eco: ecoScore ?? null,
+          eco: {
+            ecoScore,
+            ecoReason,
+            grade,
+          },
         })
       })
 
@@ -198,7 +202,7 @@ async function fetchProduct(productCode) {
             <Text style={{color: 'red'}}>High saturated fat content</Text>
           )
           )}
-          {ecoScore && (
+          {ecoScore !== null && (
             <>
               <Text style={styles.TitleText}>Eco Score: {ecoScore}</Text>
               {ecoScore > 50 && (
