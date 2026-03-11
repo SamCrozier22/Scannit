@@ -4,6 +4,7 @@ function calculateEcoScore(product) {
     let score = 0;
     let weightTotal = 0;
     const missing = [];
+    let redFlag = false;
 
 
     let materialCount = 0;
