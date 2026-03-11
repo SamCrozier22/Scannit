@@ -156,7 +156,7 @@ app.get("/saved/:username", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const savedBarcode = [...user.savedBarcodes];
+    const savedBarcodes = [...user.savedBarcodes];
 
     const savedProducts = await Product.find({
       barcode: {$in: user.savedBarcodes}

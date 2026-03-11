@@ -25,7 +25,14 @@ export default function SavedScreen() {
       const username = await AsyncStorage.getItem("username");
       const res = await fetch(`${API_BASE}/saved/${username}`);
       const data = await res.json();
-      setProducts(data);
+
+      if (res.ok) {
+        setProducts(data);
+      } else {
+        console.log("Saved products error:", data?.error);
+        setProducts([]);
+      }
+      
     } catch(e) {
       console.log("Error loading saved Products", e)
     } finally {
