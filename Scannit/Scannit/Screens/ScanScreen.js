@@ -117,7 +117,6 @@ async function fetchProduct(productCode) {
     setLastBarcode(data);
     setSaveMessage(null);
     fetchProduct(data);
-    setEcoScore(data.eco);
   };
 
   if(!permission) return <Text>Requesting for camera permission</Text>

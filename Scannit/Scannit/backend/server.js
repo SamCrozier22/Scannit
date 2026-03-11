@@ -53,7 +53,10 @@ app.get("/product/:barcode", async (req, res) => {
 
       if (data?.status === 1 && data?.product) {
           const eco = calculateEcoScore(data.product);
-      return res.json(data.product);
+      return res.json({
+        ...data.product,
+        eco,
+      });
     }
     return res.status(404).json({ error: "Product not found" });
   } catch (e) {

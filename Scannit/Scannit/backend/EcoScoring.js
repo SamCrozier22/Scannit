@@ -18,12 +18,12 @@ function calculateEcoScore(product) {
         Object.entries(packagingScores).forEach(([material, score]) => {
             if (product.packaging_tags?.some(tag => tag.includes(material))) {
                 packagingScore += score;
-                materialsFound++;
+                materialCount++;
             }
         });
 
-        const averagePackagingScore = materialsFound > 0
-            ? packagingScore / materialsFound
+        const averagePackagingScore = materialCount > 0
+            ? packagingScore / materialCount
             : null;
         score += averagePackagingScore;
         weightTotal += 20;
