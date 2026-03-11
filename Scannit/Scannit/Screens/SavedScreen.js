@@ -1,7 +1,6 @@
-import React, {useCallback} from "react";
+import React, { useState, useCallback } from "react";
 import { View, Text, ActivityIndicator, Image, FlatList, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState, useEffect } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 
 export default function SavedScreen() {
@@ -11,14 +10,14 @@ export default function SavedScreen() {
 
   const API_BASE = "https://grazegood.onrender.com";
 
-  useFocusEffect(() => {
+  useFocusEffect(
     useCallback(() => {
-      loadProducts();      
-    })
-  }, [])
+      loadProducts();
+    }, [])
+  );
   async function loadProducts( isRefreshing = false) {
     if(isRefreshing) {
-      setRefreshing(false);
+      setRefreshing(true);
     } else {
       setLoading(true);
     }
