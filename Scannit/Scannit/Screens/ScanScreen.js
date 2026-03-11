@@ -11,6 +11,7 @@ export default function ScanScreen() {
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [permission, requestPermission] = useCameraPermissions();
+  const [ecoScore, setEcoScore] = useState(null);
 
   const [lastBarcode, setLastBarcode] = useState(null);
   const [savedBy, setSavedBy] = useState(null);
@@ -116,6 +117,7 @@ async function fetchProduct(productCode) {
     setLastBarcode(data);
     setSaveMessage(null);
     fetchProduct(data);
+    setEcoScore(data.eco);
   };
 
   if(!permission) return <Text>Requesting for camera permission</Text>
@@ -191,6 +193,14 @@ async function fetchProduct(productCode) {
             product.nutriments?.["saturated-fat_100g"] > 10 && (
             <Text style={{color: 'red'}}>High saturated fat content</Text>
           )
+          )}
+          {ecoScore && (
+            <>
+              <Text style={styles.TitleText}>Eco Score: {ecoScore}</Text>
+              {ecoScore > 50 && (
+                <Text style={{color: 'red'}}>High eco score</Text>
+              )}
+            </>
           )}
 
           {product.image_front_small_url ? (

@@ -21,7 +21,7 @@ export default function TabNavigator({ setUser }) {
           if (route.name === "Home") {
             iconName = "home";
           } else if (route.name === "Scan") {
-            iconName = "qrcode";
+            iconName = "barcode";
           } else if (route.name === "Saved") {
             iconName = "bookmark";
           } 
