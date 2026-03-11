@@ -45,27 +45,41 @@ app.get("/product/:barcode", async (req, res) => {
 
   const url =
     `https://world.openfoodfacts.net/api/v2/product/${encodeURIComponent(barcode)}` +
-    `?fields=${encodeURIComponent(fields)}&lang=en`;
+    `?fields=${fields}&lang=en`;
 
   try {
-    const r = await fetch(url);
-    const data = await r.json();
+    const r = await fetch(url, {
+      headers: {
+        Accept: "application/json",
+        "User-Agent": "Scannit/1.0"
+      }
+    });
 
-      if (data?.status === 1 && data?.product) {
-          const eco = calculateEcoScore(data.product);
+    const contentType = r.headers.get("content-type") || "";
+    const bodyText = await r.text();
+
+    console.log("OFF status:", r.status);
+    console.log("OFF content-type:", contentType);
+    console.log("OFF body preview:", bodyText.slice(0, 300));
+
+    if (!contentType.includes("application/json")) {
+      return res.status(502).json({
+        error: "Open Food Facts returned non-JSON data"
+      });
+    }
+
+    const data = JSON.parse(bodyText);
+
+    if (data?.status === 1 && data?.product) {
+      const eco = calculateEcoScore(data.product);
       return res.json({
         ...data.product,
         eco,
       });
     }
-console.log("Scanning barcode:", barcode);
-console.log("OFF status:", data?.status);
-console.log("Has product:", !!data?.product);
-console.log("Packaging tags:", data?.product?.packaging_tags);
 
     return res.status(404).json({ error: "Product not found" });
   } catch (e) {
-    console.error(e);
     console.error("PRODUCT ROUTE ERROR:", e);
     return res.status(500).json({ error: "Server error" });
   }
