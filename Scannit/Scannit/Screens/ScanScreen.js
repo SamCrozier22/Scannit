@@ -73,7 +73,6 @@ useEffect(() => {
           eco: {
             ecoScore,
             ecoReason,
-            grade,
           },
         })
       })
@@ -86,9 +85,9 @@ useEffect(() => {
       } else {
         setSaveMessage(data?.error ?? "Failed to save product");
       }
-    } catch(e) {
-      console.log("Save Error: ",e);
-      setSaveMessage("Network error");
+    } catch (e) {
+      console.log("Save Error:", e);
+      setSaveMessage(e?.message ?? "Network error");
     } finally {
       setSaving(false);
     }
