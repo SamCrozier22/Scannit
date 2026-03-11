@@ -155,11 +155,20 @@ app.get("/saved/:username", async (req, res) => {
     if(!user) {
       return res.status(404).json({ error: "User not found" });
     }
+
+    const savedBarcode = [...user.savedBarcodes];
+
     const savedProducts = await Product.find({
       barcode: {$in: user.savedBarcodes}
     })
 
-    res.json(savedProducts);
+    const orderedProducts = savedBarcodes
+      .map((barcode) =>
+        savedProducts.find((product) => product.barcode === barcode)
+      )
+      .filter(Boolean);
+
+    res.json(orderedProducts);
 
   } catch (e) {
     console.error(e);
