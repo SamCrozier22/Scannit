@@ -38,12 +38,55 @@ function calculateEcoScore(product) {
         missing.push("countries_tags");
     }
 
+    let manufacturingScore = 0;
+    let placesFound = 0;
+
+    const locationScores = {
+        "united kingdom": 100,
+        "england": 100,
+        "scotland": 100,
+        "wales": 100,
+        "ireland": 90,
+
+        "france": 70,
+        "germany": 70,
+        "spain": 70,
+        "italy": 70,
+
+        "united states": 40,
+        "canada": 40,
+
+        "china": 30,
+        "japan": 30,
+        "india": 30
+    };
+
     if (product.manufacturing_places) {
-        score += 15;
-        weightTotal += 15;
-    } else {
+
+        const places = product.manufacturing_places
+            .toLowerCase()
+            .split(",");
+
+        places.forEach(place => {
+            const cleanPlace = place.trim();
+
+            if (locationScores[cleanPlace]) {
+                manufacturingScore += locationScores[cleanPlace];
+                placesFound++;
+            }
+        });
+        const averageManufacturingScore =
+            placesFound > 0
+                ? manufacturingScore / placesFound
+                : null;
+        score += (averageManufacturingScore / 1.5);
+        weightTotal += 66;
+    }
+    else {
         missing.push("manufacturing_places");
     }
+
+
 
     const finalScore = weightTotal > 0
         ? Math.round((score / weightTotal) * 100)
