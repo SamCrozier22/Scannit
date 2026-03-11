@@ -62,9 +62,15 @@ app.get("/product/:barcode", async (req, res) => {
     console.log("OFF content-type:", contentType);
     console.log("OFF body preview:", bodyText.slice(0, 300));
 
+    if (r.status === 504) {
+      return res.status(504).json({
+        error: "Open Food Facts is temporarily unavailable. Please try again."
+      });
+    }
+
     if (!contentType.includes("application/json")) {
       return res.status(502).json({
-        error: "Open Food Facts returned non-JSON data"
+        error: "Unexpected response from Open Food Facts"
       });
     }
 
@@ -168,7 +174,7 @@ app.post("/register", async (req, res) => {
     });
     } catch (e) {
       console.log("Registration Error:", e);
-      Alert.alert("Error", "Network error while registering");
+      return res.status(500).json({ error: "Server error" });
     }
 })
 
