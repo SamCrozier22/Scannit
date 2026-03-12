@@ -32,7 +32,7 @@ export default function SavedScreen() {
         console.log("Saved products error:", data?.error);
         setProducts([]);
       }
-      
+
     } catch(e) {
       console.log("Error loading saved Products", e)
     } finally {
@@ -56,6 +56,7 @@ export default function SavedScreen() {
         data={products}
         keyExtractor={(item) => item.barcode}
         refreshing={refreshing}
+        contentContainerStyle={{ flexGrow: 1 }}
         onRefresh={() => loadProducts(true)}
         renderItem={({ item }) => (
           <View style={{marginBottom: 20}}>
@@ -73,7 +74,10 @@ export default function SavedScreen() {
           </View>
         )}
         ListEmptyComponent={() => (
-          <Text style={styles.falseText}>No saved products</Text>
+          <View style={styles.emptyContainer}>
+            <Text style={styles.falseText}>No saved products</Text>
+            <Text>Pull down to refresh</Text>
+          </View>
         )}
       />
     </View>
@@ -88,4 +92,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     justifyContent: "center",
   },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  }
 })
