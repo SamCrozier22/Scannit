@@ -51,6 +51,21 @@ app.get("/health", (_req, res) => {
 app.get("/product/:barcode", async (req, res) => {
   const { barcode } = req.params;
 
+  const cachedProduct = await Product.findOne({ barcode });
+  if (cachedProduct) {
+    return res.json({
+      barcode: cachedProduct.barcode,
+      product_name: cachedProduct.product_name,
+      brands: cachedProduct.brands,
+      image_front_small_url: cachedProduct.imageUrl,
+      eco: {
+        ecoScore: cachedProduct.ecoScore,
+        grade: cachedProduct.ecoScoreGrade,
+        ecoReason: cachedProduct.ecoReason
+      }
+    });
+  }
+
   const fields =
     "product_name,brands,image_front_small_url,nutriments,nutrition_grades,packaging_tags,brand_tags,countries_tags,manufacturing_places";
 

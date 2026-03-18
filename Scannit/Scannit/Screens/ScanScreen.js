@@ -81,6 +81,9 @@ useEffect(() => {
 
       if(res.ok) {
         setSaveMessage("Product saved");
+        setTimeout(() => {
+          setSaveMessage(null);
+        }, 2000)
         console.log("Saved: ", data);
       } else {
         setSaveMessage(data?.error ?? "Failed to save product");
@@ -97,6 +100,8 @@ async function fetchProduct(productCode) {
   setLoading(true);
   setError(null);
   setProduct(null);
+  setEcoScore(null);
+  setEcoReason(null);
 
   try {
     const res = await fetch(`${API_BASE}/product/${encodeURIComponent(productCode)}`);
@@ -107,10 +112,16 @@ async function fetchProduct(productCode) {
       setEcoScore(data.eco?.ecoScore ?? null);
       setEcoReason(data.eco?.ecoReason ?? null);
     } else {
+      setProduct(null);
+      setEcoScore(null);
+      setEcoReason(null);
       setError(data?.error ?? "Not found");
     }
   } catch (e) {
     console.log(e);
+    setProduct(null);
+    setEcoScore(null);
+    setEcoReason(null);
     setError("Network error");
   } finally {
     setLoading(false);
