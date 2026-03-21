@@ -37,7 +37,6 @@ export default function RootNavigator() {
       </View>
     );
   }
-
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {user ? (
