@@ -128,7 +128,7 @@ app.post("/save", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const alreadySaved = await user.savedBarcodes.includes(barcode);
+    const alreadySaved = user.savedBarcodes.includes(barcode);
     if(alreadySaved) {
       return res.status(400).json({ error: "Product already saved" });
     }
