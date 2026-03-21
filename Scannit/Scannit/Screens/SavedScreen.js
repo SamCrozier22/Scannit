@@ -45,7 +45,7 @@ export default function SavedScreen() {
   }
   if(loading) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={styles.MainContainer}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -85,6 +85,12 @@ export default function SavedScreen() {
 }
 
 const styles = StyleSheet.create({
+  MainContainer: {
+    flex: 1, 
+    justifyContent: "center", 
+    alignItems: "center",
+    backgroundColor: "#C3B59F"
+  },
   falseText: {
     fontSize: 20,
     fontWeight: "bold",

@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TabNavigator from "./TabNavigator";
 import LoginScreen from "../Screens/LoginScreen";
 import RegisterScreen from "../Screens/RegisterScreen";
+import ProfileScreen from "../Screens/ProfileScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -40,9 +41,15 @@ export default function RootNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {user ? (
-        <Stack.Screen name="MainTabs">
-          {(props) => <TabNavigator {...props} setUser={setUser} />}
-        </Stack.Screen>
+        <>
+          <Stack.Screen name="MainTabs">
+            {(props) => <TabNavigator {...props} setUser={setUser} />}
+          </Stack.Screen>
+
+          <Stack.Screen name="Profile">
+            {(props) => <ProfileScreen {...props} setUser={setUser} />}
+          </Stack.Screen>
+        </>
       ) : (
         <>
           <Stack.Screen name="Login">

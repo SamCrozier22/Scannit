@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, ActivityIndicator, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, ActivityIndicator, Image, TouchableOpacity } from 'react-native';
 import {CameraView, useCameraPermissions} from 'expo-camera';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -18,6 +18,7 @@ export default function ScanScreen() {
   const [savedBy, setSavedBy] = useState(null);
   const [saveMessage, setSaveMessage] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [cameraOpen, setCameraOpen] = useState(false);
 
   useEffect(() => {
     if (!permission) return;
@@ -70,6 +71,8 @@ useEffect(() => {
           productName: product.product_name ?? null,
           brands: product.brands ?? null,
           imageUrl: product.image_front_small_url ?? null,
+          nutriments: product.nutriments ?? null,
+          nutrition_grades: product.nutrition_grades ?? null,
           eco: {
             ecoScore,
             ecoReason,
@@ -111,6 +114,7 @@ async function fetchProduct(productCode) {
       setProduct(data);
       setEcoScore(data.eco?.ecoScore ?? null);
       setEcoReason(data.eco?.ecoReason ?? null);
+      setCameraOpen(false);
     } else {
       setProduct(null);
       setEcoScore(null);
@@ -140,9 +144,10 @@ async function fetchProduct(productCode) {
   if(!permission.granted) return <Text>No access to camera</Text>
 
   return (
-    <View style={{flex: 1, padding: 20}}>
+    <View style={styles.MainContainer}>
       <StatusBar style="auto" />
-      <View style={{flex: 1, borderRadius: 10, overflow: 'hidden'}}>
+    {cameraOpen ? (
+      <View style={styles.cameraWrapper}>
         <CameraView
           style={{flex: 1}}
           barcodeScannerSettings={{
@@ -151,6 +156,39 @@ async function fetchProduct(productCode) {
           onBarcodeScanned={scanned ? undefined : handleScan}
         />
       </View>
+    ) : (
+      <View style={styles.openScannerContainer}>
+        <TouchableOpacity style={styles.openScannerButton} 
+        onPress={() => {
+          setCameraOpen(true);
+          setScanned(false);
+          setProduct(null);
+          setError(null);
+          setSaveMessage(null);
+          setEcoScore(null);
+          setEcoReason(null);
+        }}
+        >
+          <Text style={styles.ButtonText}>Open Scanner</Text>
+        </TouchableOpacity>
+      </View>
+    )}
+  
+    {cameraOpen && (
+        <TouchableOpacity style={styles.closeButtonScanner} 
+        onPress={() => {
+          setCameraOpen(false);
+          setScanned(false);
+          setProduct(null);
+          setError(null);
+          setSaveMessage(null);
+          setEcoScore(null);
+          setEcoReason(null);
+        }}
+        >
+          <Text style={styles.ButtonText}>{cameraOpen ? "Close Scanner" : "Open Scanner"}</Text>
+        </TouchableOpacity>
+  )}
 
       {scanned && (
         <Button
@@ -162,6 +200,7 @@ async function fetchProduct(productCode) {
             setSaveMessage(null)
             setEcoScore(null)
             setEcoReason(null)
+            setCameraOpen(true)
           }}
         />
       )}
@@ -173,34 +212,34 @@ async function fetchProduct(productCode) {
           <Text style={styles.TitleText}>Product Name: {product.product_name ?? "Unknown"}</Text>
           <Text style={styles.TitleText}>Brand: {product.brands ?? "Unknown"}</Text>
           {product.nutriments?.["energy-kcal_100g"] ? (
-            <Text>Calories (kcal): {product.nutriments?.["energy-kcal_100g"]}</Text>
+            <Text style={styles.text}>Calories (kcal): {product.nutriments?.["energy-kcal_100g"]}</Text>
           ) : null}
           {product.nutriments?.["proteins_100g"] ? (
-            <Text>Proteins (g): {product.nutriments?.["proteins_100g"]}</Text>
+            <Text style={styles.text}>Proteins (g): {product.nutriments?.["proteins_100g"]}</Text>
           ) : null}
           {product.nutriments?.["fat_100g"] ? (
-            <Text>Fats (g): {product.nutriments?.["fat_100g"]}</Text>
+            <Text style={styles.text}>Fats (g): {product.nutriments?.["fat_100g"]}</Text>
           ) : null}
           {product.nutriments?.["carbohydrates_100g"] ? (
-            <Text>Carbohydrates (g): {product.nutriments?.["carbohydrates_100g"]}</Text>
+            <Text style={styles.text}>Carbohydrates (g): {product.nutriments?.["carbohydrates_100g"]}</Text>
           ) : null}
           {product.nutriments?.["energy-kcal_100g"] ? (
-            <Text>Energy (kcal): {product.nutriments?.["energy-kcal_100g"]}</Text>
+            <Text style={styles.text}>Energy (kcal): {product.nutriments?.["energy-kcal_100g"]}</Text>
           ) : null}
           {product.nutriments?.["sugars_100g"] ? (
-            <Text>Sugars (g): {product.nutriments?.["sugars_100g"]}</Text>
+            <Text style={styles.text}>Sugars (g): {product.nutriments?.["sugars_100g"]}</Text>
           ) : null}
           {product.nutriments?.["salt_100g"] ? (
-            <Text>Salt (g): {product.nutriments?.["salt_100g"]}</Text>
+            <Text style={styles.text}>Salt (g): {product.nutriments?.["salt_100g"]}</Text>
           ) : null}
           {product.nutriments?.["cholesterol_100g"] ? (
-            <Text>Cholesterol (mg): {product.nutriments?.["cholesterol_100g"]}</Text>
+            <Text style={styles.text}>Cholesterol (mg): {product.nutriments?.["cholesterol_100g"]}</Text>
           ) : null}
           {product.nutriments?.["fiber_100g"] ? (
-            <Text>Fiber (g): {product.nutriments?.["fiber_100g"]}</Text>
+            <Text style={styles.text}>Fiber (g): {product.nutriments?.["fiber_100g"]}</Text>
           ) : null}
           {product.nutriments?.["saturated-fat_100g"] ? (
-            <Text>Saturated Fat (g): {product.nutriments?.["saturated-fat_100g"]}</Text>
+            <Text style={styles.text}>Saturated Fat (g): {product.nutriments?.["saturated-fat_100g"]}</Text>
           ) : null}
           {product.nutriments?.["saturated-fat_100g"] && (
             product.nutriments?.["saturated-fat_100g"] > 5 && (
@@ -216,7 +255,7 @@ async function fetchProduct(productCode) {
             <>
               <Text style={styles.TitleText}>Eco Score: {ecoScore}</Text>
               {ecoScore > 50 && (
-                <Text style={{color: 'red'}}>High eco score</Text>
+                <Text style={{color: 'red', fontSize: 20, marginBottom: 10, fontWeight: 'bold'}}>High eco score</Text>
               )}
             </>
           )}
@@ -233,7 +272,7 @@ async function fetchProduct(productCode) {
           disabled={saving || saveMessage === "Product already saved"}
           />
           {saveMessage && (
-            <Text style={{marginTop: 10}}>{saveMessage}</Text>
+            <Text style={{marginTop: 10, color: '#A0AF84'}}>{saveMessage}</Text>
           )}
         </View>
       )}
@@ -242,11 +281,10 @@ async function fetchProduct(productCode) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  MainContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#C3B59F',
+    padding: 20,
   },
   Text: {
     fontSize: 20,
@@ -255,14 +293,59 @@ const styles = StyleSheet.create({
   },
   ProductInfo: {
     marginTop: 20,
-    backgroundColor: '#bcf9abff',
+    backgroundColor: '#215C3D',
     padding: 10,
     borderRadius: 10,
     alignItems: 'center',
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 5,
+      height: 5
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 5
+  },
+  text: {
+    color: '#A0AF84'
   },
   TitleText: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 5,
+    color: '#A0AF84'
   },
+  openScannerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  openScannerButton: {
+    backgroundColor: '#108A2C',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  ButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  closeButtonScanner: {
+    backgroundColor: "#108A2C",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginTop: 10,
+    width: "50%",
+    alignSelf: "center",
+  },
+  cameraWrapper: {
+    flex: 1,
+    width: "100%",
+    borderRadius: 10,
+    overflow: "hidden",
+  }
 });

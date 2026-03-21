@@ -26,6 +26,15 @@ const ProductSchema = new Schema(
       default: null,
       trim: true
     },
+    nutriments: {
+      type: Object,
+      default: null
+    },
+    nutrition_grades: {
+      type: String,
+      default: null,
+      trim: true
+    },
     ecoScore: { 
       type: Number, 
       default: null,

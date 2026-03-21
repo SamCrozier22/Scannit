@@ -58,6 +58,8 @@ app.get("/product/:barcode", async (req, res) => {
       product_name: cachedProduct.product_name,
       brands: cachedProduct.brands,
       image_front_small_url: cachedProduct.imageUrl,
+      nutriments: cachedProduct.nutriments,
+      nutrition_grades: cachedProduct.nutrition_grades,
       eco: {
         ecoScore: cachedProduct.ecoScore,
         grade: cachedProduct.ecoScoreGrade,
@@ -119,7 +121,17 @@ app.get("/product/:barcode", async (req, res) => {
 
 app.post("/save", async (req, res) => {
   try {
-    const {savedBy, barcode,productName, brands, imageUrl, eco} = req.body;
+    const {savedBy, barcode,productName, brands, imageUrl, eco, nutriments, nutrition_grades} = req.body;
+    const user = await userData.findOne({username: savedBy});
+
+    if(!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const alreadySaved = await user.savedBarcodes.includes(barcode);
+    if(alreadySaved) {
+      return res.status(400).json({ error: "Product already saved" });
+    }
 
     const product = await Product.findOneAndUpdate(
       {barcode},
@@ -130,7 +142,9 @@ app.post("/save", async (req, res) => {
         imageUrl: imageUrl ?? null,
         ecoScore: eco?.ecoScore ?? null,
         ecoScoreGrade: eco?.grade ?? null,
-        ecoReason: eco?.ecoReason ?? null
+        ecoReason: eco?.ecoReason ?? null,
+        nutriments: nutriments ?? null,
+        nutrition_grades: nutrition_grades ?? null,
       },
       {
         new: true,
