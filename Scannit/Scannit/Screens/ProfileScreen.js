@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ProfileScreen({setUser}) {
@@ -9,7 +9,7 @@ export default function ProfileScreen({setUser}) {
         setUser(null)
     }
     return (
-        <View>
+        <View style={styles.container}>
             <Text>Profile</Text>
 
             <Button
@@ -19,3 +19,11 @@ export default function ProfileScreen({setUser}) {
         </View>
     );
 }
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#C3B59F",
+    }
+})

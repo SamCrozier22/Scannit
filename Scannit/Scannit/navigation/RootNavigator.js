@@ -39,10 +39,23 @@ export default function RootNavigator() {
     );
   }
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ 
+      headerShown: true,
+      headerStyle: {
+          backgroundColor: "#215C3D",
+          height: 120,
+      },
+      headerTitleStyle: {
+          color: "#A0AF84",
+          fontSize: 30,
+      },
+      headerBackVisible: false,
+      }}>
       {user ? (
         <>
-          <Stack.Screen name="MainTabs">
+          <Stack.Screen name="MainTabs"
+          options={{headerShown: false}}
+          >
             {(props) => <TabNavigator {...props} setUser={setUser} />}
           </Stack.Screen>
 

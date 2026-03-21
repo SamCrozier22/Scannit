@@ -51,8 +51,9 @@ export default function SavedScreen() {
     );
   }
   return (
-    <View style={{ flex: 1, padding: 20 }}>
+    <View style={styles.MainContainer}>
       <FlatList
+        style={styles.flatlist}
         data={products}
         keyExtractor={(item) => item.barcode}
         refreshing={refreshing}
@@ -88,7 +89,6 @@ const styles = StyleSheet.create({
   MainContainer: {
     flex: 1, 
     justifyContent: "center", 
-    alignItems: "center",
     backgroundColor: "#C3B59F"
   },
   falseText: {
@@ -102,5 +102,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#C3B59F",
+    margin: 0,
+  },
+  flatlist: {
+    flex: 1,
+    backgroundColor: "#C3B59F",
+    margin: 0,
   }
 })

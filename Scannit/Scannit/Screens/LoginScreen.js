@@ -5,7 +5,8 @@ import {
   TextInput,
   Button,
   Alert,
-  StyleSheet
+  StyleSheet,
+  TouchableOpacity
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -55,35 +56,41 @@ export default function LoginScreen({ navigation, setUser }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsernameLocal}
-        autoCapitalize="none"
-      />
+    <View style={styles.InputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Username"
+          value={username}
+          onChangeText={setUsernameLocal}
+          autoCapitalize="none"
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
 
-      <Button
-        title={loading ? "Logging in..." : "Login"}
-        onPress={handleLogin}
-        disabled={loading}
-      />
+        <TouchableOpacity
+          style={styles.loginBtn}
+          onPress={handleLogin}
+        >
+          <Text style={styles.buttonText}>{loading ? "Loading..." : "Login"}</Text>
+        </TouchableOpacity>
+      </View>
 
       <View style={{ marginTop: 12 }}>
-        <Button
-          title="Go to Register"
-          onPress={() => navigation.navigate("Register")}
-        />
+      <Text style={{ color: "#2D4739", fontSize: 18, fontWeight: "bold" }}>Don't have an account?</Text>
+
+      <TouchableOpacity
+        style={styles.loginBtn}
+        onPress= { () => navigation.navigate("Register") }
+      >
+        <Text style={styles.buttonText}>Register</Text>
+      </TouchableOpacity>
       </View>
     </View>
   );
@@ -94,11 +101,52 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#C3B59F",
   },
   title: {
+    color: "#2D4739",
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  InputContainer: {
+    borderRadius: 10,
+    padding: 20,
+    backgroundColor: "#2D4739",
+    width: "80%",
 
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 5,
+      height: 5
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 5,
+
+    justifyContent: "center",
+    alignItems: "center",
   },
   input: {
-
+    width: 200,
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
+    backgroundColor: "#d3c5b0ff",
   },
+  loginBtn: {
+    backgroundColor: '#108A2C',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    margin: 15
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  }
 });

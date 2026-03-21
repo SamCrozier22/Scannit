@@ -6,7 +6,8 @@ export default function HomeScreen( { setUser } ) {
 
   return (
     <View style={styles.MainPage}>
-      <Text>Home Screen</Text>
+      <Text style={styles.Title}>GrazeGood</Text>
+      
     </View>
   );
 
@@ -17,5 +18,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#C3B59F",
+  },
+  Title: {
+    color: "#215C3D",
+    fontSize: 30,
+    fontWeight: "bold",
   }
 });

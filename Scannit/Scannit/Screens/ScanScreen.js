@@ -149,7 +149,7 @@ async function fetchProduct(productCode) {
     {cameraOpen ? (
       <View style={styles.cameraWrapper}>
         <CameraView
-          style={{flex: 1}}
+          style={styles.Camera}
           barcodeScannerSettings={{
             barcodeTypes: ["ean13", "ean8", "upc_a", "upc_e"]
           }}
@@ -157,6 +157,16 @@ async function fetchProduct(productCode) {
         />
       </View>
     ) : (
+      <>
+      <View>
+        <Text style={styles.Title}>GrazeGood</Text>
+        <Text style={styles.SubTitle}>Scan a product to check how good it is for you and the environment!</Text>
+      </View>
+        <View style={styles.SubContainer}>
+          <Text style={styles.text}>Hit the save button to save your products and review them later in the Saved tab</Text>
+          <Text style={styles.text}>The higher the eco score, the better for you and the environment!</Text>
+          <Text style={styles.text}>To start scanning, click the button below</Text>
+        </View>
       <View style={styles.openScannerContainer}>
         <TouchableOpacity style={styles.openScannerButton} 
         onPress={() => {
@@ -172,6 +182,7 @@ async function fetchProduct(productCode) {
           <Text style={styles.ButtonText}>Open Scanner</Text>
         </TouchableOpacity>
       </View>
+      </>
     )}
   
     {cameraOpen && (
@@ -186,24 +197,10 @@ async function fetchProduct(productCode) {
           setEcoReason(null);
         }}
         >
-          <Text style={styles.ButtonText}>{cameraOpen ? "Close Scanner" : "Open Scanner"}</Text>
+          <Text style={styles.ButtonText}>{cameraOpen ? "Close Scanner" : "Scan Again"}</Text>
         </TouchableOpacity>
   )}
 
-      {scanned && (
-        <Button
-          title="Scan again"
-          onPress={() => {
-            setScanned(false)
-            setProduct(null)
-            setError(null)
-            setSaveMessage(null)
-            setEcoScore(null)
-            setEcoReason(null)
-            setCameraOpen(true)
-          }}
-        />
-      )}
       {loading && <ActivityIndicator />}
       {error && <Text style={{color: 'red'}}>{error}</Text>}
 
@@ -308,7 +305,10 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   text: {
-    color: '#A0AF84'
+    color: '#215C3D',
+    fontSize: 20,
+    margin: 5,
+    textAlign: 'center',
   },
   TitleText: {
     fontSize: 20,
@@ -323,6 +323,7 @@ const styles = StyleSheet.create({
   },
   openScannerButton: {
     backgroundColor: '#108A2C',
+    marginTop: "auto",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
@@ -345,7 +346,32 @@ const styles = StyleSheet.create({
   cameraWrapper: {
     flex: 1,
     width: "100%",
+    height: "75%",
     borderRadius: 10,
     overflow: "hidden",
+  },
+  Title: {
+    color: "#215C3D",
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: 'center',
+    marginBottom: 20
+  },
+  SubTitle: {
+    color: "#215C3D",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  Camera: {
+    height: "100%",
+    width: "100%",
+    borderRadius: 10,
+  },
+  SubContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#C3B59F",
   }
 });
