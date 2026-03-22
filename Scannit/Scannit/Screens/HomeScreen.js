@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { useState, useCallback } from "react";
 import React from "react";
-import { View, Text, Button, StyleSheet, FlatList, Image } from "react-native";
+import { View, Text, Button, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
 
 export default function HomeScreen( { setUser } ) {
   const [products, setProducts] = useState([]);
@@ -38,7 +38,7 @@ export default function HomeScreen( { setUser } ) {
   return (
     <View style={styles.MainPage}>
       <Text style={styles.Title}>GrazeGood</Text>
-      <Text style={{color: "#215C3D", fontSize: 20, fontWeight: "bold", textAlign: "left", marginBottom: 10}}>Saved Products</Text>
+      <Text style={{color: "#215C3D", fontSize: 20, fontWeight: "bold", textAlign: "left", marginBottom: 10}}>Saved Products ({products.length})</Text>
     <View style={styles.RecentContainer}>
       {products.length === 0 ? (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -70,8 +70,10 @@ export default function HomeScreen( { setUser } ) {
 
               <Text style={{ color: "#A0AF84", fontSize: 15, textAlign: "center"}}>Eco Score: {item.ecoScore}</Text>
           </View>
+
           </View>
           )}
+          
         />
       )}
     </View>

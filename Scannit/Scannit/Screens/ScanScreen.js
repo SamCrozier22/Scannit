@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, ActivityIndicator, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, ActivityIndicator, Image, TouchableOpacity, ScrollView } from 'react-native';
 import {CameraView, useCameraPermissions} from 'expo-camera';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -183,13 +183,13 @@ async function fetchProduct(productCode) {
           </View>
 
           <View style={styles.SubContainer}>
-            <Text style={styles.infoText}>
+            <Text style={styles.text}>
               Hit the save button to save your products and review them later in the Saved tab
             </Text>
-            <Text style={styles.infoText}>
+            <Text style={styles.text}>
               The higher the eco score, the better for you and the environment!
             </Text>
-            <Text style={styles.infoText}>
+            <Text style={styles.text}>
               To start scanning, click the button below
             </Text>
           </View>
@@ -232,76 +232,118 @@ async function fetchProduct(productCode) {
 
       {loading && <ActivityIndicator />}
       {error && <Text style={{color: 'red'}}>{error}</Text>}
-
-      {product && (
+      {product ? (
         <View style={styles.ProductInfo}>
-          <Text style={styles.TitleText}>Product Name: {product.product_name ?? "Unknown"}</Text>
-          <Text style={styles.TitleText}>Brand: {product.brands ?? "Unknown"}</Text>
-          {product.nutriments?.["energy-kcal_100g"] ? (
-            <Text style={styles.text}>Calories (kcal): {product.nutriments?.["energy-kcal_100g"]}</Text>
-          ) : null}
-          {product.nutriments?.["proteins_100g"] ? (
-            <Text style={styles.text}>Proteins (g): {product.nutriments?.["proteins_100g"]}</Text>
-          ) : null}
-          {product.nutriments?.["fat_100g"] ? (
-            <Text style={styles.text}>Fats (g): {product.nutriments?.["fat_100g"]}</Text>
-          ) : null}
-          {product.nutriments?.["carbohydrates_100g"] ? (
-            <Text style={styles.text}>Carbohydrates (g): {product.nutriments?.["carbohydrates_100g"]}</Text>
-          ) : null}
-          {product.nutriments?.["energy-kcal_100g"] ? (
-            <Text style={styles.text}>Energy (kcal): {product.nutriments?.["energy-kcal_100g"]}</Text>
-          ) : null}
-          {product.nutriments?.["sugars_100g"] ? (
-            <Text style={styles.text}>Sugars (g): {product.nutriments?.["sugars_100g"]}</Text>
-          ) : null}
-          {product.nutriments?.["salt_100g"] ? (
-            <Text style={styles.text}>Salt (g): {product.nutriments?.["salt_100g"]}</Text>
-          ) : null}
-          {product.nutriments?.["cholesterol_100g"] ? (
-            <Text style={styles.text}>Cholesterol (mg): {product.nutriments?.["cholesterol_100g"]}</Text>
-          ) : null}
-          {product.nutriments?.["fiber_100g"] ? (
-            <Text style={styles.text}>Fiber (g): {product.nutriments?.["fiber_100g"]}</Text>
-          ) : null}
-          {product.nutriments?.["saturated-fat_100g"] ? (
-            <Text style={styles.text}>Saturated Fat (g): {product.nutriments?.["saturated-fat_100g"]}</Text>
-          ) : null}
-          {product.nutriments?.["saturated-fat_100g"] && (
-            product.nutriments?.["saturated-fat_100g"] > 5 && (
-            <Text style={{color: 'red'}}>High saturated fat content</Text>
-          )
+          <Text style={styles.TitleText}>
+            Product Name: {product.product_name ?? "Unknown"}
+          </Text>
+
+          <Text style={styles.TitleText}>
+            Brand: {product.brands ?? "Unknown"}
+          </Text>
+
+          {product.nutriments?.["energy-kcal_100g"] != null && (
+            <Text style={styles.infoText}>
+              Calories (kcal): {product.nutriments["energy-kcal_100g"]}
+            </Text>
           )}
-          {product.nutriments?.["saturated-fat_100g"] && (
-            product.nutriments?.["saturated-fat_100g"] > 10 && (
-            <Text style={{color: 'red'}}>High saturated fat content</Text>
-          )
+
+          {product.nutriments?.["proteins_100g"] != null && (
+            <Text style={styles.infoText}>
+              Proteins (g): {product.nutriments["proteins_100g"]}
+            </Text>
           )}
+
+          {product.nutriments?.["fat_100g"] != null && (
+            <Text style={styles.infoText}>
+              Fats (g): {product.nutriments["fat_100g"]}
+            </Text>
+          )}
+
+          {product.nutriments?.["carbohydrates_100g"] != null && (
+            <Text style={styles.infoText}>
+              Carbohydrates (g): {product.nutriments["carbohydrates_100g"]}
+            </Text>
+          )}
+
+          {product.nutriments?.["sugars_100g"] != null && (
+            <Text style={styles.infoText}>
+              Sugars (g): {product.nutriments["sugars_100g"]}
+            </Text>
+          )}
+
+          {product.nutriments?.["salt_100g"] != null && (
+            <Text style={styles.infoText}>
+              Salt (g): {product.nutriments["salt_100g"]}
+            </Text>
+          )}
+
+          {product.nutriments?.["cholesterol_100g"] != null && (
+            <Text style={styles.infoText}>
+              Cholesterol (mg): {product.nutriments["cholesterol_100g"]}
+            </Text>
+          )}
+
+          {product.nutriments?.["fiber_100g"] != null && (
+            <Text style={styles.infoText}>
+              Fiber (g): {product.nutriments["fiber_100g"]}
+            </Text>
+          )}
+
+          {product.nutriments?.["saturated-fat_100g"] != null && (
+            <Text style={styles.infoText}>
+              Saturated Fat (g): {product.nutriments["saturated-fat_100g"]}
+            </Text>
+          )}
+
+          {product.nutriments?.["saturated-fat_100g"] > 5 && (
+            <Text style={{ color: "red" }}>High saturated fat content</Text>
+          )}
+
+          {product.nutriments?.["saturated-fat_100g"] > 10 && (
+            <Text style={{ color: "red" }}>Very high saturated fat content</Text>
+          )}
+
           {ecoScore !== null && (
             <>
+            <View style={styles.divider}></View>
               <Text style={styles.TitleText}>Eco Score: {ecoScore}</Text>
               {ecoScore > 50 && (
-                <Text style={{color: 'red', fontSize: 20, marginBottom: 10, fontWeight: 'bold'}}>High eco score</Text>
+                <Text
+                  style={{
+                    color: "red",
+                    fontSize: 20,
+                    marginBottom: 10,
+                    fontWeight: "bold",
+                  }}
+                >
+                  High eco score
+                </Text>
               )}
             </>
           )}
 
           {product.image_front_small_url ? (
             <Image
-              source={{uri: product.image_front_small_url}}
-              style={{width: 200, height: 200}}
+              source={{ uri: product.image_front_small_url }}
+              style={{ width: 200, height: 200 }}
             />
           ) : null}
-          <Button
-          title={saving ? "Saving..." : "Save Product"}
-          onPress={saveProduct}
-          disabled={saving || saveMessage === "Product already saved"}
-          />
-          {saveMessage && (
-            <Text style={{marginTop: 10, color: '#A0AF84'}}>{saveMessage}</Text>
-          )}
+          <TouchableOpacity
+            onPress={saveProduct}
+            style={styles.Button}
+            disabled={saving || saveMessage === "Product already saved"}
+          >
+            <Text style={styles.ButtonText}>Save Product</Text>
+          </TouchableOpacity>
+
+          {saveMessage ? (
+            <Text style={{ marginTop: 10, color: "#A0AF84" }}>
+              {saveMessage}
+            </Text>
+          ) : null}
         </View>
-      )}
+      ) : null}
     </View>
   );
 }
@@ -328,17 +370,23 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 5
   },
+  divider: {
+    height: 1,
+    backgroundColor: '#A0AF84',
+    width: "100%",
+    marginVertical: 10,
+  },
   text: {
-    color: '#A0AF84',
+    color: '#215C3D',
     fontSize: 20,
     margin: 5,
     textAlign: 'center',
   },
   infoText: {
-    color: '#215C3D',
-    fontSize: 20,
-    margin: 5,
+    color: '#a0af84',
+    fontSize: 16,
     textAlign: 'center',
+    margin: 0
   },
   TitleText: {
     fontSize: 20,
@@ -353,13 +401,19 @@ const styles = StyleSheet.create({
   },
   openScannerButton: {
     backgroundColor: '#108A2C',
-    marginTop: "auto",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
+    marginTop: "auto",
+  },
+  Button: {
+    backgroundColor: '#108A2C',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginTop: 10,
   },
   scanAgainContainer: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -368,6 +422,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
+    alignSelf: 'center',
   },
   ButtonText: {
     color: '#fff',

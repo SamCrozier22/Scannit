@@ -60,18 +60,25 @@ export default function SavedScreen() {
         contentContainerStyle={{ flexGrow: 1 }}
         onRefresh={() => loadProducts(true)}
         renderItem={({ item }) => (
-          <View style={{marginBottom: 20}}>
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-              {item.product_name ?? "Unknown Product"}
-            </Text>
-            <Text>{item.brands}</Text>
-            {item.imageUrl && (
-              <Image
-                source={{ uri: item.imageUrl }}
-                style={{ width: 200, height: 200 }}
-              />
-            )}
-            <Text>Eco Score: {item.ecoScore ?? "N/A"}</Text>
+          <View style={styles.savedProductContainer}>
+            <View style={styles.savedProduct}>
+              {item.imageUrl && (
+                <View>
+                  <Image
+                    source={{ uri: item.imageUrl }}
+                    style={{ width: 150, height: 150, borderRadius: 10 }}
+                  />
+                </View>
+              )}
+              <View style={styles.savedProductInfo}>
+                <Text style={{ fontSize: 16, fontWeight: "bold", color: "#A0AF84" }}>
+                  {item.product_name ?? "Unknown Product"}
+                </Text>
+                <Text style={{color: "#A0AF84", fontSize: 15, fontWeight: "bold", marginTop: 10}}>{item.brands}</Text>
+                <View style={styles.divider}></View>
+                <Text style={{color: "#A0AF84", fontSize: 18}}>Eco Score: {item.ecoScore ?? "N/A"}</Text>
+              </View>
+            </View>
           </View>
         )}
         ListEmptyComponent={() => (
@@ -91,6 +98,12 @@ const styles = StyleSheet.create({
     justifyContent: "center", 
     backgroundColor: "#C3B59F"
   },
+  divider: {
+    height: 1,
+    backgroundColor: '#A0AF84',
+    width: "100%",
+    marginVertical: 10,
+  },
   falseText: {
     fontSize: 20,
     fontWeight: "bold",
@@ -109,5 +122,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#C3B59F",
     margin: 0,
-  }
+  },
+  savedProductContainer: {
+    backgroundColor: "#215C3D",
+    padding: 10,
+    margin: 10,
+    borderRadius: 10,
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 5,
+      height: 5
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  savedProduct: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  savedProductInfo: {
+    display: "flex",
+    marginLeft: 10,
+    justifyContent: "space-between",
+  },
 })
