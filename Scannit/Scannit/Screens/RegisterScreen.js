@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, Alert, ActivityIndicator, TouchableOpacity } from "react-native";
 import { useState } from "react";
 
 export default function RegisterScreen( { navigation } ) {
@@ -51,10 +51,12 @@ export default function RegisterScreen( { navigation } ) {
     }
   }
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Register</Text>
+    <View style={styles.container}>
 
+    <View style={styles.InputContainer}>
+      <Text style={styles.title}>Enter Your Details</Text>
       <TextInput
+      style={styles.input}
       placeholder="Enter Username"
       value={username}
       onChangeText={setUsername}
@@ -62,18 +64,21 @@ export default function RegisterScreen( { navigation } ) {
       />
 
       <TextInput
+      style={styles.input}
       placeholder="Enter First Name"
       value={firstName}
       onChangeText={setFirstName}
       />
 
       <TextInput
+      style={styles.input}
       placeholder="Enter Last Name"
       value={lastName}
       onChangeText={setLastName}
       />
 
       <TextInput
+      style={styles.input}
       placeholder="Enter Email"
       value={email}
       onChangeText={setEmail}
@@ -81,31 +86,86 @@ export default function RegisterScreen( { navigation } ) {
       />
 
       <TextInput
+      style={styles.input}
       placeholder="Enter Password"
       value={password}
       onChangeText={setPassword}
       secureTextEntry={true}
       />
 
-      <Button
-      title={loading ? "Registering..." : "Register"}
+      <TouchableOpacity
+      style={styles.registerBtn}
       onPress={handleRegister}
-      disabled={loading}
-      />
+      >
+        <Text style={styles.buttonText}>Register</Text>
+      </TouchableOpacity>
+      </View>
+      <Text 
+      style={{ color: "#2D4739", fontSize: 18, fontWeight: "bold", marginTop: 20 }}
+      >
+        Already Have an Account?
+      </Text>
+      <TouchableOpacity
+      style={styles.registerBtn}
+      onPress={() => navigation.navigate("Login")}
+      >
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#C3B59F",
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'green',
+    color: "#A0AF84",
   },
   input: {
+    width: 200,
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
+    backgroundColor: "#d3c5b0ff",
+  },
+  InputContainer: {
+    borderRadius: 10,
+    padding: 20,
+    backgroundColor: "#2D4739",
+    width: "80%",
 
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 5,
+      height: 5
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 5,
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  registerBtn: {
+    backgroundColor: '#108A2C',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    margin: 15
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
   }
 })

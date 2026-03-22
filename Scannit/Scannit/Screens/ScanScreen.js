@@ -146,47 +146,76 @@ async function fetchProduct(productCode) {
   return (
     <View style={styles.MainContainer}>
       <StatusBar style="auto" />
-    {cameraOpen ? (
-      <View style={styles.cameraWrapper}>
-        <CameraView
-          style={styles.Camera}
-          barcodeScannerSettings={{
-            barcodeTypes: ["ean13", "ean8", "upc_a", "upc_e"]
-          }}
-          onBarcodeScanned={scanned ? undefined : handleScan}
-        />
-      </View>
-    ) : (
-      <>
-      <View>
-        <Text style={styles.Title}>GrazeGood</Text>
-        <Text style={styles.SubTitle}>Scan a product to check how good it is for you and the environment!</Text>
-      </View>
-        <View style={styles.SubContainer}>
-          <Text style={styles.text}>Hit the save button to save your products and review them later in the Saved tab</Text>
-          <Text style={styles.text}>The higher the eco score, the better for you and the environment!</Text>
-          <Text style={styles.text}>To start scanning, click the button below</Text>
+      {cameraOpen ? (
+        <View style={styles.cameraWrapper}>
+          <CameraView
+            style={styles.Camera}
+            barcodeScannerSettings={{
+              barcodeTypes: ["ean13", "ean8", "upc_a", "upc_e"],
+            }}
+            onBarcodeScanned={scanned ? undefined : handleScan}
+          />
         </View>
-      <View style={styles.openScannerContainer}>
-        <TouchableOpacity style={styles.openScannerButton} 
-        onPress={() => {
-          setCameraOpen(true);
-          setScanned(false);
-          setProduct(null);
-          setError(null);
-          setSaveMessage(null);
-          setEcoScore(null);
-          setEcoReason(null);
-        }}
-        >
-          <Text style={styles.ButtonText}>Open Scanner</Text>
-        </TouchableOpacity>
-      </View>
-      </>
-    )}
+      ) : product ? (
+        <View style={styles.scanAgainContainer}>
+          <TouchableOpacity
+            style={styles.scanAgainButton}
+            onPress={() => {
+              setCameraOpen(true);
+              setScanned(false);
+              setProduct(null);
+              setError(null);
+              setSaveMessage(null);
+              setEcoScore(null);
+              setEcoReason(null);
+            }}
+          >
+            <Text style={styles.ButtonText}>Scan Another Product</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <>
+          <View>
+            <Text style={styles.Title}>GrazeGood</Text>
+            <Text style={styles.SubTitle}>
+              Scan a product to check how good it is for you and the environment!
+            </Text>
+          </View>
+
+          <View style={styles.SubContainer}>
+            <Text style={styles.infoText}>
+              Hit the save button to save your products and review them later in the Saved tab
+            </Text>
+            <Text style={styles.infoText}>
+              The higher the eco score, the better for you and the environment!
+            </Text>
+            <Text style={styles.infoText}>
+              To start scanning, click the button below
+            </Text>
+          </View>
+
+          <View style={styles.openScannerContainer}>
+            <TouchableOpacity
+              style={styles.openScannerButton}
+              onPress={() => {
+                setCameraOpen(true);
+                setScanned(false);
+                setProduct(null);
+                setError(null);
+                setSaveMessage(null);
+                setEcoScore(null);
+                setEcoReason(null);
+              }}
+            >
+              <Text style={styles.ButtonText}>Open Scanner</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
   
     {cameraOpen && (
-        <TouchableOpacity style={styles.closeButtonScanner} 
+      <TouchableOpacity
+        style={styles.closeButtonScanner}
         onPress={() => {
           setCameraOpen(false);
           setScanned(false);
@@ -196,10 +225,10 @@ async function fetchProduct(productCode) {
           setEcoScore(null);
           setEcoReason(null);
         }}
-        >
-          <Text style={styles.ButtonText}>{cameraOpen ? "Close Scanner" : "Scan Again"}</Text>
-        </TouchableOpacity>
-  )}
+      >
+        <Text style={styles.ButtonText}>Close Scanner</Text>
+      </TouchableOpacity>
+    )}
 
       {loading && <ActivityIndicator />}
       {error && <Text style={{color: 'red'}}>{error}</Text>}
@@ -283,11 +312,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#C3B59F',
     padding: 20,
   },
-  Text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'green',
-  },
   ProductInfo: {
     marginTop: 20,
     backgroundColor: '#215C3D',
@@ -305,6 +329,12 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   text: {
+    color: '#A0AF84',
+    fontSize: 20,
+    margin: 5,
+    textAlign: 'center',
+  },
+  infoText: {
     color: '#215C3D',
     fontSize: 20,
     margin: 5,
@@ -324,6 +354,17 @@ const styles = StyleSheet.create({
   openScannerButton: {
     backgroundColor: '#108A2C',
     marginTop: "auto",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  scanAgainContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scanAgainButton: {
+    backgroundColor: '#108A2C',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,

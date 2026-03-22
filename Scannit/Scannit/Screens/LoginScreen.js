@@ -103,11 +103,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#C3B59F",
   },
-  title: {
-    color: "#2D4739",
-    fontSize: 30,
-    fontWeight: "bold",
-  },
   InputContainer: {
     borderRadius: 10,
     padding: 20,
