@@ -53,25 +53,28 @@ export default function HomeScreen( { setUser } ) {
           keyExtractor={(item) => item.barcode}
           horizontal
           showsHorizontalScrollIndicator={false}
+          ListFooterComponentStyle={styles.footer}
+          ListFooterComponent={ () => {
+            <Text style={{color: "#215C3D", fontSize: 20, fontWeight: "bold", textAlign: "left", marginBottom: 10}}> HELP MEEEEEEEE </Text>
+          }}
           contentContainerStyle={{
             flexGrow: 1,
             justifyContent: products.length <= 2 ? "center" : "flex-start",
           }}
           renderItem={({ item }) => (
             <View style={styles.ProductContainer}>
-            <View style={styles.Product}>
-              {item.imageUrl && (
-                <Image
-                  style={{ width: 100, height: 100 }}
-                  source={{ uri: item.imageUrl }}
-                />
-              )}
-              <Text style={{ color: "#A0AF84", fontSize: 15, textAlign: "center", fontWeight: "bold"}}>{item.product_name}</Text>
+              <View style={styles.Product}>
+                {item.imageUrl && (
+                  <Image
+                    style={{ width: 100, height: 100 }}
+                    source={{ uri: item.imageUrl }}
+                  />
+                )}
+                <Text style={{ color: "#A0AF84", fontSize: 15, textAlign: "center", fontWeight: "bold"}}>{item.product_name}</Text>
 
-              <Text style={{ color: "#A0AF84", fontSize: 15, textAlign: "center"}}>Eco Score: {item.ecoScore}</Text>
-          </View>
-
-          </View>
+                <Text style={{ color: "#A0AF84", fontSize: 15, textAlign: "center"}}>Eco Score: {item.ecoScore}</Text>
+              </View>
+            </View>
           )}
           
         />
@@ -146,5 +149,28 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20, 
+  },
+  Button: {
+    backgroundColor: '#108A2C',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignSelf: 'center',
+  },
+  ButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  footer: {
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 20,
+  },
+  ButtonContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 20,
   },
 });

@@ -204,7 +204,26 @@ app.get("/saved/:username", async (req, res) => {
     return res.status(500).json({ error: "Server error" });
   }
 })
-
+app.delete("/saved/:username/:barcode", async (req, res) => {
+  try {
+    const {username, barcode} = req.params;
+    const UpdatedUser = await userData.findOneAndUpdate(
+      { username },
+      {$pull: { savedBarcodes: barcode } },
+      { new: true }
+    )
+      if(!UpdatedUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      return res.json({ 
+        message: "Product removed",
+        savedBarcodes: UpdatedUser.savedBarcodes,
+      });
+    } catch (e) {
+      console.error("Delete saved error: ", e);
+      return res.status(500).json({ error: "Server error" });
+    }
+})
 app.post("/login", async (req, res) => {
   try {
     const {username, password} = req.body;
