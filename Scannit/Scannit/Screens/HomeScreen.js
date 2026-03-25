@@ -53,10 +53,6 @@ export default function HomeScreen( { setUser } ) {
           keyExtractor={(item) => item.barcode}
           horizontal
           showsHorizontalScrollIndicator={false}
-          ListFooterComponentStyle={styles.footer}
-          ListFooterComponent={ () => {
-            <Text style={{color: "#215C3D", fontSize: 20, fontWeight: "bold", textAlign: "left", marginBottom: 10}}> HELP MEEEEEEEE </Text>
-          }}
           contentContainerStyle={{
             flexGrow: 1,
             justifyContent: products.length <= 2 ? "center" : "flex-start",
@@ -64,19 +60,29 @@ export default function HomeScreen( { setUser } ) {
           renderItem={({ item }) => (
             <View style={styles.ProductContainer}>
               <View style={styles.Product}>
-                {item.imageUrl && (
+                {item.imageUrl ? (
                   <Image
-                    style={{ width: 100, height: 100 }}
+                    style={styles.ProductImage}
                     source={{ uri: item.imageUrl }}
                   />
-                )}
-                <Text style={{ color: "#A0AF84", fontSize: 15, textAlign: "center", fontWeight: "bold"}}>{item.product_name}</Text>
+                ) : (
+                  <Image
+                    style={styles.ProductImage}
+                    source={require("../assets/product-placeholder.jpg")}
+                  />
+                )} 
+                <Text
+                style={styles.ProductName}
+                numberOfLines={3}
+                ellipsizeMode="tail"
+                >
+                  {item.product_name}
+                </Text>
 
                 <Text style={{ color: "#A0AF84", fontSize: 15, textAlign: "center"}}>Eco Score: {item.ecoScore}</Text>
               </View>
             </View>
           )}
-          
         />
       )}
     </View>
@@ -102,7 +108,7 @@ const styles = StyleSheet.create({
     padding: 0,
     backgroundColor: "#215C3D",
     width: "100%",
-    height: 250,
+    height: 300,
 
     shadowColor: "#000",
     shadowOffset: {
@@ -125,8 +131,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     margin: 15,
     maxWidth: 100,
-    maxHeight: 120,
-    marginVertical: "auto",
+
+    gap: 5
+  },
+  ProductName: { 
+    color: "#A0AF84", 
+    fontSize: 14, 
+    textAlign: "center", 
+    fontWeight: "bold",
+    width: 100,
+    minHeight: 50
+  },
+  ProductImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
   },
   ProductContainer: {
     padding: 10,
@@ -134,6 +153,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 10,
     marginVertical: 20,
+    width: 150,
     
     shadowColor: "#000",
     shadowOffset: {
@@ -162,15 +182,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  footer: {
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 20,
-  },
-  ButtonContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 20,
   },
 });

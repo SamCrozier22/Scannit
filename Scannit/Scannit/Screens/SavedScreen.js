@@ -3,7 +3,7 @@ import { View, Text, ActivityIndicator, Image, FlatList, StyleSheet } from "reac
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { Pressable } from "react-native";
-import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
+import Swipeable from "react-native-gesture-handler/Swipeable";
 
 export default function SavedScreen() {
   const [products, setProducts] = useState([]);
@@ -21,14 +21,14 @@ export default function SavedScreen() {
     try {
       const username = await AsyncStorage.getItem("username");
 
-      const res = await fetch({
+      const res = await fetch(`${API_BASE}/saved/${username}/${barcode}`, {
         method: "DELETE",
       })
 
       const data = await res.json();
 
       if(res.ok) {
-        setProducts((prev) > prev.filter((item) => item.barcode !== barcode))
+        setProducts((prev) => prev.filter((item) => item.barcode !== barcode))
       } else {
         console.log("Error deleting product", data?.error);
       }
@@ -94,10 +94,17 @@ export default function SavedScreen() {
           <Swipeable renderRightActions={() => renderRightActions(item.barcode)}>
             <View style={styles.savedProductContainer}>
               <View style={styles.savedProduct}>
-                {item.imageUrl && (
+                {item.imageUrl ? (
                   <View>
                     <Image
                       source={{ uri: item.imageUrl }}
+                      style={{ width: 150, height: 150, borderRadius: 10 }}
+                    />
+                  </View>
+                ) : (
+                  <View>
+                    <Image
+                      source={require("../assets/product-placeholder.jpg")}
                       style={{ width: 150, height: 150, borderRadius: 10 }}
                     />
                   </View>
@@ -178,6 +185,7 @@ const styles = StyleSheet.create({
   },
   savedProductInfo: {
     display: "flex",
+    flex: 1,
     marginLeft: 10,
     justifyContent: "space-between",
   },
@@ -185,12 +193,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fa4437",
-    padding: 10,
     borderRadius: 10,
-    width: "100%"
+    width: "25%",
+    marginHorizontal: 10,
+    marginVertical: 10,
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 5,
+      height: 5
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 5,
   },
   deleteText: {
-    color: "red",
+    color: "white",
     fontWeight: "bold",
     fontSize: 18,
   }
