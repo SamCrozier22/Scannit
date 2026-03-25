@@ -73,13 +73,13 @@ export default function HomeScreen( { setUser } ) {
                 )} 
                 <Text
                 style={styles.ProductName}
-                numberOfLines={3}
+                numberOfLines={4}
                 ellipsizeMode="tail"
                 >
                   {item.product_name}
                 </Text>
-
-                <Text style={{ color: "#A0AF84", fontSize: 15, textAlign: "center"}}>Eco Score: {item.ecoScore}</Text>
+                <View style={{flex: 1}}/>
+                <Text style={styles.EcoScore}>Eco Score: {item.ecoScore}</Text>
               </View>
             </View>
           )}
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     margin: 15,
     maxWidth: 100,
-
+    flex: 1,
     gap: 5
   },
   ProductName: { 
@@ -146,6 +146,12 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 10,
+  },
+  EcoScore: { 
+    color: "#A0AF84", 
+    fontSize: 14, 
+    textAlign: "center",
+    marginBottom: 10
   },
   ProductContainer: {
     padding: 10,

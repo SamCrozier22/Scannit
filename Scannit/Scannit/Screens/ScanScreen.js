@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, ActivityIndicator, Image, TouchableOpacity, ScrollView } from 'react-native';
 import {CameraView, useCameraPermissions} from 'expo-camera';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 export default function ScanScreen() {
   const [scanned, setScanned] = useState(false);
@@ -16,7 +17,6 @@ export default function ScanScreen() {
 
   const [lastBarcode, setLastBarcode] = useState(null);
   const [savedBy, setSavedBy] = useState(null);
-  const [saveMessage, setSaveMessage] = useState(null);
   const [saving, setSaving] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(false);
 
@@ -51,54 +51,85 @@ useEffect(() => {
     return newId;
   }
 
-  async function saveProduct() {
-    if(!product || !lastBarcode || !savedBy) {
-      setSaveMessage("Missing required fields");
-      return;
-    }
-    setSaving(true);
-    setSaveMessage(null);
-    
-    try {
-      const res = await fetch(`${API_BASE}/save`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          savedBy,
-          barcode: lastBarcode,
-          productName: product.product_name ?? null,
-          brands: product.brands ?? null,
-          imageUrl: product.image_front_small_url ?? null,
-          nutriments: product.nutriments ?? null,
-          nutrition_grades: product.nutrition_grades ?? null,
-          eco: {
-            ecoScore,
-            ecoReason,
-          },
-        })
-      })
-
-      const data = await res.json();
-
-      if(res.ok) {
-        setSaveMessage("Product saved");
-        setTimeout(() => {
-          setSaveMessage(null);
-        }, 2000)
-        console.log("Saved: ", data);
-      } else {
-        setSaveMessage(data?.error ?? "Failed to save product");
-      }
-    } catch (e) {
-      console.log("Save Error:", e);
-      setSaveMessage(e?.message ?? "Network error");
-    } finally {
-      setSaving(false);
-    }
+async function saveProduct() {
+  if (!product || !lastBarcode || !savedBy) {
+    Toast.show({
+      type: "error",
+      text1: "Error",
+      text2: "Missing required fields",
+      visibilityTime: 2000,
+    });
+    return;
   }
 
+  setSaving(true);
+
+  try {
+    const res = await fetch(`${API_BASE}/save`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        savedBy,
+        barcode: lastBarcode,
+        productName: product.product_name ?? null,
+        brands: product.brands ?? null,
+        imageUrl: product.image_front_small_url ?? null,
+        nutriments: product.nutriments ?? null,
+        nutrition_grades: product.nutrition_grades ?? null,
+        eco: {
+          ecoScore,
+          ecoReason,
+        },
+      }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Product saved",
+        visibilityTime: 2000,
+      });
+      console.log("Saved:", data);
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: data?.error ?? "Unknown error",
+        visibilityTime: 2000,
+      });
+      console.log("Save Error:", data?.error);
+    }
+  } catch (e) {
+    Toast.show({
+      type: "error",
+      text1: "Error",
+      text2: e?.message ?? "Network error",
+      visibilityTime: 2000,
+    });
+    console.log("Save Error:", e);
+  } finally {
+    setSaving(false);
+  }
+}
+function GetEcoIndicator(score) {
+  if(score <=30) {
+    return "🔴"
+  }
+  if(score <=70 && score > 30) {
+    return "🟡"
+  }
+  if(score > 70) {
+    return "🟢"
+  }
+  if(score == null) {
+    return "⚪️"
+  }
+}
 async function fetchProduct(productCode) {
   setLoading(true);
   setError(null);
@@ -136,7 +167,7 @@ async function fetchProduct(productCode) {
     if(scanned) return;
     setScanned(true);
     setLastBarcode(data);
-    setSaveMessage(null);
+
     fetchProduct(data);
   };
 
@@ -165,7 +196,7 @@ async function fetchProduct(productCode) {
               setScanned(false);
               setProduct(null);
               setError(null);
-              setSaveMessage(null);
+
               setEcoScore(null);
               setEcoReason(null);
             }}
@@ -202,7 +233,6 @@ async function fetchProduct(productCode) {
                 setScanned(false);
                 setProduct(null);
                 setError(null);
-                setSaveMessage(null);
                 setEcoScore(null);
                 setEcoReason(null);
               }}
@@ -221,7 +251,6 @@ async function fetchProduct(productCode) {
           setScanned(false);
           setProduct(null);
           setError(null);
-          setSaveMessage(null);
           setEcoScore(null);
           setEcoReason(null);
         }}
@@ -307,19 +336,7 @@ async function fetchProduct(productCode) {
           {ecoScore !== null && (
             <>
             <View style={styles.divider}></View>
-              <Text style={styles.TitleText}>Eco Score: {ecoScore}</Text>
-              {ecoScore > 50 && (
-                <Text
-                  style={{
-                    color: "red",
-                    fontSize: 20,
-                    marginBottom: 10,
-                    fontWeight: "bold",
-                  }}
-                >
-                  High eco score
-                </Text>
-              )}
+              <Text style={[styles.TitleText, {marginBottom: 10}]}>Eco Score: {ecoScore} {GetEcoIndicator(ecoScore)}</Text>
             </>
           )}
 
@@ -332,16 +349,10 @@ async function fetchProduct(productCode) {
           <TouchableOpacity
             onPress={saveProduct}
             style={styles.Button}
-            disabled={saving || saveMessage === "Product already saved"}
+            disabled={saving}
           >
             <Text style={styles.ButtonText}>Save Product</Text>
           </TouchableOpacity>
-
-          {saveMessage ? (
-            <Text style={{ marginTop: 10, color: "#A0AF84" }}>
-              {saveMessage}
-            </Text>
-          ) : null}
         </View>
       ) : null}
     </View>
