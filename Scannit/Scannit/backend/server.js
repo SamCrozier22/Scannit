@@ -248,7 +248,7 @@ app.get("/user/:username/scans", async (req, res) => {
       scanCredits: user.scanCredits,
       isPremium: user.isPremium
     })
-    
+
   } catch (e) {
     console.error('Error getting scans: ', e);
     return res.status(500).json({ error: "Server error" });
@@ -266,6 +266,12 @@ app.post("/user/:username/rewardScans", async (req, res) => {
     if(!user) {
       return res.status(404).json({ error: "User not found" });
     }
+
+    if(user.scanCredits == null) {
+      user.scanCredits = 5;
+    }
+  user.scanCredits += 5;
+  await user.save();
 
     return res.json({
       message: "Scans rewarded",
@@ -285,6 +291,9 @@ app.post("/user/:username/useScan", async (req, res) => {
 
     if(!user) {
       return res.status(404).json({ error: "User not found" });
+    }
+    if(user.scanCredits == null) {
+      user.scanCredits = 5;
     }
     if(user.isPremium) {
       return res.json({
