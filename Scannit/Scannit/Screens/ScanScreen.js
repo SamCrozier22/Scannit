@@ -5,6 +5,7 @@ import { StyleSheet, Text, View, Button, ActivityIndicator, Image, TouchableOpac
 import {CameraView, useCameraPermissions} from 'expo-camera';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 
 export default function ScanScreen() {
   const [scanned, setScanned] = useState(false);
@@ -14,6 +15,8 @@ export default function ScanScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [ecoScore, setEcoScore] = useState(null);
   const [ecoReason, setEcoReason] = useState(null);
+
+  const [scansLeft, setScansLeft] = useState(0);
 
   const [lastBarcode, setLastBarcode] = useState(null);
   const [savedBy, setSavedBy] = useState(null);
@@ -31,6 +34,20 @@ useEffect(() => {
   (async () => {
     const username = await AsyncStorage.getItem("username");
     setSavedBy(username);
+    if(!username) return;
+
+    try{
+      const res = await fetch(`${API_BASE}/user/${username}/scans`);
+      const data = await res.json();
+
+      if(res.ok) {
+        setScansLeft(data.scansLeft);
+      } else {
+        console.log("Error loading Scans: ", data?.error);
+      }
+    } catch (e) {
+      console.error('Error getting scans: ', e);
+    }
   })();
 }, []);
 
@@ -41,7 +58,6 @@ useEffect(() => {
     const data = await res.json();
     console.log(data);
   }
-
   async function DeviceId() {
     const existing = await AsyncStorage.getItem("deviceId");
     if(existing) return existing;
@@ -130,6 +146,34 @@ function GetEcoIndicator(score) {
     return "⚪️"
   }
 }
+async function rewardScans() {
+  try {
+    const rewardRes = await fetch(`${API_BASE}/user/${savedBy}/rewardScans`,{
+      method: "POST",
+    })
+    const rewardData = await rewardRes.json();
+
+    if(rewardRes.ok) {
+      setScansLeft(rewardData.scanCredits)
+      
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "5 scans rewarded",
+        visibilityTime: 2000,
+      })
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: rewardData?.error ?? "Could Not Reward Scans",
+        visibilityTime: 2000,
+      })
+    }
+  } catch (e) {
+    console.log("Reward scan Error:", e);
+  }
+}
 async function fetchProduct(productCode) {
   setLoading(true);
   setError(null);
@@ -146,6 +190,16 @@ async function fetchProduct(productCode) {
       setEcoScore(data.eco?.ecoScore ?? null);
       setEcoReason(data.eco?.ecoReason ?? null);
       setCameraOpen(false);
+      const scanRes = await fetch(`${API_BASE}/user/${savedBy}/useScan`,{
+        method: "POST",
+      })
+      const scanData = await scanRes.json();
+
+      if(scanRes.ok) {
+        setScansLeft(scanData.scansLeft);
+      } else {
+        console.log("Error loading Scans: ", scanData?.error);
+      }
     } else {
       setProduct(null);
       setEcoScore(null);
@@ -178,15 +232,28 @@ async function fetchProduct(productCode) {
     <View style={styles.MainContainer}>
       <StatusBar style="auto" />
       {cameraOpen ? (
-        <View style={styles.cameraWrapper}>
-          <CameraView
-            style={styles.Camera}
-            barcodeScannerSettings={{
-              barcodeTypes: ["ean13", "ean8", "upc_a", "upc_e"],
+        <>
+        <View style={styles.scanCountContainer}>
+          <TouchableOpacity
+            style={styles.watchAdsBtn}
+            onPress = { () => {
+
             }}
-            onBarcodeScanned={scanned ? undefined : handleScan}
-          />
-        </View>
+          >
+            <FontAwesome5 name="ad" size={30} color="white" />
+          </TouchableOpacity>
+          <Text style={styles.ScanCounter}>Scans Left: {scansLeft}</Text>
+          </View>
+          <View style={styles.cameraWrapper}>
+            <CameraView
+              style={styles.Camera}
+              barcodeScannerSettings={{
+                barcodeTypes: ["ean13", "ean8", "upc_a", "upc_e"],
+              }}
+              onBarcodeScanned={scanned ? undefined : handleScan}
+            />
+          </View>
+          </>
       ) : product ? (
         <View style={styles.scanAgainContainer}>
           <TouchableOpacity
@@ -229,6 +296,15 @@ async function fetchProduct(productCode) {
             <TouchableOpacity
               style={styles.openScannerButton}
               onPress={() => {
+                if(scansLeft <= 0) {
+                  Toast.show({
+                    type: 'error',
+                    text1: 'Error',
+                    text2: 'You have reached your scan limit, watch an ad to get more!',
+                    visibilityTime: 2000
+                  })
+                  return
+                }
                 setCameraOpen(true);
                 setScanned(false);
                 setProduct(null);
@@ -244,19 +320,21 @@ async function fetchProduct(productCode) {
       )}
   
     {cameraOpen && (
-      <TouchableOpacity
-        style={styles.closeButtonScanner}
-        onPress={() => {
-          setCameraOpen(false);
-          setScanned(false);
-          setProduct(null);
-          setError(null);
-          setEcoScore(null);
-          setEcoReason(null);
-        }}
-      >
-        <Text style={styles.ButtonText}>Close Scanner</Text>
-      </TouchableOpacity>
+      <>
+        <TouchableOpacity
+          style={styles.closeButtonScanner}
+          onPress={() => {
+            setCameraOpen(false);
+            setScanned(false);
+            setProduct(null);
+            setError(null);
+            setEcoScore(null);
+            setEcoReason(null);
+          }}
+        >
+          <Text style={styles.ButtonText}>Close Scanner</Text>
+        </TouchableOpacity>
+      </>
     )}
 
       {loading && <ActivityIndicator />}
@@ -480,5 +558,33 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#C3B59F",
+  },
+  ScanCounter: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 10,
+    color: "#215C3D",
+    borderRadius: 10,
+    width: "50%",
+    margin: "auto",
+    padding: 5,
+  },
+  scanCountContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+  },
+  watchAdsBtn: {
+    padding: 5,
+    backgroundColor: "#108A2C",
+    borderRadius: 10,
+    marginTop: 10,
+    marginVertical: 10,
+    position: "absolute",
+    right: 0,
+    bottom: 0
   }
 });

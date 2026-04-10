@@ -224,6 +224,85 @@ app.delete("/saved/:username/:barcode", async (req, res) => {
       return res.status(500).json({ error: "Server error" });
     }
 })
+app.get("/user/:username/scans", async (req, res) => {
+  try{
+    const {username} = req.params;
+
+    const user = await userData.findOne({username});
+
+    if(!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.json({
+      scanCredits: user.scanCredits,
+      isPremium: user.isPremium
+    })
+
+  } catch (e) {
+    console.error('Error getting scans: ', e);
+    return res.status(500).json({ error: "Server error" });
+  }
+})
+app.post("/user/:username/rewardScans", async (req, res) => {
+  try {
+    const username = req.params;
+
+    const user = await userData.findOneAndUpdate(
+      {username},
+      {$inc: {scanCredits: 5}},
+      {new: true}
+    );
+    if(!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.json({
+      message: "Scans rewarded",
+      scanCredits: user.scanCredits,
+      isPremium: user.isPremium
+    })
+  } catch (e) {
+    console.error('Error rewarding scans: ', e);
+    return res.status(500).json({ error: "Server error" });
+  }
+})
+app.post("/user/:username/useScan", async (req, res) => {
+  try {
+    const username = req.params;
+
+    const user = await userData.findOne({username});
+
+    if(!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    if(user.isPremium) {
+      return res.json({
+        message: "Premium user - no scans used",
+        scanCredits: user.scanCredits,
+        isPremium: true
+      })
+    }
+    if(user.scanCredits <= 0) {
+      return res.json({
+        message: "No scans left",
+        scanCredits: 0,
+        isPremium: false
+      })
+    }
+    user.scanCredits - 1;
+    await user.save();
+
+    return res.json({
+      message: "Scan used",
+      scanCredits: user.scanCredits,
+      isPremium: false
+    })
+  } catch (e) {
+    console.error('Error using scan: ', e);
+    return res.status(500).json({ error: "Server error" });
+  }
+})
 app.post("/login", async (req, res) => {
   try {
     const {username, password} = req.body;

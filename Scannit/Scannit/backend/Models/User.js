@@ -11,6 +11,9 @@ const UserSchema = new Schema(
         lastName: {type: String, required: true, trim: true},
         email: {type: String, required: true, unique: true, trim: true},
         savedBarcodes: {type: [String], default: [], trim: true},
+        isPremium: {type: Boolean, default: false},
+        scanCredits: {type: Number, default: 5},
+        lastScanReset: {type: Date, default: Date.now},
     },
     {timestamps: true}
 );
