@@ -16,7 +16,7 @@ export default function ScanScreen() {
   const [ecoScore, setEcoScore] = useState(null);
   const [ecoReason, setEcoReason] = useState(null);
 
-  const [scansLeft, setScansLeft] = useState(0);
+  const [scansLeft, setScansLeft] = useState(null);
 
   const [lastBarcode, setLastBarcode] = useState(null);
   const [savedBy, setSavedBy] = useState(null);
@@ -41,7 +41,7 @@ useEffect(() => {
       const data = await res.json();
 
       if(res.ok) {
-        setScansLeft(data.scansLeft);
+        setScansLeft(data.scansCredits);
       } else {
         console.log("Error loading Scans: ", data?.error);
       }
@@ -196,7 +196,7 @@ async function fetchProduct(productCode) {
       const scanData = await scanRes.json();
 
       if(scanRes.ok) {
-        setScansLeft(scanData.scansLeft);
+        setScansLeft(scanData.scansCredits);
       } else {
         console.log("Error loading Scans: ", scanData?.error);
       }
@@ -237,12 +237,12 @@ async function fetchProduct(productCode) {
           <TouchableOpacity
             style={styles.watchAdsBtn}
             onPress = { () => {
-
+              rewardScans()
             }}
           >
             <FontAwesome5 name="ad" size={30} color="white" />
           </TouchableOpacity>
-          <Text style={styles.ScanCounter}>Scans Left: {scansLeft}</Text>
+          <Text style={styles.ScanCounter}>Scans Left: {scansLeft ?? "..."}</Text>
           </View>
           <View style={styles.cameraWrapper}>
             <CameraView
@@ -296,7 +296,7 @@ async function fetchProduct(productCode) {
             <TouchableOpacity
               style={styles.openScannerButton}
               onPress={() => {
-                if(scansLeft <= 0) {
+                if(scansLeft == null && scansLeft <= 0) {
                   Toast.show({
                     type: 'error',
                     text1: 'Error',

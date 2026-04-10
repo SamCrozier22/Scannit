@@ -234,11 +234,21 @@ app.get("/user/:username/scans", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
+    if(user.scanCredits === null) {
+      user.scanCredits = 5;
+    }
+    if(user.isPremium === null) {
+      user.isPremium = false;
+    }
+    if(!user.lastScanReset) {
+      user.lastScanReset = new Date();
+    }
+    await user.save();
     return res.json({
       scanCredits: user.scanCredits,
       isPremium: user.isPremium
     })
-
+    
   } catch (e) {
     console.error('Error getting scans: ', e);
     return res.status(500).json({ error: "Server error" });
