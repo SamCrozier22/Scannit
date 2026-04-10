@@ -234,7 +234,7 @@ app.get("/user/:username/scans", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    if(user.scanCredits === null) {
+    if(user.scanCredits == null) {
       user.scanCredits = 5;
     }
     if(user.isPremium === null) {
@@ -256,36 +256,34 @@ app.get("/user/:username/scans", async (req, res) => {
 })
 app.post("/user/:username/rewardScans", async (req, res) => {
   try {
-    const username = req.params;
+    const { username } = req.params;
 
-    const user = await userData.findOneAndUpdate(
-      {username},
-      {$inc: {scanCredits: 5}},
-      {new: true}
-    );
-    if(!user) {
+    const user = await userData.findOne({ username });
+
+    if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    if(user.scanCredits == null) {
+    if (user.scanCredits == null) {
       user.scanCredits = 5;
     }
-  user.scanCredits += 5;
-  await user.save();
+
+    user.scanCredits += 5;
+    await user.save();
 
     return res.json({
       message: "Scans rewarded",
       scanCredits: user.scanCredits,
-      isPremium: user.isPremium
-    })
+      isPremium: user.isPremium ?? false,
+    });
   } catch (e) {
-    console.error('Error rewarding scans: ', e);
+    console.error("Error rewarding scans: ", e);
     return res.status(500).json({ error: "Server error" });
   }
-})
+});
 app.post("/user/:username/useScan", async (req, res) => {
   try {
-    const username = req.params;
+    const {username} = req.params;
 
     const user = await userData.findOne({username});
 
@@ -309,7 +307,7 @@ app.post("/user/:username/useScan", async (req, res) => {
         isPremium: false
       })
     }
-    user.scanCredits - 1;
+    user.scanCredits -= 1;
     await user.save();
 
     return res.json({

@@ -41,7 +41,7 @@ useEffect(() => {
       const data = await res.json();
 
       if(res.ok) {
-        setScansLeft(data.scansCredits);
+        setScansLeft(data.scanCredits);
       } else {
         console.log("Error loading Scans: ", data?.error);
       }
@@ -196,7 +196,7 @@ async function fetchProduct(productCode) {
       const scanData = await scanRes.json();
 
       if(scanRes.ok) {
-        setScansLeft(scanData.scansCredits);
+        setScansLeft(scanData.scanCredits);
       } else {
         console.log("Error loading Scans: ", scanData?.error);
       }
