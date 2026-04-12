@@ -35,6 +35,42 @@ mongoose.connect(process.env.MONGODB_URI)
 
       return response;
     }
+
+function ensureScanDefaults(user) {
+  if (user.scanCredits == null) user.scanCredits = 5;
+  if (!user.lastScanReset) user.lastScanReset = new Date();
+}
+
+function handleDailyReset(user) {
+  if(!user.lastScanReset) {
+    user.lastScanReset = new Date();
+  }
+  const now = new Date();
+  const lastReset = new Date(user.lastScanReset);
+
+  const diffMins = now - lastReset;
+  const diffHours = diffMins / (1000 * 60 * 60);
+
+  if(diffHours >= 24) {
+    user.scanCredits = 5;
+    user.lastScanReset = new Date();
+  }
+}
+function handleAdReset(user) {
+  if(!user.lastAdReset) {
+    user.lastAdReset = new Date();
+  }
+  const now = new Date();
+  const lastReset = new Date(user.lastAdReset);
+
+  const diffMins = now - lastReset;
+  const diffHours = diffMins / (1000 * 60 * 60);
+
+  if(diffHours >= 24) {
+    user.adsWatchedToday = 0;
+    user.lastAdReset = new Date();
+  }
+}
 app.use((req, _res, next) => {
   console.log("REQ:", req.method, req.url);
   next();
@@ -229,24 +265,23 @@ app.get("/user/:username/scans", async (req, res) => {
     const {username} = req.params;
 
     const user = await userData.findOne({username});
-
     if(!user) {
       return res.status(404).json({ error: "User not found" });
     }
+    handleDailyReset(user);
 
-    if(user.scanCredits == null) {
-      user.scanCredits = 5;
-    }
-    if(user.isPremium === null) {
-      user.isPremium = false;
-    }
+    const premium = user.isActivePremium();
+
+    ensureScanDefaults(user);
+    
     if(!user.lastScanReset) {
       user.lastScanReset = new Date();
     }
     await user.save();
     return res.json({
       scanCredits: user.scanCredits,
-      isPremium: user.isPremium
+      isPremium: premium,
+      adsWatchedToday: user.adsWatchedToday
     })
 
   } catch (e) {
@@ -264,17 +299,34 @@ app.post("/user/:username/rewardScans", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    if (user.scanCredits == null) {
-      user.scanCredits = 5;
+    handleDailyReset(user);
+
+    const premium = user.isActivePremium();
+
+    ensureScanDefaults(user);
+
+    handleAdReset(user);
+
+    if(user.adsWatchedToday == null) {
+      user.adsWatchedToday = 0;
+    }
+
+    if(user.adsWatchedToday >= 5) {
+      return res.status(400).json({
+        error: "You reached your ads watch limit today",
+        adsWatchedToday: user.adsWatchedToday
+      })
     }
 
     user.scanCredits += 5;
+    user.adsWatchedToday += 1;
     await user.save();
 
     return res.json({
       message: "Scans rewarded",
       scanCredits: user.scanCredits,
-      isPremium: user.isPremium ?? false,
+      adsWatchedToday: user.adsWatchedToday,
+      isPremium: premium,
     });
   } catch (e) {
     console.error("Error rewarding scans: ", e);
@@ -290,21 +342,25 @@ app.post("/user/:username/useScan", async (req, res) => {
     if(!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    if(user.scanCredits == null) {
-      user.scanCredits = 5;
-    }
-    if(user.isPremium) {
+
+    handleDailyReset(user);
+
+    const premium = user.isActivePremium();
+
+    ensureScanDefaults(user);
+
+    if(premium) {
       return res.json({
         message: "Premium user - no scans used",
         scanCredits: user.scanCredits,
-        isPremium: true
+        isPremium: premium
       })
     }
     if(user.scanCredits <= 0) {
-      return res.json({
-        message: "No scans left",
+      return res.status(400).json({
+        error: "No scans left",
         scanCredits: 0,
-        isPremium: false
+        isPremium: premium
       })
     }
     user.scanCredits -= 1;
@@ -313,7 +369,8 @@ app.post("/user/:username/useScan", async (req, res) => {
     return res.json({
       message: "Scan used",
       scanCredits: user.scanCredits,
-      isPremium: false
+      isPremium: premium,
+      adsWatchedToday: user.adsWatchedToday
     })
   } catch (e) {
     console.error('Error using scan: ', e);

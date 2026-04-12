@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 
-export default function ScanScreen() {
+export default function ScanScreen( { navigation } ) {
   const [scanned, setScanned] = useState(false);
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState(null);
@@ -17,6 +17,8 @@ export default function ScanScreen() {
   const [ecoReason, setEcoReason] = useState(null);
 
   const [scansLeft, setScansLeft] = useState(null);
+  const [isPremium, setIsPremium] = useState(false);
+  const [adsLeft, setAdsLeft] = useState(5);
 
   const [lastBarcode, setLastBarcode] = useState(null);
   const [savedBy, setSavedBy] = useState(null);
@@ -42,6 +44,8 @@ useEffect(() => {
 
       if(res.ok) {
         setScansLeft(data.scanCredits);
+        setIsPremium(data.isPremium);
+        setAdsLeft(5 - data.adsWatchedToday);
       } else {
         console.log("Error loading Scans: ", data?.error);
       }
@@ -155,6 +159,8 @@ async function rewardScans() {
 
     if(rewardRes.ok) {
       setScansLeft(rewardData.scanCredits)
+      setIsPremium(rewardData.isPremium)
+      setAdsLeft(5 - rewardData.adsWatchedToday)
       
       Toast.show({
         type: "success",
@@ -197,6 +203,8 @@ async function fetchProduct(productCode) {
 
       if(scanRes.ok) {
         setScansLeft(scanData.scanCredits);
+        setIsPremium(scanData.isPremium);
+        setAdsLeft(5 - scanData.adsWatchedToday);
       } else {
         console.log("Error loading Scans: ", scanData?.error);
       }
@@ -233,17 +241,21 @@ async function fetchProduct(productCode) {
       <StatusBar style="auto" />
       {cameraOpen ? (
         <>
-        <View style={styles.scanCountContainer}>
-          <TouchableOpacity
-            style={styles.watchAdsBtn}
-            onPress = { () => {
-              rewardScans()
-            }}
-          >
-            <FontAwesome5 name="ad" size={30} color="white" />
-          </TouchableOpacity>
-          <Text style={styles.ScanCounter}>Scans Left: {scansLeft ?? "..."}</Text>
-          </View>
+        {!isPremium && (
+          <View style={styles.scanCountContainer}>
+            <Text style={styles.adsLeft}>{adsLeft ?? "..."} ads left</Text>
+            <TouchableOpacity
+              style={styles.watchAdsBtn}
+              onPress = { () => {
+                rewardScans()
+              }}
+            >
+              <FontAwesome5 name="ad" size={30} color="white" />
+            </TouchableOpacity>
+            <Text style={styles.ScanCounter}>Scans Left: {scansLeft ?? "..."}</Text>
+            </View>
+        )}
+        <>
           <View style={styles.cameraWrapper}>
             <CameraView
               style={styles.Camera}
@@ -253,6 +265,7 @@ async function fetchProduct(productCode) {
               onBarcodeScanned={scanned ? undefined : handleScan}
             />
           </View>
+          </>
           </>
       ) : product ? (
         <View style={styles.scanAgainContainer}>
@@ -290,13 +303,19 @@ async function fetchProduct(productCode) {
             <Text style={styles.text}>
               To start scanning, click the button below
             </Text>
+            <Text style={styles.text}>
+              Please Note, you get 5 scans per day and need to watch ads to get more
+            </Text>
+            <Text style={[styles.text, styles.lastText]}>
+              Buy premium to get unlimited scans <TouchableOpacity onPress={() => navigation.navigate("Premium")}><Text style={styles.premiumNav}>here</Text></TouchableOpacity>
+            </Text>
           </View>
 
           <View style={styles.openScannerContainer}>
             <TouchableOpacity
               style={styles.openScannerButton}
               onPress={() => {
-                if(scansLeft == null && scansLeft <= 0) {
+                if(!isPremium && scansLeft !== null && scansLeft <= 0) {
                   Toast.show({
                     type: 'error',
                     text1: 'Error',
@@ -471,6 +490,9 @@ const styles = StyleSheet.create({
     margin: 5,
     textAlign: 'center',
   },
+  lastText: {
+    marginTop: 50,
+  },
   infoText: {
     color: '#a0af84',
     fontSize: 16,
@@ -558,6 +580,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#C3B59F",
+    marginTop: 50
   },
   ScanCounter: {
     color: "white",
@@ -586,5 +609,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
     bottom: 0
+  },
+  premiumNav: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "blue",
   }
 });

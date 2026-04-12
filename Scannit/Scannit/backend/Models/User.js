@@ -11,13 +11,20 @@ const UserSchema = new Schema(
         lastName: {type: String, required: true, trim: true},
         email: {type: String, required: true, unique: true, trim: true},
         savedBarcodes: {type: [String], default: [], trim: true},
-        isPremium: {type: Boolean, default: false},
         scanCredits: {type: Number, default: 5},
         lastScanReset: {type: Date, default: Date.now},
+        premiumStart: {type: Date},
+        premiumEnd: {type: Date},
+        adsWatchedToday: {type: Number, default: 0},
+        lastAdReset: {type: Date, default: Date.now},
     },
     {timestamps: true}
 );
 const userData = model("User", UserSchema);
+
+UserSchema.methods.isActivePremium = function() {
+    return !!(this.premiumStart && this.premiumEnd && this.premiumEnd > new Date());
+}
 
 async function createUser(username, password, firstName, lastName, email) {
     if(!username || !password || !firstName || !lastName || !email) {
