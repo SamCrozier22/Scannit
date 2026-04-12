@@ -610,6 +610,17 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0
   },
+  adsLeft: {
+    color: "#215C3D",
+    fontSize: 15,
+    fontWeight: "bold",
+    position: "absolute",
+    left: 0,
+    bottom: 0,
+    marginTop: 10,
+    marginBottom: 15,
+    marginVertical: 10
+  },
   premiumNav: {
     fontSize: 20,
     fontWeight: "bold",

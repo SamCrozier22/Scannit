@@ -23,7 +23,7 @@ const UserSchema = new Schema(
 const userData = model("User", UserSchema);
 
 UserSchema.methods.isActivePremium = function() {
-    return !!(this.premiumStart && this.premiumEnd && this.premiumEnd > new Date());
+    return !!(this.premiumStart && this.premiumEnd > new Date());
 }
 
 async function createUser(username, password, firstName, lastName, email) {
