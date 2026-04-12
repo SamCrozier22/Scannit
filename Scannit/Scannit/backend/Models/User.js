@@ -20,11 +20,11 @@ const UserSchema = new Schema(
     },
     {timestamps: true}
 );
-const userData = model("User", UserSchema);
-
 UserSchema.methods.isActivePremium = function() {
-    return !!(this.premiumStart && this.premiumEnd > new Date());
+    return !!(this.premiumEnd && this.premiumEnd > new Date());
 }
+
+const userData = model("User", UserSchema);
 
 async function createUser(username, password, firstName, lastName, email) {
     if(!username || !password || !firstName || !lastName || !email) {

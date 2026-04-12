@@ -39,6 +39,8 @@ mongoose.connect(process.env.MONGODB_URI)
 function ensureScanDefaults(user) {
   if (user.scanCredits == null) user.scanCredits = 5;
   if (!user.lastScanReset) user.lastScanReset = new Date();
+  if (user.adsWatchedToday == null) user.adsWatchedToday = 0;
+  if (!user.lastAdReset) user.lastAdReset = new Date();
 }
 
 function handleDailyReset(user) {
