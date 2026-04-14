@@ -1,12 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import React from "react";
 import { View, Text, Button, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
 
 export default function HomeScreen( { setUser } ) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [productOfTheWeek, setProductOfTheWeek] = useState([]);
 
   const API_BASE = "https://grazegood.onrender.com";
 
@@ -16,6 +17,23 @@ export default function HomeScreen( { setUser } ) {
     }, [])
   );
 
+async function loadProductOfTheWeek() {
+  try {
+    const res = await fetch(`${API_BASE}/product-of-the-week`);
+    const data = await res.json();
+    if(res.ok) {
+      setProductOfTheWeek(data);
+    } else {
+      console.log("Product of the week error:", data?.error);
+      setProductOfTheWeek([]);
+    }
+  } catch (e) {
+    console.log("Error loading product of the week", e);
+  }
+}
+useEffect(() => {
+  loadProductOfTheWeek()
+}, [])
   async function loadProducts() {
     try {
       const username = await AsyncStorage.getItem("username");
@@ -85,6 +103,44 @@ export default function HomeScreen( { setUser } ) {
           )}
         />
       )}
+    </View>
+    <View style={styles.weeklyContainer}>
+      <Text style={{color: "#215C3D",marginTop: 20, fontSize: 20, fontWeight: "bold", textAlign: "left", marginBottom: 10}}>GrazeGood Picks of the Week 🌱</Text>
+      <FlatList
+        ListEmptyComponent={() => (
+          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <View style={styles.NoProducts}>
+            <Text style={styles.falseText}>No product of the week</Text>
+          </View>
+          </View>
+        )}
+        data={productOfTheWeek}
+        horizontal
+        keyExtractor={(item) => item.id}
+        showsHorizontalScrollIndicator={false}
+        renderItem = {({item}) => (
+          <View style={styles.ProductContainer}>
+            <View style={styles.Product}>
+              {item.imageUrl ? (
+                <Image
+                  style={styles.ProductImage}
+                  source={{ uri: item.imageUrl }}
+                />
+              ) : (
+                <Image
+                  style={styles.ProductImage}
+                  source={require("../assets/product-placeholder.jpg")}
+                />
+              )}
+              <Text>
+                <Text style={styles.ProductName}>{item.product_name}</Text>
+                {item.ecoscore && <Text style={styles.EcoScore}>Eco Score: {item.ecoscore}</Text>}
+                <Text style={styles.EcoScore}>Eco Grade: {item.ecoGrade}</Text>
+              </Text>  
+          </View>
+          </View>
+        )}
+      />
     </View>
     </View>
   );

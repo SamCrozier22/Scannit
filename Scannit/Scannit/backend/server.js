@@ -379,6 +379,41 @@ app.post("/user/:username/useScan", async (req, res) => {
     return res.status(500).json({ error: "Server error" });
   }
 })
+app.get("/products-of-the-week", async (req, res) => {
+  try {
+    const randomPage = Math.floor(Math.random() * 20) + 1;
+
+    const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=&json=1&page_size=20&page=${randomPage}&tagtype_0=ecoscore_grade&tag_contains_0=contains&tag_0=a`
+
+    const r = await fetch(url);
+    const data = await r.json();
+
+    if(!data.products) {
+      return res.status(500).json({ error: "Products not found" });
+    }
+    const goodProducts = data.products.filter(
+      (p) => 
+        p.product_name &&
+        p.image_front_small_url &&
+        p.ecoscore_score &&
+        p.ecoscore_grade
+    );
+    const shuffled = goodProducts.sort(() => 0.5 - Math.random());
+    const picks = shuffled.slice(0, 5);
+
+    const formatted = picks.map(p => ({
+      id: p._id,
+      product_name: p.product_name,
+      imageUrl: p.image_front_small_url,
+      ecoscore: p.ecoscore_score || null,
+      ecoGrade: p.ecoscore_grade,
+    }))
+    res.json(formatted)
+  } catch (e) {
+    console.error("Error getting products of the week: ", e);
+    return res.status(500).json({ error: "Server error" });
+  }
+})
 app.post("/login", async (req, res) => {
   try {
     const {username, password} = req.body;
