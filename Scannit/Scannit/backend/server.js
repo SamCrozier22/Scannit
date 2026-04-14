@@ -383,37 +383,63 @@ app.get("/products-of-the-week", async (req, res) => {
   try {
     const randomPage = Math.floor(Math.random() * 20) + 1;
 
-    const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=&json=1&page_size=20&page=${randomPage}&tagtype_0=ecoscore_grade&tag_contains_0=contains&tag_0=a`
+    const url =
+      `https://world.openfoodfacts.org/cgi/search.pl` +
+      `?search_terms=&json=1&page_size=20&page=${randomPage}` +
+      `&tagtype_0=ecoscore_grade&tag_contains_0=contains&tag_0=a`;
 
-    const r = await fetch(url);
-    const data = await r.json();
+    const r = await fetch(url, {
+      headers: {
+        Accept: "application/json",
+        "User-Agent": "Scannit/1.0",
+      },
+    });
 
-    if(!data.products) {
+    const contentType = r.headers.get("content-type") || "";
+    const bodyText = await r.text();
+
+    console.log("POTW status:", r.status);
+    console.log("POTW content-type:", contentType);
+    console.log("POTW body preview:", bodyText.slice(0, 300));
+
+    if (!contentType.includes("application/json")) {
+      return res.status(502).json({
+        error: "Unexpected response from Open Food Facts",
+      });
+    }
+
+    const data = JSON.parse(bodyText);
+
+    if (!data.products || !Array.isArray(data.products)) {
       return res.status(500).json({ error: "Products not found" });
     }
+
     const goodProducts = data.products.filter(
-      (p) => 
+      (p) =>
+        p._id &&
         p.product_name &&
         p.image_front_small_url &&
-        p.ecoscore_score &&
-        p.ecoscore_grade
+        p.ecoscore_grade &&
+        p.ecoscore_score != null
     );
+
     const shuffled = goodProducts.sort(() => 0.5 - Math.random());
     const picks = shuffled.slice(0, 5);
 
-    const formatted = picks.map(p => ({
+    const formatted = picks.map((p) => ({
       id: p._id,
       product_name: p.product_name,
       imageUrl: p.image_front_small_url,
-      ecoscore: p.ecoscore_score || null,
+      ecoscore: p.ecoscore_score,
       ecoGrade: p.ecoscore_grade,
-    }))
-    res.json(formatted)
+    }));
+
+    return res.json(formatted);
   } catch (e) {
     console.error("Error getting products of the week: ", e);
     return res.status(500).json({ error: "Server error" });
   }
-})
+});
 app.post("/login", async (req, res) => {
   try {
     const {username, password} = req.body;
