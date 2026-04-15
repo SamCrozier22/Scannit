@@ -280,10 +280,10 @@ function calculateEcoScore(product) {
         missing.push("ingredients_text");
     }
 
-    const finalScore = weightTotal > 0
+    let finalScore = weightTotal > 0
         ? Math.round((score / weightTotal) * 100)
         : null;
-    if (redFlag = true) {
+    if (redFlag) {
         finalScore = 0;
     }
 
