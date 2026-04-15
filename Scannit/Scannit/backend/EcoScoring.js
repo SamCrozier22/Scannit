@@ -78,14 +78,19 @@ function calculateEcoScore(product) {
         refill: 19
     };
     if (product.packaging_tags) {
-        Object.entries(packagingScores).forEach(([material, score]) => {
-            if (product.packaging_tags?.some(tag => tag.includes(material))) {
-                packagingScore += score;
+        Object.entries(packagingScores).forEach(([material, value]) => {
+            const matchedTag = product.packaging_tags?.find(tag => tag.includes(material));
+
+            if (matchedTag) {
+                packagingScore += value;
                 materialCount++;
-                redFlags.push({
-                    message: `unsustainable material used: ${tag}`,
-                    impact: `low`
-                });
+
+                if (value <= 4) {
+                    redFlags.push({
+                        message: `Unsustainable material used: ${matchedTag}`,
+                        impact: "low"
+                    });
+                }
             }
         });
 
