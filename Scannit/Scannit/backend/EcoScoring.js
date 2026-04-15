@@ -14,6 +14,7 @@ function calculateEcoScore(product) {
         "mondelez international",
         "mondelez",
         "sabra",
+        "mars",
 
         "shell",
         "bp",

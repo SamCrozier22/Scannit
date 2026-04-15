@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\crozs\\OneDrive\\Documents\\GitHub\\Scannit\\Scannit\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\crozs\\OneDrive\\Documents\\GitHub\\Scannit\\Scannit\\Scannit\\backend\\EcoScoring.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Scannit\\backend\\EcoScoring.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\crozs\\OneDrive\\Documents\\GitHub\\Scannit\\Scannit\\Scannit\\Screens\\ScanScreen.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Scannit\\Screens\\ScanScreen.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\crozs\\OneDrive\\Documents\\GitHub\\Scannit\\Scannit\\Scannit\\backend\\server.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Scannit\\backend\\server.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\crozs\\OneDrive\\Documents\\GitHub\\Scannit\\Scannit\\Scannit\\backend\\EcoScoring.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Scannit\\backend\\EcoScoring.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\crozs\\OneDrive\\Documents\\GitHub\\Scannit\\Scannit\\Scannit\\Screens\\SavedScreen.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -26,11 +26,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "server.js",
               "DocumentMoniker": "C:\\Users\\crozs\\OneDrive\\Documents\\GitHub\\Scannit\\Scannit\\Scannit\\backend\\server.js",
               "RelativeDocumentMoniker": "Scannit\\backend\\server.js",
@@ -43,13 +43,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "ScanScreen.js",
               "DocumentMoniker": "C:\\Users\\crozs\\OneDrive\\Documents\\GitHub\\Scannit\\Scannit\\Scannit\\Screens\\ScanScreen.js",
               "RelativeDocumentMoniker": "Scannit\\Screens\\ScanScreen.js",
               "ToolTip": "C:\\Users\\crozs\\OneDrive\\Documents\\GitHub\\Scannit\\Scannit\\Scannit\\Screens\\ScanScreen.js",
               "RelativeToolTip": "Scannit\\Screens\\ScanScreen.js",
-              "ViewState": "AgIAAI4AAAAAAAAAAAAQwGYAAAATAAAAAAAAAA==",
+              "ViewState": "AgIAALUBAAAAAAAAAAAowM0BAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2026-04-15T08:44:29.42Z",
               "EditorCaption": ""
@@ -64,17 +64,18 @@
               "RelativeToolTip": "Scannit\\Screens\\SavedScreen.js",
               "ViewState": "AgIAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2026-04-15T08:03:01.543Z"
+              "WhenOpened": "2026-04-15T08:03:01.543Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "EcoScoring.js",
               "DocumentMoniker": "C:\\Users\\crozs\\OneDrive\\Documents\\GitHub\\Scannit\\Scannit\\Scannit\\backend\\EcoScoring.js",
               "RelativeDocumentMoniker": "Scannit\\backend\\EcoScoring.js",
               "ToolTip": "C:\\Users\\crozs\\OneDrive\\Documents\\GitHub\\Scannit\\Scannit\\Scannit\\backend\\EcoScoring.js",
               "RelativeToolTip": "Scannit\\backend\\EcoScoring.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAI8AAAAjAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQBAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2026-03-11T10:49:49.622Z",
               "EditorCaption": ""
