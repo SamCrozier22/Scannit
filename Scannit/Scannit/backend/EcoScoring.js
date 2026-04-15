@@ -11,6 +11,9 @@ function calculateEcoScore(product) {
     //boycott check
     const boycottList = [
         "nestle",
+        "mondelez international",
+        "mondelez",
+        "sabra",
 
         "shell",
         "bp",
@@ -137,6 +140,13 @@ function calculateEcoScore(product) {
             if (locationScores[cleanPlace]) {
                 manufacturingScore += locationScores[cleanPlace];
                 placesFound++;
+                if (cleanPlace == "israel") {
+                    redFlag = true;
+                    redFlags.push({
+                        impact: `high`,
+                        message: `product has ties to Israel so is currently boycotted`
+                    })
+                }
                 if (locationScores[cleanPlace] <= 40) {
                     redFlags.push({
                         impact: 'medium',
