@@ -44,7 +44,7 @@ export default function SavedScreen() {
       style={styles.deleteButton}
       >
         <Text style={styles.deleteText}>
-          <FontAwesome5 name="TrashCan" size={36} color="white" />
+          <FontAwesome5 name="trash" size={36} color="white" />
         </Text>
       </Pressable>
     )

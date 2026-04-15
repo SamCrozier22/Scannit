@@ -168,7 +168,7 @@ app.post("/save", async (req, res) => {
 
     const alreadySaved = user.savedBarcodes.includes(barcode);
     if(alreadySaved) {
-      return res.json({ message: "Product already saved" });
+      return res.status(400).json({ message: "Product already saved" });
     }
 
     const product = await Product.findOneAndUpdate(
@@ -367,7 +367,7 @@ app.post("/user/:username/useScan", async (req, res) => {
     }
     user.scanCredits -= 1;
     await user.save();
-
+console.log("hello")
     return res.json({
       message: "Scan used",
       scanCredits: user.scanCredits,
