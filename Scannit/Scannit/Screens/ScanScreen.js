@@ -305,7 +305,7 @@ async function fetchProduct(productCode) {
               </View>
 
             </View>
-            <Text style={styles.SubTitle}>
+            <Text style={[styles.SubTitle, {marginTop: 20}]}>
               Scan a product to check how good it is for you and the environment!
             </Text>
           </View>
@@ -662,7 +662,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative',
+    position: 'absolute',
+    right: 0,
   },
   adCountClosed: {
     color: '#215C3D',
