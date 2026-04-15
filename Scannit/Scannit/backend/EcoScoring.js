@@ -11,6 +11,9 @@ function calculateEcoScore(product) {
     //boycott check
     const boycottList = [
         "nestle",
+        "mondelez international",
+        "mondelez",
+        "sabra",
 
         "shell",
         "bp",
@@ -137,6 +140,13 @@ function calculateEcoScore(product) {
             if (locationScores[cleanPlace]) {
                 manufacturingScore += locationScores[cleanPlace];
                 placesFound++;
+                if (cleanPlace == "israel") {
+                    redFlag = true;
+                    redFlags.push({
+                        impact: `high`,
+                        message: `product has ties to Israel so is currently boycotted`
+                    })
+                }
                 if (locationScores[cleanPlace] <= 40) {
                     redFlags.push({
                         impact: 'medium',
@@ -178,10 +188,10 @@ function calculateEcoScore(product) {
         whey: 60,
         casein: 60,
 
-        "palm oil": 15,
-        "palm fat": 15,
-        "palm kernel oil": 15,
-        "palm kernel fat": 15,
+        "palm oil": 0,
+        "palm fat": 0,
+        "palm kernel oil": 0,
+        "palm kernel fat": 0,
 
         soy: 50,
         soya: 50,
@@ -232,6 +242,13 @@ function calculateEcoScore(product) {
 
                 ingredientScore += value;
                 ingredientsFound++;
+                if (ingredient == "palm oil" || ingredient=="palm fat") {
+                    redFlag = true;
+                    redFlags.push({
+                        impact: `high`,
+                        message: `Palm Oil detected!!!! DIEEE!!!`
+                    })
+                }
 
                 if (value <= 20) {
                     redFlags.push({
@@ -273,7 +290,7 @@ function calculateEcoScore(product) {
     return {
         ecoScore: finalScore,
         missingVariables: missing,
-        scaries: redFlags
+        ecoReason: redFlags
     };
 }
 
