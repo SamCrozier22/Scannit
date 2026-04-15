@@ -133,6 +133,11 @@ app.get("/product/:barcode", async (req, res) => {
         error: "Open Food Facts is temporarily unavailable. Please try again."
       });
     }
+    if (r.status === 429) {
+      return res.status(429).json({
+        error: "Too many requests. Please try again later."
+      });
+    }
 
     if (!contentType.includes("application/json")) {
       return res.status(502).json({
@@ -144,6 +149,27 @@ app.get("/product/:barcode", async (req, res) => {
 
     if (data?.status === 1 && data?.product) {
       const eco = calculateEcoScore(data.product);
+
+      await Product.findOneAndUpdate(
+        { barcode },
+        {
+          barcode,
+          product_name: data.product.product_name ?? null,
+          brands: data.product.brands ?? null,
+          imageUrl: data.product.image_front_small_url ?? null,
+          ecoScore: eco?.ecoScore ?? null,
+          ecoScoreGrade: eco?.grade ?? null,
+          ecoReason: eco?.ecoReason ?? null,
+          nutriments: data.product.nutriments ?? null,
+          nutrition_grades: data.product.nutrition_grades ?? null,
+        },
+        {
+          new: true,
+          upsert: true,
+          setDefaultsOnInsert: true,
+        }
+      );
+
       return res.json({
         ...data.product,
         eco,
