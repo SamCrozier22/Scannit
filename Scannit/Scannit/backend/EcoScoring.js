@@ -273,8 +273,8 @@ function calculateEcoScore(product) {
                 ? ingredientScore / ingredientsFound
                 : null;
 
-        score += (averageIngredientScore / 2); // scale similar to your manufacturing
-        weightTotal += 40;
+        score += (averageIngredientScore / 2);
+        weightTotal += 50;
 
     } else {
         missing.push("ingredients_text");

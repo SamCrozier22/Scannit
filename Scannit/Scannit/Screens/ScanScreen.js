@@ -450,6 +450,18 @@ async function fetchProduct(productCode) {
             </>
           )}
 
+          {ecoReason && ecoReason.length > 0 && (
+            <>
+              <View style={styles.divider}></View>
+
+              {ecoReason.map((flag, index) => (
+                <Text key={index} style={styles.bodyText}>
+                 [{flag.impact.toUpperCase()}] {flag.message}
+                </Text>
+              ))}
+            </>
+          )}
+
           {product.image_front_small_url ? (
             <Image
               source={{ uri: product.image_front_small_url }}
