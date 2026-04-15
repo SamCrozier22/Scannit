@@ -19,6 +19,7 @@ export default function ScanScreen( { navigation } ) {
   const [scansLeft, setScansLeft] = useState(null);
   const [isPremium, setIsPremium] = useState(false);
   const [adsLeft, setAdsLeft] = useState(5);
+  const [canScan, setCanScan] = useState(true);
 
   const [lastBarcode, setLastBarcode] = useState(null);
   const [savedBy, setSavedBy] = useState(null);
@@ -192,6 +193,7 @@ async function fetchProduct(productCode) {
     const data = await res.json();
 
     if (res.ok) {
+      setCanScan(true);
       setProduct(data);
       setEcoScore(data.eco?.ecoScore ?? null);
       setEcoReason(data.eco?.ecoReason ?? null);
@@ -209,6 +211,7 @@ async function fetchProduct(productCode) {
         console.log("Error loading Scans: ", scanData?.error);
       }
     } else {
+      setCanScan(true);
       setProduct(null);
       setEcoScore(null);
       setEcoReason(null);
@@ -226,11 +229,11 @@ async function fetchProduct(productCode) {
 }
   
   const handleScan = ({data}) => {
-    if(scanned) return;
-    setScanned(true);
-    setLastBarcode(data);
-
-    fetchProduct(data);
+      if(scanned) return;
+      setScanned(true);
+      setLastBarcode(data);
+      fetchProduct(data);
+      setCanScan(false)
   };
 
   if(!permission) return <Text>Requesting for camera permission</Text>
@@ -262,7 +265,7 @@ async function fetchProduct(productCode) {
               barcodeScannerSettings={{
                 barcodeTypes: ["ean13", "ean8", "upc_a", "upc_e"],
               }}
-              onBarcodeScanned={scanned ? undefined : handleScan}
+              onBarcodeScanned={canScan && scanned ? undefined : handleScan}
             />
           </View>
           </>
@@ -287,7 +290,21 @@ async function fetchProduct(productCode) {
       ) : (
         <>
           <View>
-            <Text style={styles.Title}>GrazeGood</Text>
+            <View style={styles.scanHeaderContainer}>
+              <Text style={styles.scanTitle}>GrazeGood</Text>
+              <View style={styles.adCountContainer}>
+                <TouchableOpacity
+                  style={styles.watchAdsBtnClosed}
+                  onPress = { () => {
+                    rewardScans()
+                  }}
+                >
+                  <FontAwesome5 name="ad" size={30} color="white" />
+                </TouchableOpacity>
+                <Text style={styles.adCountClosed}>Ads Left: {adsLeft ?? "..."}</Text>
+              </View>
+
+            </View>
             <Text style={styles.SubTitle}>
               Scan a product to check how good it is for you and the environment!
             </Text>
@@ -310,8 +327,9 @@ async function fetchProduct(productCode) {
               Buy premium to get unlimited scans <TouchableOpacity onPress={() => navigation.navigate("Premium")}><Text style={styles.premiumNav}>here</Text></TouchableOpacity>
             </Text>
           </View>
-
           <View style={styles.openScannerContainer}>
+              <Text style={styles.scanCountClosed}>Scans Left: {scansLeft ?? "..."}</Text>
+
             <TouchableOpacity
               style={styles.openScannerButton}
               onPress={() => {
@@ -334,19 +352,6 @@ async function fetchProduct(productCode) {
             >
               <Text style={styles.ButtonText}>Open Scanner</Text>
             </TouchableOpacity>
-            {!isPremium && (
-            <View style={styles.adContainer}>
-            <Text style={styles.adsLeft}>{adsLeft ?? "..."} ads left</Text>
-            <TouchableOpacity
-              style={styles.watchAdsBtn}
-              onPress = { () => {
-                rewardScans()
-              }}
-            >
-              <FontAwesome5 name="ad" size={30} color="white" />
-            </TouchableOpacity>
-            </View>
-        )}
           </View>
         </>
       )}
@@ -528,7 +533,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
-    marginTop: "auto",
   },
   Button: {
     backgroundColor: '#108A2C',
@@ -638,5 +642,47 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "blue",
+  },
+  scanHeaderContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    position: 'relative',
+  },
+  scanTitle: {
+    color: "#215C3D",
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: 'center',
+    marginBottom: 20,
+    position: 'relative',
+    alignSelf: 'center',
+  },
+  adCountContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  adCountClosed: {
+    color: '#215C3D',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  watchAdsBtnClosed: {
+    padding: 5,
+    backgroundColor: "#108A2C",
+    borderRadius: 10,
+    marginTop: 10,
+    marginVertical: 10,
+  },
+  scanCountClosed: {
+    color: "#215C3D",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginTop: 'auto'
   }
 });
