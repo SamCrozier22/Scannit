@@ -334,6 +334,19 @@ async function fetchProduct(productCode) {
             >
               <Text style={styles.ButtonText}>Open Scanner</Text>
             </TouchableOpacity>
+            {!isPremium && (
+            <View style={styles.adContainer}>
+            <Text style={styles.adsLeft}>{adsLeft ?? "..."} ads left</Text>
+            <TouchableOpacity
+              style={styles.watchAdsBtn}
+              onPress = { () => {
+                rewardScans()
+              }}
+            >
+              <FontAwesome5 name="ad" size={30} color="white" />
+            </TouchableOpacity>
+            </View>
+        )}
           </View>
         </>
       )}

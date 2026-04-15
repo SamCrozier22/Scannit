@@ -19,9 +19,15 @@ export default function HomeScreen( { setUser } ) {
 
 async function loadProductOfTheWeek() {
   try {
-    const res = await fetch(`${API_BASE}/product-of-the-week`);
-    const data = await res.json();
-    if(res.ok) {
+    const res = await fetch(`${API_BASE}/products-of-the-week`);
+    const text = await res.text();
+
+    console.log("POTW status:", res.status);
+    console.log("POTW raw response:", text);
+
+    const data = JSON.parse(text);
+
+    if (res.ok) {
       setProductOfTheWeek(data);
     } else {
       console.log("Product of the week error:", data?.error);
@@ -132,11 +138,13 @@ useEffect(() => {
                   source={require("../assets/product-placeholder.jpg")}
                 />
               )}
-              <Text>
-                <Text style={styles.ProductName}>{item.product_name}</Text>
-                {item.ecoscore && <Text style={styles.EcoScore}>Eco Score: {item.ecoscore}</Text>}
-                <Text style={styles.EcoScore}>Eco Grade: {item.ecoGrade}</Text>
-              </Text>  
+            <View>
+              <Text style={styles.ProductName}>{item.product_name}</Text>
+              {item.ecoscore != null && (
+                <Text style={styles.EcoScore}>Eco Score: {item.ecoscore}</Text>
+              )}
+              <Text style={styles.EcoScore}>Eco Grade: {item.ecoGrade}</Text>
+            </View> 
           </View>
           </View>
         )}

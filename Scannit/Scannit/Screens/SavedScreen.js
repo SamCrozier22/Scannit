@@ -3,6 +3,7 @@ import { View, Text, ActivityIndicator, Image, FlatList, StyleSheet } from "reac
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { Pressable } from "react-native";
+import { FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 
 export default function SavedScreen() {
@@ -42,7 +43,9 @@ export default function SavedScreen() {
       onPress={() => deleteProduct(barcode)}
       style={styles.deleteButton}
       >
-        <Text style={styles.deleteText}>Delete</Text>
+        <Text style={styles.deleteText}>
+          <FontAwesome5 name="TrashCan" size={36} color="white" />
+        </Text>
       </Pressable>
     )
   }
