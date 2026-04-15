@@ -2,7 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\Scannit",
-    "\\Scannit\\backend"
+    "\\Scannit\\backend",
+    "\\Scannit\\Screens"
   ],
   "SelectedNode": "\\Scannit\\backend\\EcoScoring.js",
   "PreviewInSolutionExplorer": false
