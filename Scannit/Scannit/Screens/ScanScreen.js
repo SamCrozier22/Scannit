@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, ActivityIndicator, Image, TouchableOpacity, ScrollView } from 'react-native';
 import {CameraView, useCameraPermissions} from 'expo-camera';
@@ -8,6 +8,7 @@ import Toast from 'react-native-toast-message';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 
 export default function ScanScreen( { navigation } ) {
+  const scanLock = useRef(false);
   const [scanned, setScanned] = useState(false);
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState(null);
@@ -21,8 +22,6 @@ export default function ScanScreen( { navigation } ) {
   const [adsLeft, setAdsLeft] = useState(5);
   const [canScan, setCanScan] = useState(true);
 
-  const [openScanner, setOpenScanner] = useState(false);
-
   const [lastBarcode, setLastBarcode] = useState(null);
   const [savedBy, setSavedBy] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -33,33 +32,36 @@ export default function ScanScreen( { navigation } ) {
     if (!permission.granted) requestPermission();
   }, [permission]);
 
-  useEffect(() => {
-    pingAPI();
+useEffect(() => {
+  pingAPI();
 
-    (async () => {
-      const username = await AsyncStorage.getItem("username");
-      setSavedBy(username);
-      if(!username) return;
+  (async () => {
+    const username = await AsyncStorage.getItem("username");
+    setSavedBy(username);
+    if (!username) return;
 
-      try{
-        const res = await fetch(`${API_BASE}/user/${username}/scans`);
-        const data = await res.json();
-
-        if(res.ok) {
-          setScansLeft(data.scanCredits);
-          setIsPremium(data.isPremium);
-          setAdsLeft(5 - data.adsWatchedToday);
-        } else {
-          console.log("Error loading Scans: ", data?.error);
-        }
-      } catch (e) {
-        console.error('Error getting scans: ', e);
-      }
-    })();
-  }, [openScanner]);
+    loadScanData(username);
+  })();
+}, []);
 
   const API_BASE = "https://grazegood.onrender.com";
 
+  async function loadScanData(username) {
+    try {
+      const res = await fetch(`${API_BASE}/user/${username}/scans`);
+      const data = await res.json();
+
+      if (res.ok) {
+        setScansLeft(data.scanCredits);
+        setIsPremium(data.isPremium);
+        setAdsLeft(5 - data.adsWatchedToday);
+      } else {
+        console.log("Error loading scans:", data?.error);
+      }
+    } catch (e) {
+      console.error("Error getting scans:", e);
+    }
+  }
   async function pingAPI() {
     const res = await fetch(`${API_BASE}/health`);
     const data = await res.json();
@@ -200,7 +202,6 @@ async function fetchProduct(productCode) {
       setEcoScore(data.eco?.ecoScore ?? null);
       setEcoReason(data.eco?.ecoReason ?? null);
       setCameraOpen(false);
-      setOpenScanner(false);
       const scanRes = await fetch(`${API_BASE}/user/${savedBy}/useScan`,{
         method: "POST",
       })
@@ -231,22 +232,15 @@ async function fetchProduct(productCode) {
   }
 }
   
-  const handleScan = ({data}) => {
-      if(scanned) return;
-      setScanned(true);
-      setLastBarcode(data);
-      fetchProduct(data);
-      setCanScan(false)
-  };
+  const handleScan = ({ data }) => {
+    if (scanLock.current) return;
+    scanLock.current = true;
 
-    const getImpactColor = (impact) => {
-        switch (impact) {
-            case 'high':
-                return 'red';
-            case 'medium':
-                return 'orange';
-            default:
-                return 'gray';
+    setScanned(true);
+    setCanScan(false);
+    setLastBarcode(data);
+    fetchProduct(data);
+  };
 
   if(!permission) return <Text>Requesting for camera permission</Text>
   if(!permission.granted) return <Text>No access to camera</Text>
@@ -277,7 +271,7 @@ async function fetchProduct(productCode) {
               barcodeScannerSettings={{
                 barcodeTypes: ["ean13", "ean8", "upc_a", "upc_e"],
               }}
-              onBarcodeScanned={canScan && scanned ? undefined : handleScan}
+              onBarcodeScanned={scanned || !canScan ? undefined : handleScan}
             />
           </View>
           </>
@@ -288,11 +282,12 @@ async function fetchProduct(productCode) {
             style={styles.scanAgainButton}
             onPress={() => {
               setCameraOpen(true);
-              setOpenScanner(true)
               setScanned(false);
               setProduct(null);
               setError(null);
-
+              scanLock.current = false;
+              setScanned(false);
+              setCanScan(true);
               setEcoScore(null);
               setEcoReason(null);
             }}
@@ -345,23 +340,29 @@ async function fetchProduct(productCode) {
 
             <TouchableOpacity
               style={styles.openScannerButton}
-              onPress={() => {
-                if(!isPremium && scansLeft !== null && scansLeft <= 0) {
+              onPress={async () => {
+                if (!isPremium && scansLeft !== null && scansLeft <= 0) {
                   Toast.show({
                     type: 'error',
                     text1: 'Error',
                     text2: 'You have reached your scan limit, watch an ad to get more!',
                     visibilityTime: 2000
-                  })
-                  return
+                  });
+                  return;
                 }
+
+                if (savedBy) {
+                  await loadScanData(savedBy);
+                }
+
+                scanLock.current = false;
+                setCanScan(true);
                 setCameraOpen(true);
                 setScanned(false);
                 setProduct(null);
                 setError(null);
                 setEcoScore(null);
                 setEcoReason(null);
-                setOpenScanner(true)
               }}
             >
               <Text style={styles.ButtonText}>Open Scanner</Text>
@@ -376,7 +377,6 @@ async function fetchProduct(productCode) {
           style={styles.closeButtonScanner}
           onPress={() => {
             setCameraOpen(false);
-            setOpenScanner(false)
             setScanned(false);
             setProduct(null);
             setError(null);
@@ -403,7 +403,7 @@ async function fetchProduct(productCode) {
 
           {product.nutriments?.["energy-kcal_100g"] != null && (
             <Text style={styles.infoText}>
-              Calories (kcal): {product.nutriments["energy-kcal_100g"]}
+              Calories (kcal): {product.nutriments["energy-kcal_100g"].toFixed(2)}
             </Text>
           )}
 
@@ -476,10 +476,7 @@ async function fetchProduct(productCode) {
 
               {ecoReason.map((flag, index) => (
                 <Text key={index} style={styles.bodyText}>
-                      <Text style={{ color: getImpactColor(flag.impact), fontWeight: 'bold' }}>
-                          [{flag.impact.toUpperCase()}]
-                      </Text>{" "}
-                      {flag.message}
+                 [{flag.impact.toUpperCase()}] {flag.message}
                 </Text>
               ))}
             </>
