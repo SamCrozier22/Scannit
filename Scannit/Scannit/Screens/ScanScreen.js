@@ -403,7 +403,7 @@ async function fetchProduct(productCode) {
 
           {product.nutriments?.["energy-kcal_100g"] != null && (
             <Text style={styles.infoText}>
-              Calories (kcal): {product.nutriments["energy-kcal_100g"]}
+              Calories (kcal): {product.nutriments["energy-kcal_100g"].toFixed(2)}
             </Text>
           )}
 
