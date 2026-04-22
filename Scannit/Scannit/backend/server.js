@@ -79,10 +79,10 @@ async function handlePremiumRenewal(user) {
 
   const now = new Date();
 
-  if(user.premiumEnd <- now) {
+  if(user.premiumEnd <= now) {
     const newStart = new Date(user.premiumEnd);
     const newEnd = new Date(user.premiumEnd);
-    newEnd.setDate(newEnd.getMonth() + 1);
+    newEnd.setMonth(newEnd.getMonth() + 1);
 
     user.premiumStart = newStart;
     user.premiumEnd = newEnd;
@@ -313,18 +313,18 @@ app.get("/user/:username/scans", async (req, res) => {
     if(!user) {
       return res.status(404).json({ error: "User not found" });
     }
+    
+    ensureScanDefaults(user);
     handleDailyReset(user);
+    await handlePremiumRenewal(user);
 
     const premium = user.isActivePremium();
 
-    ensureScanDefaults(user);
     
     if(!user.lastScanReset) {
       user.lastScanReset = new Date();
     }
     await user.save();
-
-    handlePremiumRenewal(user);
 
     return res.json({
       scanCredits: user.scanCredits,
@@ -347,17 +347,13 @@ app.post("/user/:username/rewardScans", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
+    ensureScanDefaults(user);
     handleDailyReset(user);
-
+    await handlePremiumRenewal(user);
     const premium = user.isActivePremium();
 
-    ensureScanDefaults(user);
 
     handleAdReset(user);
-
-    if(user.adsWatchedToday == null) {
-      user.adsWatchedToday = 0;
-    }
 
     if(user.adsWatchedToday >= 5) {
       return res.status(400).json({
@@ -391,11 +387,11 @@ app.post("/user/:username/useScan", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
+    ensureScanDefaults(user);
     handleDailyReset(user);
-
+    await handlePremiumRenewal(user);
     const premium = user.isActivePremium();
 
-    ensureScanDefaults(user);
 
     if(premium) {
       return res.json({
@@ -443,9 +439,12 @@ app.get("/user/:username/premium", async (req, res) => {
     if(!user) {
       return res.status(404).json({ error: "User not found" });
     }
+    
+    await handlePremiumRenewal(user);
+
     const isPremium = user.isActivePremium();
 
-    handlePremiumRenewal(user);
+    
 
     return res.json({
       isPremium,
@@ -597,14 +596,13 @@ app.post("/login", async (req, res) => {
     if(!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    
+    await handlePremiumRenewal(user);
     const validPassword = await bcrypt.compare(password, user.password);
 
     if(!validPassword) {
       return res.status(401).json({ error: "Invalid password" });
     }
 
-    handlePremiumRenewal(user);
 
     return res.json({
       message: "Login successful",
