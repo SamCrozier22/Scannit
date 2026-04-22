@@ -73,6 +73,23 @@ function handleAdReset(user) {
     user.lastAdReset = new Date();
   }
 }
+async function handlePremiumRenewal(user) {
+  if(!user.autoRenew) return;
+  if(!user.premiumEnd) return;
+
+  const now = new Date();
+
+  if(user.premiumEnd <- now) {
+    const newStart = new Date(user.premiumEnd);
+    const newEnd = new Date(user.premiumEnd);
+    newEnd.setDate(newEnd.getMonth() + 1);
+
+    user.premiumStart = newStart;
+    user.premiumEnd = newEnd;
+
+    await user.save();
+  }
+}
 app.use((req, _res, next) => {
   console.log("REQ:", req.method, req.url);
   next();
@@ -306,6 +323,9 @@ app.get("/user/:username/scans", async (req, res) => {
       user.lastScanReset = new Date();
     }
     await user.save();
+
+    handlePremiumRenewal(user);
+
     return res.json({
       scanCredits: user.scanCredits,
       isPremium: premium,
@@ -417,17 +437,90 @@ app.get("/user/:username/premium", async (req, res) => {
         lastName: 1,
         premiumStart: 1,
         premiumEnd: 1,
+        autoRenew: 1
       }
     );
+    if(!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const isPremium = user.isActivePremium();
+
+    handlePremiumRenewal(user);
+
+    return res.json({
+      isPremium,
+      premiumStart: user.premiumStart,
+      premiumEnd: user.premiumEnd,
+      autoRenew: user.autoRenew ?? true
+    })
+  } catch (e) {
+    console.error('Error getting premium status: ', e);
+    return res.status(500).json({ error: "Server error" });
+  }
+})
+app.post("/user/:username/buyPremium", async (req, res) => {
+  try {
+    const {username} = req.params;
+
+    const user = await userData.findOne({username});
 
     if(!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    const premium = user.isActivePremium();
-    return res.json({ premium, premiumStart: user.premiumStart, premiumEnd: user.premiumEnd });
 
+    const now = new Date();
+
+    let premiumStartDate;
+    let premiumEndDate;
+
+    const wasRenewal = user.isActivePremium();
+
+    if(wasRenewal) {
+      premiumStartDate = user.premiumStart ?? now;
+      premiumEndDate = new Date(user.premiumEnd);
+      premiumEndDate.setMonth(premiumEndDate.getMonth() + 1);
+    } else {
+      premiumStartDate = now;
+      premiumEndDate = new Date(now);
+      premiumEndDate.setMonth(premiumEndDate.getMonth() + 1);
+    }
+
+    user.premiumStart = premiumStartDate;
+    user.premiumEnd = premiumEndDate;
+    user.autoRenew = true;
+
+    await user.save();
+
+    return res.json({
+      message: wasRenewal ? "Premium renewed" : "Premium bought",
+      isPremium: user.isActivePremium(),
+      premiumStart: user.premiumStart,
+      premiumEnd: user.premiumEnd,
+      autoRenew: user.autoRenew
+    })
   } catch (e) {
-    console.error('Error getting premium: ', e);
+    console.error('Error buying premium: ', e);
+    return res.status(500).json({ error: "Server error" });
+  }
+})
+app.post('/user/:username/togglePremiumRenewal', async (req, res) => {
+  try {
+    const {username} = req.params;
+    const {autoRenew} = req.body;
+
+    const user = await userData.findOne({username});
+
+    if(!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    user.autoRenew = autoRenew
+    await user.save();
+    return res.json({
+      message: "Auto renewal updated",
+      autoRenew: user.autoRenew
+    })
+  } catch (e) {
+    console.error('Error toggling premium renewal: ', e);
     return res.status(500).json({ error: "Server error" });
   }
 })
@@ -510,6 +603,8 @@ app.post("/login", async (req, res) => {
     if(!validPassword) {
       return res.status(401).json({ error: "Invalid password" });
     }
+
+    handlePremiumRenewal(user);
 
     return res.json({
       message: "Login successful",

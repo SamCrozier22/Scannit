@@ -15,13 +15,14 @@ const UserSchema = new Schema(
         lastScanReset: {type: Date, default: Date.now},
         premiumStart: {type: Date},
         premiumEnd: {type: Date},
+        autoRenew: {type: Boolean, default: true},
         adsWatchedToday: {type: Number, default: 0},
         lastAdReset: {type: Date, default: Date.now},
     },
     {timestamps: true}
 );
 UserSchema.methods.isActivePremium = function() {
-    return !!(this.premiumEnd && this.premiumEnd > new Date());
+    return !!(this.premiumStart && this.premiumEnd && this.premiumEnd > new Date());
 }
 
 const userData = model("User", UserSchema);
