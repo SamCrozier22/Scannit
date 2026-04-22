@@ -44,11 +44,12 @@ const ProductSchema = new Schema(
       default: null,
       trim: true
     },
-    ecoReason: [{
-      type: String, 
-      default: null,
-      trim: true
-    }],
+    ecoReason: [
+      {
+        impact: {type: String, default: null, trim: true},
+        message: {type: String, default: null, trim: true}
+      }
+    ],
   },
   { timestamps: true }
 );
