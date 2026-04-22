@@ -21,6 +21,8 @@ export default function ScanScreen( { navigation } ) {
   const [adsLeft, setAdsLeft] = useState(5);
   const [canScan, setCanScan] = useState(true);
 
+  const [openScanner, setOpenScanner] = useState(false);
+
   const [lastBarcode, setLastBarcode] = useState(null);
   const [savedBy, setSavedBy] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -31,30 +33,30 @@ export default function ScanScreen( { navigation } ) {
     if (!permission.granted) requestPermission();
   }, [permission]);
 
-useEffect(() => {
-  pingAPI();
+  useEffect(() => {
+    pingAPI();
 
-  (async () => {
-    const username = await AsyncStorage.getItem("username");
-    setSavedBy(username);
-    if(!username) return;
+    (async () => {
+      const username = await AsyncStorage.getItem("username");
+      setSavedBy(username);
+      if(!username) return;
 
-    try{
-      const res = await fetch(`${API_BASE}/user/${username}/scans`);
-      const data = await res.json();
+      try{
+        const res = await fetch(`${API_BASE}/user/${username}/scans`);
+        const data = await res.json();
 
-      if(res.ok) {
-        setScansLeft(data.scanCredits);
-        setIsPremium(data.isPremium);
-        setAdsLeft(5 - data.adsWatchedToday);
-      } else {
-        console.log("Error loading Scans: ", data?.error);
+        if(res.ok) {
+          setScansLeft(data.scanCredits);
+          setIsPremium(data.isPremium);
+          setAdsLeft(5 - data.adsWatchedToday);
+        } else {
+          console.log("Error loading Scans: ", data?.error);
+        }
+      } catch (e) {
+        console.error('Error getting scans: ', e);
       }
-    } catch (e) {
-      console.error('Error getting scans: ', e);
-    }
-  })();
-}, []);
+    })();
+  }, [openScanner]);
 
   const API_BASE = "https://grazegood.onrender.com";
 
@@ -198,6 +200,7 @@ async function fetchProduct(productCode) {
       setEcoScore(data.eco?.ecoScore ?? null);
       setEcoReason(data.eco?.ecoReason ?? null);
       setCameraOpen(false);
+      setOpenScanner(false);
       const scanRes = await fetch(`${API_BASE}/user/${savedBy}/useScan`,{
         method: "POST",
       })
@@ -276,6 +279,7 @@ async function fetchProduct(productCode) {
             style={styles.scanAgainButton}
             onPress={() => {
               setCameraOpen(true);
+              setOpenScanner(true)
               setScanned(false);
               setProduct(null);
               setError(null);
@@ -348,6 +352,7 @@ async function fetchProduct(productCode) {
                 setError(null);
                 setEcoScore(null);
                 setEcoReason(null);
+                setOpenScanner(true)
               }}
             >
               <Text style={styles.ButtonText}>Open Scanner</Text>
@@ -362,6 +367,7 @@ async function fetchProduct(productCode) {
           style={styles.closeButtonScanner}
           onPress={() => {
             setCameraOpen(false);
+            setOpenScanner(false)
             setScanned(false);
             setProduct(null);
             setError(null);
