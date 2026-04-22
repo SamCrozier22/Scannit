@@ -405,6 +405,32 @@ console.log("hello")
     return res.status(500).json({ error: "Server error" });
   }
 })
+app.get("/user/:username/premium", async (req, res) => {
+  try {
+    const {username} = req.params;
+
+    const user = await userData.findOne(
+      {username},
+      {
+        username: 1,
+        firstName: 1,
+        lastName: 1,
+        premiumStart: 1,
+        premiumEnd: 1,
+      }
+    );
+
+    if(!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const premium = user.isActivePremium();
+    return res.json({ premium, premiumStart: user.premiumStart, premiumEnd: user.premiumEnd });
+
+  } catch (e) {
+    console.error('Error getting premium: ', e);
+    return res.status(500).json({ error: "Server error" });
+  }
+})
 app.get("/products-of-the-week", async (req, res) => {
   try {
     const randomPage = Math.floor(Math.random() * 20) + 1;

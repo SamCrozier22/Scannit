@@ -1,19 +1,51 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function PremiumScreen() {
 
+export default function PremiumScreen( { setUser }) {
+const [isPremium, setIsPremium] = useState(false);
+
+const API_BASE = "https://grazegood.onrender.com";
+
+useEffect(() => {
+  const fetchPremiumStatus = async () => {
+    try {
+      const username = await AsyncStorage.getItem("username");
+      const res = await fetch(`${API_BASE}/user/${username}/premium`);
+      const data = await res.json();
+      if(res.ok) {
+        setIsPremium(data.isPremium);
+      }
+    } catch (error) {
+      console.log("Error fetching premium status:", error);
+    }
+  }
+}, []);
   return (
     <View style={styles.MainPage}>
-      <Text style={{color: "#215C3D", fontSize: 30, fontWeight: "bold"}}>Premium coming soon 🚀</Text>
+      <Text style={styles.text}>Premium</Text>
+      {isPremium ? (
+        <Text style={styles.text}>You are a premium user</Text>
 
-      <Text style={{color: "#215C3D", fontSize: 20, fontWeight: "bold"}}>Premium Features</Text>
-      <Text style={styles.text}>- No Ads</Text>
-      <Text style={styles.text}>- More Scans Per Day</Text>
-      <Text style={styles.text}>- Detailed Stats About Your Scans</Text>
-      <Text style={styles.text}>- Scan History</Text>
-      <Text style={styles.text}>- Reasoning for Eco scores</Text>
+      ) : (
+        <>
+          <Text style={styles.text}>You are not a premium user</Text>
+          <Text style={styles.text}>Upgrade to premium to unlock all features</Text>
+          <ul>
+            <li>Unlimited Scans!</li>
+            <li>Ad Free!</li>
+            <li>Scan History</li>
+            <li>Nutriment information</li>
+          </ul>
+          <TouchableOpacity
+            onPress={() => setIsPremium(true)}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Upgrade to premium</Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 }
