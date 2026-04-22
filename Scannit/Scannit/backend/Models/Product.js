@@ -44,11 +44,11 @@ const ProductSchema = new Schema(
       default: null,
       trim: true
     },
-    ecoReason: { 
+    ecoReason: [{
       type: String, 
       default: null,
       trim: true
-    },
+    }],
   },
   { timestamps: true }
 );
