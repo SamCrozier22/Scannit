@@ -135,7 +135,7 @@ app.get("/product/:barcode", async (req, res) => {
     }
     if (r.status === 429) {
       return res.status(429).json({
-        error: "Too many requests. Please try again later."
+        error: "Open Food Facts is rate-limited. Please try again later."
       });
     }
 
