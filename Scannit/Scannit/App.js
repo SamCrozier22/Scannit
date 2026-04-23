@@ -12,6 +12,7 @@ const toastConfig = {
       style={{
         borderLeftColor: "#108A2C",
         backgroundColor: "#2D4739",
+        height: 100
       }}
       contentContainerStyle={{
         paddingHorizontal: 15,
