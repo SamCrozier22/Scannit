@@ -543,8 +543,13 @@ app.get("/products-of-the-week", async (_req, res) => {
         ecoReason: eco.ecoReason
       }
     })
+
+    console.log("Total POTWs:", scoredProducts.length);
+    console.log("Good POTWs:", scoredProducts.filter(p => p.ecoScore !== null && p.ecoScore > 70).length);
+
+
     const goodProducts = scoredProducts 
-    .filter((p) => p.ecoScore !== null && p.ecoScore > 70)
+    .filter((p) => p.ecoScore !== null && p.ecoScore > 60)
     .sort(() => Math.random() - 0.5)
     .slice(0,5);
 
