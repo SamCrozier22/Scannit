@@ -5,6 +5,7 @@ require("dotenv").config();
 const app = express();
 
 const calculateEcoScore = require("./EcoScoring");
+const POTWs = require("./data/POTWs.json");
 
 app.use(cors());
 app.use(express.json());
@@ -89,6 +90,13 @@ async function handlePremiumRenewal(user) {
 
     await user.save();
   }
+}
+function getEcoGrade(score) {
+  if (score >= 80) return "A";
+  if (score >= 70) return "B";
+  if (score >= 50) return "C";
+  if (score >= 30) return "D";
+  return "E";
 }
 app.use((req, _res, next) => {
   console.log("REQ:", req.method, req.url);
@@ -523,62 +531,24 @@ app.post('/user/:username/togglePremiumRenewal', async (req, res) => {
     return res.status(500).json({ error: "Server error" });
   }
 })
-app.get("/products-of-the-week", async (req, res) => {
+app.get("/products-of-the-week", async (_req, res) => {
   try {
-    const randomPage = Math.floor(Math.random() * 20) + 1;
 
-    const url =
-      `https://world.openfoodfacts.org/cgi/search.pl` +
-      `?search_terms=&json=1&page_size=20&page=${randomPage}` +
-      `&tagtype_0=ecoscore_grade&tag_contains_0=contains&tag_0=a`;
+    const scoredProducts = POTWs.map((product) => {
+      const eco = calculateEcoScore(product);
+      return {
+        ...product,
+        ecoScore: eco.ecoScore,
+        ecoScoreGrade: getEcoGrade(eco.ecoScore),
+        ecoReason: eco.ecoReason
+      }
+    })
+    const goodProducts = scoredProducts 
+    .filter((p) => p.ecoScore !== null && p.ecoScore > 70)
+    .sort(() => Math.random() - 0.5)
+    .slice(0,5);
 
-    const r = await fetch(url, {
-      headers: {
-        Accept: "application/json",
-        "User-Agent": "Scannit/1.0",
-      },
-    });
-
-    const contentType = r.headers.get("content-type") || "";
-    const bodyText = await r.text();
-
-    console.log("POTW status:", r.status);
-    console.log("POTW content-type:", contentType);
-    console.log("POTW body preview:", bodyText.slice(0, 300));
-
-    if (!contentType.includes("application/json")) {
-      return res.status(502).json({
-        error: "Unexpected response from Open Food Facts",
-      });
-    }
-
-    const data = JSON.parse(bodyText);
-
-    if (!data.products || !Array.isArray(data.products)) {
-      return res.status(500).json({ error: "Products not found" });
-    }
-
-    const goodProducts = data.products.filter(
-      (p) =>
-        p._id &&
-        p.product_name &&
-        p.image_front_small_url &&
-        p.ecoscore_grade &&
-        p.ecoscore_score != null
-    );
-
-    const shuffled = goodProducts.sort(() => 0.5 - Math.random());
-    const picks = shuffled.slice(0, 5);
-
-    const formatted = picks.map((p) => ({
-      id: p._id,
-      product_name: p.product_name,
-      imageUrl: p.image_front_small_url,
-      ecoscore: p.ecoscore_score,
-      ecoGrade: p.ecoscore_grade,
-    }));
-
-    return res.json(formatted);
+    res.json(goodProducts);
   } catch (e) {
     console.error("Error getting products of the week: ", e);
     return res.status(500).json({ error: "Server error" });

@@ -141,9 +141,9 @@ useEffect(() => {
             <View>
               <Text style={styles.ProductName}>{item.product_name}</Text>
               {item.ecoscore != null && (
-                <Text style={styles.EcoScore}>Eco Score: {item.ecoscore}</Text>
+                <Text style={styles.EcoScore}>Eco Score: {item.ecoScore}</Text>
               )}
-              <Text style={styles.EcoScore}>Eco Grade: {item.ecoGrade}</Text>
+              <Text style={styles.EcoScore}>Eco Grade: {item.ecoScoreGrade}</Text>
             </View> 
           </View>
           </View>

@@ -252,7 +252,7 @@ function calculateEcoScore(product) {
                     redFlag = true;
                     redFlags.push({
                         impact: `high`,
-                        message: `Palm Oil detected!!!! DIEEE!!!`
+                        message: `Palm Oil is incredibly bad for both the environment and you`
                     })
                 }
 

@@ -1,0 +1,61 @@
+[
+  { "id": "1", "product_name": "Organic Rolled Oats", "brands": "Flahavan's", "imageUrl": "", "packaging_tags": ["en:cardboard","en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "Ireland", "ingredients_text": "wholegrain oats" },
+  { "id": "2", "product_name": "Wholewheat Pasta", "brands": "Napolina", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "wholewheat durum wheat semolina" },
+  { "id": "3", "product_name": "Brown Rice", "brands": "Tilda", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "brown rice" },
+  { "id": "4", "product_name": "Organic Chickpeas", "brands": "Biona", "imageUrl": "", "packaging_tags": ["en:tin"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "chickpeas, water" },
+  { "id": "5", "product_name": "Red Lentils", "brands": "Merchant Gourmet", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "red lentils" },
+
+  { "id": "6", "product_name": "Green Lentils", "brands": "Biona", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:france"], "manufacturing_places": "France", "ingredients_text": "green lentils" },
+  { "id": "7", "product_name": "Organic Tomato Passata", "brands": "Mr Organic", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "organic tomatoes" },
+  { "id": "8", "product_name": "Oat Drink", "brands": "Minor Figures", "imageUrl": "", "packaging_tags": ["en:carton"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "water, oats, rapeseed oil" },
+  { "id": "9", "product_name": "Soya Drink", "brands": "Alpro", "imageUrl": "", "packaging_tags": ["en:carton"], "countries_tags": ["en:france"], "manufacturing_places": "France", "ingredients_text": "water, soya beans" },
+  { "id": "10", "product_name": "Frozen Peas", "brands": "Birds Eye", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "peas" },
+
+  { "id": "11", "product_name": "Carrots", "brands": "Riverford", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "carrots" },
+  { "id": "12", "product_name": "Broccoli", "brands": "Tesco", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "broccoli" },
+  { "id": "13", "product_name": "Spinach", "brands": "Tesco", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "spinach" },
+  { "id": "14", "product_name": "Bananas", "brands": "Fairtrade", "imageUrl": "", "packaging_tags": ["en:none"], "countries_tags": ["en:ecuador"], "manufacturing_places": "Ecuador", "ingredients_text": "bananas" },
+  { "id": "15", "product_name": "Apples", "brands": "Pink Lady", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "apples" },
+
+  { "id": "16", "product_name": "Potatoes", "brands": "Tesco", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "potatoes" },
+  { "id": "17", "product_name": "Onions", "brands": "Tesco", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "onions" },
+  { "id": "18", "product_name": "Garlic", "brands": "Tesco", "imageUrl": "", "packaging_tags": ["en:none"], "countries_tags": ["en:spain"], "manufacturing_places": "Spain", "ingredients_text": "garlic" },
+  { "id": "19", "product_name": "Kidney Beans", "brands": "Biona", "imageUrl": "", "packaging_tags": ["en:tin"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "kidney beans, water" },
+  { "id": "20", "product_name": "Black Beans", "brands": "Biona", "imageUrl": "", "packaging_tags": ["en:tin"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "black beans, water" },
+
+  { "id": "21", "product_name": "Cannellini Beans", "brands": "Napolina", "imageUrl": "", "packaging_tags": ["en:tin"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "white beans, water" },
+  { "id": "22", "product_name": "Butter Beans", "brands": "Napolina", "imageUrl": "", "packaging_tags": ["en:tin"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "butter beans, water" },
+  { "id": "23", "product_name": "Chopped Tomatoes", "brands": "Mutti", "imageUrl": "", "packaging_tags": ["en:tin"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "tomatoes" },
+  { "id": "24", "product_name": "Wholegrain Couscous", "brands": "Merchant Gourmet", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:france"], "manufacturing_places": "France", "ingredients_text": "wholewheat semolina" },
+  { "id": "25", "product_name": "Quinoa", "brands": "Biona", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:peru"], "manufacturing_places": "Peru", "ingredients_text": "quinoa" },
+
+  { "id": "26", "product_name": "Organic Tofu", "brands": "Tofoo", "imageUrl": "", "packaging_tags": ["en:plastic"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "soya beans, water" },
+  { "id": "27", "product_name": "Falafel", "brands": "Cauldron", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "chickpeas, herbs, spices" },
+  { "id": "28", "product_name": "Hummus", "brands": "Yarden", "imageUrl": "", "packaging_tags": ["en:plastic"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "chickpeas, tahini, olive oil" },
+  { "id": "29", "product_name": "Olive Oil", "brands": "Filippo Berio", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "olive oil" },
+  { "id": "30", "product_name": "Rapeseed Oil", "brands": "Borderfields", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "rapeseed oil" },
+
+  { "id": "31", "product_name": "Sunflower Oil", "brands": "Flora", "imageUrl": "", "packaging_tags": ["en:plastic"], "countries_tags": ["en:ukraine"], "manufacturing_places": "Ukraine", "ingredients_text": "sunflower oil" },
+  { "id": "32", "product_name": "Wholegrain Bread", "brands": "Hovis", "imageUrl": "", "packaging_tags": ["en:plastic"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "wholegrain flour" },
+  { "id": "33", "product_name": "Porridge Oats", "brands": "Quaker", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "oats" },
+  { "id": "34", "product_name": "Granola", "brands": "Jordans", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "oats, nuts" },
+  { "id": "35", "product_name": "Trail Mix", "brands": "Eat Natural", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "nuts, raisins" },
+
+  { "id": "36", "product_name": "Almonds", "brands": "Whole Foods", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:spain"], "manufacturing_places": "Spain", "ingredients_text": "almonds" },
+  { "id": "37", "product_name": "Walnuts", "brands": "Whole Foods", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:france"], "manufacturing_places": "France", "ingredients_text": "walnuts" },
+  { "id": "38", "product_name": "Hazelnuts", "brands": "Whole Foods", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "hazelnuts" },
+  { "id": "39", "product_name": "Pumpkin Seeds", "brands": "Tesco", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:poland"], "manufacturing_places": "Poland", "ingredients_text": "pumpkin seeds" },
+  { "id": "40", "product_name": "Chia Seeds", "brands": "Biona", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:peru"], "manufacturing_places": "Peru", "ingredients_text": "chia seeds" },
+
+  { "id": "41", "product_name": "Green Tea", "brands": "Twinings", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "green tea" },
+  { "id": "42", "product_name": "Herbal Tea", "brands": "Pukka", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "herbs" },
+  { "id": "43", "product_name": "Black Coffee Beans", "brands": "Union Coffee", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:colombia"], "manufacturing_places": "Colombia", "ingredients_text": "coffee" },
+  { "id": "44", "product_name": "Sparkling Water", "brands": "San Pellegrino", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "water" },
+  { "id": "45", "product_name": "Still Water", "brands": "Highland Spring", "imageUrl": "", "packaging_tags": ["en:plastic"], "countries_tags": ["en:scotland"], "manufacturing_places": "Scotland", "ingredients_text": "water" },
+
+  { "id": "46", "product_name": "Apple Juice", "brands": "Copella", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "apple juice" },
+  { "id": "47", "product_name": "Orange Juice", "brands": "Innocent", "imageUrl": "", "packaging_tags": ["en:carton"], "countries_tags": ["en:spain"], "manufacturing_places": "Spain", "ingredients_text": "orange juice" },
+  { "id": "48", "product_name": "Beetroot", "brands": "Tesco", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "beetroot" },
+  { "id": "49", "product_name": "Sauerkraut", "brands": "Biona", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:germany"], "manufacturing_places": "Germany", "ingredients_text": "cabbage, salt" },
+  { "id": "50", "product_name": "Kimchi", "brands": "Yutaka", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:korea"], "manufacturing_places": "Korea", "ingredients_text": "cabbage, chilli, garlic" }
+]
