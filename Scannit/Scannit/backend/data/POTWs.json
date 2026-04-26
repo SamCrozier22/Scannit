@@ -1,61 +1,708 @@
 [
-  { "id": "1", "product_name": "Organic Rolled Oats", "brands": "Flahavan's", "imageUrl": "", "packaging_tags": ["en:cardboard","en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "Ireland", "ingredients_text": "wholegrain oats" },
-  { "id": "2", "product_name": "Wholewheat Pasta", "brands": "Napolina", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "wholewheat durum wheat semolina" },
-  { "id": "3", "product_name": "Brown Rice", "brands": "Tilda", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "brown rice" },
-  { "id": "4", "product_name": "Organic Chickpeas", "brands": "Biona", "imageUrl": "", "packaging_tags": ["en:tin"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "chickpeas, water" },
-  { "id": "5", "product_name": "Red Lentils", "brands": "Merchant Gourmet", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "red lentils" },
-
-  { "id": "6", "product_name": "Green Lentils", "brands": "Biona", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:france"], "manufacturing_places": "France", "ingredients_text": "green lentils" },
-  { "id": "7", "product_name": "Organic Tomato Passata", "brands": "Mr Organic", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "organic tomatoes" },
-  { "id": "8", "product_name": "Oat Drink", "brands": "Minor Figures", "imageUrl": "", "packaging_tags": ["en:carton"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "water, oats, rapeseed oil" },
-  { "id": "9", "product_name": "Soya Drink", "brands": "Alpro", "imageUrl": "", "packaging_tags": ["en:carton"], "countries_tags": ["en:france"], "manufacturing_places": "France", "ingredients_text": "water, soya beans" },
-  { "id": "10", "product_name": "Frozen Peas", "brands": "Birds Eye", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "peas" },
-
-  { "id": "11", "product_name": "Carrots", "brands": "Riverford", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "carrots" },
-  { "id": "12", "product_name": "Broccoli", "brands": "Tesco", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "broccoli" },
-  { "id": "13", "product_name": "Spinach", "brands": "Tesco", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "spinach" },
-  { "id": "14", "product_name": "Bananas", "brands": "Fairtrade", "imageUrl": "", "packaging_tags": ["en:none"], "countries_tags": ["en:ecuador"], "manufacturing_places": "Ecuador", "ingredients_text": "bananas" },
-  { "id": "15", "product_name": "Apples", "brands": "Pink Lady", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "apples" },
-
-  { "id": "16", "product_name": "Potatoes", "brands": "Tesco", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "potatoes" },
-  { "id": "17", "product_name": "Onions", "brands": "Tesco", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "onions" },
-  { "id": "18", "product_name": "Garlic", "brands": "Tesco", "imageUrl": "", "packaging_tags": ["en:none"], "countries_tags": ["en:spain"], "manufacturing_places": "Spain", "ingredients_text": "garlic" },
-  { "id": "19", "product_name": "Kidney Beans", "brands": "Biona", "imageUrl": "", "packaging_tags": ["en:tin"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "kidney beans, water" },
-  { "id": "20", "product_name": "Black Beans", "brands": "Biona", "imageUrl": "", "packaging_tags": ["en:tin"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "black beans, water" },
-
-  { "id": "21", "product_name": "Cannellini Beans", "brands": "Napolina", "imageUrl": "", "packaging_tags": ["en:tin"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "white beans, water" },
-  { "id": "22", "product_name": "Butter Beans", "brands": "Napolina", "imageUrl": "", "packaging_tags": ["en:tin"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "butter beans, water" },
-  { "id": "23", "product_name": "Chopped Tomatoes", "brands": "Mutti", "imageUrl": "", "packaging_tags": ["en:tin"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "tomatoes" },
-  { "id": "24", "product_name": "Wholegrain Couscous", "brands": "Merchant Gourmet", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:france"], "manufacturing_places": "France", "ingredients_text": "wholewheat semolina" },
-  { "id": "25", "product_name": "Quinoa", "brands": "Biona", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:peru"], "manufacturing_places": "Peru", "ingredients_text": "quinoa" },
-
-  { "id": "26", "product_name": "Organic Tofu", "brands": "Tofoo", "imageUrl": "", "packaging_tags": ["en:plastic"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "soya beans, water" },
-  { "id": "27", "product_name": "Falafel", "brands": "Cauldron", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "chickpeas, herbs, spices" },
-  { "id": "28", "product_name": "Hummus", "brands": "Yarden", "imageUrl": "", "packaging_tags": ["en:plastic"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "chickpeas, tahini, olive oil" },
-  { "id": "29", "product_name": "Olive Oil", "brands": "Filippo Berio", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "olive oil" },
-  { "id": "30", "product_name": "Rapeseed Oil", "brands": "Borderfields", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "rapeseed oil" },
-
-  { "id": "31", "product_name": "Sunflower Oil", "brands": "Flora", "imageUrl": "", "packaging_tags": ["en:plastic"], "countries_tags": ["en:ukraine"], "manufacturing_places": "Ukraine", "ingredients_text": "sunflower oil" },
-  { "id": "32", "product_name": "Wholegrain Bread", "brands": "Hovis", "imageUrl": "", "packaging_tags": ["en:plastic"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "wholegrain flour" },
-  { "id": "33", "product_name": "Porridge Oats", "brands": "Quaker", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "oats" },
-  { "id": "34", "product_name": "Granola", "brands": "Jordans", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "oats, nuts" },
-  { "id": "35", "product_name": "Trail Mix", "brands": "Eat Natural", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "nuts, raisins" },
-
-  { "id": "36", "product_name": "Almonds", "brands": "Whole Foods", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:spain"], "manufacturing_places": "Spain", "ingredients_text": "almonds" },
-  { "id": "37", "product_name": "Walnuts", "brands": "Whole Foods", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:france"], "manufacturing_places": "France", "ingredients_text": "walnuts" },
-  { "id": "38", "product_name": "Hazelnuts", "brands": "Whole Foods", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "hazelnuts" },
-  { "id": "39", "product_name": "Pumpkin Seeds", "brands": "Tesco", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:poland"], "manufacturing_places": "Poland", "ingredients_text": "pumpkin seeds" },
-  { "id": "40", "product_name": "Chia Seeds", "brands": "Biona", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:peru"], "manufacturing_places": "Peru", "ingredients_text": "chia seeds" },
-
-  { "id": "41", "product_name": "Green Tea", "brands": "Twinings", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "green tea" },
-  { "id": "42", "product_name": "Herbal Tea", "brands": "Pukka", "imageUrl": "", "packaging_tags": ["en:cardboard"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "herbs" },
-  { "id": "43", "product_name": "Black Coffee Beans", "brands": "Union Coffee", "imageUrl": "", "packaging_tags": ["en:paper"], "countries_tags": ["en:colombia"], "manufacturing_places": "Colombia", "ingredients_text": "coffee" },
-  { "id": "44", "product_name": "Sparkling Water", "brands": "San Pellegrino", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:italy"], "manufacturing_places": "Italy", "ingredients_text": "water" },
-  { "id": "45", "product_name": "Still Water", "brands": "Highland Spring", "imageUrl": "", "packaging_tags": ["en:plastic"], "countries_tags": ["en:scotland"], "manufacturing_places": "Scotland", "ingredients_text": "water" },
-
-  { "id": "46", "product_name": "Apple Juice", "brands": "Copella", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "apple juice" },
-  { "id": "47", "product_name": "Orange Juice", "brands": "Innocent", "imageUrl": "", "packaging_tags": ["en:carton"], "countries_tags": ["en:spain"], "manufacturing_places": "Spain", "ingredients_text": "orange juice" },
-  { "id": "48", "product_name": "Beetroot", "brands": "Tesco", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:united-kingdom"], "manufacturing_places": "United Kingdom", "ingredients_text": "beetroot" },
-  { "id": "49", "product_name": "Sauerkraut", "brands": "Biona", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:germany"], "manufacturing_places": "Germany", "ingredients_text": "cabbage, salt" },
-  { "id": "50", "product_name": "Kimchi", "brands": "Yutaka", "imageUrl": "", "packaging_tags": ["en:glass"], "countries_tags": ["en:korea"], "manufacturing_places": "Korea", "ingredients_text": "cabbage, chilli, garlic" }
+  {
+    "id": "1",
+    "product_name": "Irish Organic Jumbo Oats",
+    "brands": "Flahavan's",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/509/980/100/3339/front_en.6.400.jpg",
+    "packaging_tags": [
+      "en:cardboard",
+      "en:paper"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "Ireland",
+    "ingredients_text": "wholegrain oats",
+    "barcode": "5099801003339"
+  },
+  {
+    "id": "2",
+    "product_name": "Wholewheat Pasta",
+    "brands": "Tesco",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/500/011/931/9906/front_en.64.400.jpg",
+    "packaging_tags": [
+      "en:cardboard"
+    ],
+    "countries_tags": [
+      "en:italy"
+    ],
+    "manufacturing_places": "Italy",
+    "ingredients_text": "wholewheat durum wheat semolina",
+    "barcode": "5000119319906"
+  },
+  {
+    "id": "3",
+    "product_name": "Brown Rice",
+    "brands": "Tilda",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/501/115/788/8132/front_en.28.200.jpg",
+    "packaging_tags": [
+      "en:cardboard"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "brown rice",
+    "barcode": "5011157888132"
+  },
+  {
+    "id": "4",
+    "product_name": "Organic Chickpeas",
+    "brands": "Biona",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/505/775/391/0822/front_en.17.400.jpg",
+    "packaging_tags": [
+      "en:tin"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "chickpeas, water",
+    "barcode": "5057753910822"
+  },
+  {
+    "id": "5",
+    "product_name": "Red Lentils",
+    "brands": "Merchant Gourmet",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/501/809/501/1059/front_en.3.200.jpg",
+    "packaging_tags": [
+      "en:cardboard"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "red lentils",
+    "barcode": "5018095011059"
+  },
+  {
+    "id": "6",
+    "product_name": "Green Lentils",
+    "brands": "Biona",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/503/272/230/2235/front_en.34.200.jpg",
+    "packaging_tags": [
+      "en:paper"
+    ],
+    "countries_tags": [
+      "en:france"
+    ],
+    "manufacturing_places": "France",
+    "ingredients_text": "green lentils",
+    "barcode": "5032722302235"
+  },
+  {
+    "id": "7",
+    "product_name": "SO Organic Passata",
+    "brands": "Mr Organic",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/000/000/121/5397/front_en.19.400.jpg",
+    "packaging_tags": [
+      "en:glass"
+    ],
+    "countries_tags": [
+      "en:italy"
+    ],
+    "manufacturing_places": "Italy",
+    "ingredients_text": "organic tomatoes",
+    "barcode": "01215397"
+  },
+  {
+    "id": "8",
+    "product_name": "Oat Drink",
+    "brands": "Minor Figures",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/506/040/608/0452/front_en.57.200.jpg",
+    "packaging_tags": [
+      "en:carton"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "water, oats, rapeseed oil",
+    "barcode": "5060406080452"
+  },
+  {
+    "id": "9",
+    "product_name": "Soya Drink",
+    "brands": "Alpro",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/541/118/854/3381/front_cs.118.400.jpg",
+    "packaging_tags": [
+      "en:carton"
+    ],
+    "countries_tags": [
+      "en:france"
+    ],
+    "manufacturing_places": "France",
+    "ingredients_text": "water, soya beans",
+    "barcode": "5411188543381"
+  },
+  {
+    "id": "10",
+    "product_name": "Frozen Peas",
+    "brands": "Birds Eye",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/001/450/002/1304/front_en.37.200.jpg",
+    "packaging_tags": [
+      "en:cardboard"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "peas",
+    "barcode": "0014500021304"
+  },
+  {
+    "id": "11",
+    "product_name": "British Carrots",
+    "brands": "Tesco",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/000/000/327/2657/front_en.16.400.jpg",
+    "packaging_tags": [
+      "en:paper"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "carrots",
+    "barcode": "03272657"
+  },
+  {
+    "id": "12",
+    "product_name": "Broccoli",
+    "brands": "Tesco",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/000/000/331/8003/front_en.5.200.jpg",
+    "packaging_tags": [
+      "en:paper"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "broccoli",
+    "barcode": "03318003"
+  },
+  {
+    "id": "13",
+    "product_name": "Spinach",
+    "brands": "Tesco",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/505/754/580/7132/front_en.4.200.jpg",
+    "packaging_tags": [
+      "en:paper"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "spinach",
+    "barcode": "5057545807132"
+  },
+  {
+    "id": "14",
+    "product_name": "Bananas",
+    "brands": "Fairtrade",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/325/039/306/2582/front_fr.35.200.jpg",
+    "packaging_tags": [
+      "en:none"
+    ],
+    "countries_tags": [
+      "en:ecuador"
+    ],
+    "manufacturing_places": "Ecuador",
+    "ingredients_text": "bananas",
+    "barcode": "3250393062582"
+  },
+  {
+    "id": "15",
+    "product_name": "Apples",
+    "brands": "Pink Lady",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/000/000/081/0357/front_en.21.400.jpg",
+    "packaging_tags": [
+      "en:paper"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "apples",
+    "barcode": "00810357"
+  },
+  {
+    "id": "17",
+    "product_name": "Brown Onions",
+    "brands": "Tesco",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/000/000/324/3176/front_en.22.400.jpg",
+    "packaging_tags": [
+      "en:paper"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "onions",
+    "barcode": "03243176"
+  },
+  {
+    "id": "18",
+    "product_name": "Garlic",
+    "brands": "Tesco",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/505/796/739/5057/front_en.4.200.jpg",
+    "packaging_tags": [
+      "en:none"
+    ],
+    "countries_tags": [
+      "en:spain"
+    ],
+    "manufacturing_places": "Spain",
+    "ingredients_text": "garlic",
+    "barcode": "5057967395057"
+  },
+  {
+    "id": "19",
+    "product_name": "Kidney Beans",
+    "brands": "Biona",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/503/272/230/1320/front_en.33.200.jpg",
+    "packaging_tags": [
+      "en:tin"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "kidney beans, water",
+    "barcode": "5032722301320"
+  },
+  {
+    "id": "20",
+    "product_name": "Black Beans",
+    "brands": "Biona",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/503/272/230/9791/front_en.37.200.jpg",
+    "packaging_tags": [
+      "en:tin"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "black beans, water",
+    "barcode": "5032722309791"
+  },
+  {
+    "id": "21",
+    "product_name": "Cannellini Beans",
+    "brands": "Napolina",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/500/023/284/4279/front_en.5.400.jpg",
+    "packaging_tags": [
+      "en:tin"
+    ],
+    "countries_tags": [
+      "en:italy"
+    ],
+    "manufacturing_places": "Italy",
+    "ingredients_text": "white beans, water",
+    "barcode": "5000232844279"
+  },
+  {
+    "id": "22",
+    "product_name": "Butter Beans",
+    "brands": "Napolina",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/500/023/284/4255/front_en.18.200.jpg",
+    "packaging_tags": [
+      "en:tin"
+    ],
+    "countries_tags": [
+      "en:italy"
+    ],
+    "manufacturing_places": "Italy",
+    "ingredients_text": "butter beans, water",
+    "barcode": "5000232844255"
+  },
+  {
+    "id": "23",
+    "product_name": "Chopped Tomatoes",
+    "brands": "Mutti",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/085/469/300/0164/front_en.15.400.jpg",
+    "packaging_tags": [
+      "en:tin"
+    ],
+    "countries_tags": [
+      "en:italy"
+    ],
+    "manufacturing_places": "Italy",
+    "ingredients_text": "tomatoes",
+    "barcode": "0854693000164"
+  },
+  {
+    "id": "25",
+    "product_name": "Quinoa",
+    "brands": "Biona",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/503/272/231/7543/front_en.3.200.jpg",
+    "packaging_tags": [
+      "en:paper"
+    ],
+    "countries_tags": [
+      "en:peru"
+    ],
+    "manufacturing_places": "Peru",
+    "ingredients_text": "quinoa",
+    "barcode": "5032722317543"
+  },
+  {
+    "id": "26",
+    "product_name": "Organic Tofu",
+    "brands": "Tofoo",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/503/446/700/0216/front_en.64.200.jpg",
+    "packaging_tags": [
+      "en:plastic"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "soya beans, water",
+    "barcode": "5034467000216"
+  },
+  {
+    "id": "27",
+    "product_name": "Falafel",
+    "brands": "Cauldron",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/501/368/330/5589/front_en.83.200.jpg",
+    "packaging_tags": [
+      "en:cardboard"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "chickpeas, herbs, spices",
+    "barcode": "5013683305589"
+  },
+  {
+    "id": "28",
+    "product_name": "Hummus",
+    "brands": "Yarden",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/342/399/000/6734/front_fr.22.200.jpg",
+    "packaging_tags": [
+      "en:plastic"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "chickpeas, tahini, olive oil",
+    "barcode": "3423990006734"
+  },
+  {
+    "id": "29",
+    "product_name": "Olive Oil",
+    "brands": "Filippo Berio",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/800/221/050/0204/front_en.19.200.jpg",
+    "packaging_tags": [
+      "en:glass"
+    ],
+    "countries_tags": [
+      "en:italy"
+    ],
+    "manufacturing_places": "Italy",
+    "ingredients_text": "olive oil",
+    "barcode": "8002210500204"
+  },
+  {
+    "id": "30",
+    "product_name": "Rapeseed Oil",
+    "brands": "Borderfields",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/506/012/736/0048/front_en.3.400.jpg",
+    "packaging_tags": [
+      "en:glass"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "rapeseed oil",
+    "barcode": "5060127360048"
+  },
+  {
+    "id": "31",
+    "product_name": "Sunflower Oil",
+    "brands": "Flora",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/500/023/282/8736/front_en.3.200.jpg",
+    "packaging_tags": [
+      "en:plastic"
+    ],
+    "countries_tags": [
+      "en:ukraine"
+    ],
+    "manufacturing_places": "Ukraine",
+    "ingredients_text": "sunflower oil",
+    "barcode": "5000232828736"
+  },
+  {
+    "id": "32",
+    "product_name": "Wholegrain Bread",
+    "brands": "Hovis",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/501/000/306/7684/front_en.3.200.jpg",
+    "packaging_tags": [
+      "en:plastic"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "wholegrain flour",
+    "barcode": "5010003067684"
+  },
+  {
+    "id": "33",
+    "product_name": "Porridge Oats",
+    "brands": "Quaker",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/500/010/802/2152/front_en.61.200.jpg",
+    "packaging_tags": [
+      "en:cardboard"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "oats",
+    "barcode": "5000108022152"
+  },
+  {
+    "id": "34",
+    "product_name": "Granola",
+    "brands": "Jordans",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/501/047/735/6277/front_fr.65.200.jpg",
+    "packaging_tags": [
+      "en:cardboard"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "oats, nuts",
+    "barcode": "5010477356277"
+  },
+  {
+    "id": "36",
+    "product_name": "Almonds",
+    "brands": "Whole Foods",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/325/622/812/5613/front_fr.15.200.jpg",
+    "packaging_tags": [
+      "en:paper"
+    ],
+    "countries_tags": [
+      "en:spain"
+    ],
+    "manufacturing_places": "Spain",
+    "ingredients_text": "almonds",
+    "barcode": "3256228125613"
+  },
+  {
+    "id": "37",
+    "product_name": "Walnuts",
+    "brands": "Whole Foods",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/009/948/243/4618/front_en.9.200.jpg",
+    "packaging_tags": [
+      "en:paper"
+    ],
+    "countries_tags": [
+      "en:france"
+    ],
+    "manufacturing_places": "France",
+    "ingredients_text": "walnuts",
+    "barcode": "0099482434618"
+  },
+  {
+    "id": "38",
+    "product_name": "Hazelnuts",
+    "brands": "Whole Foods",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/433/561/901/4428/front_en.6.200.jpg",
+    "packaging_tags": [
+      "en:paper"
+    ],
+    "countries_tags": [
+      "en:italy"
+    ],
+    "manufacturing_places": "Italy",
+    "ingredients_text": "hazelnuts",
+    "barcode": "4335619014428"
+  },
+  {
+    "id": "39",
+    "product_name": "Pumpkin Seeds",
+    "brands": "Tesco",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/000/001/000/1691/front_en.27.200.jpg",
+    "packaging_tags": [
+      "en:paper"
+    ],
+    "countries_tags": [
+      "en:poland"
+    ],
+    "manufacturing_places": "Poland",
+    "ingredients_text": "pumpkin seeds",
+    "barcode": "10001691"
+  },
+  {
+    "id": "40",
+    "product_name": "Chia Seeds",
+    "brands": "Biona",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/503/272/231/2920/front_en.28.200.jpg",
+    "packaging_tags": [
+      "en:paper"
+    ],
+    "countries_tags": [
+      "en:peru"
+    ],
+    "manufacturing_places": "Peru",
+    "ingredients_text": "chia seeds",
+    "barcode": "5032722312920"
+  },
+  {
+    "id": "41",
+    "product_name": "Green Tea",
+    "brands": "Twinings",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/505/595/390/3057/front_fr.13.200.jpg",
+    "packaging_tags": [
+      "en:cardboard"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "green tea",
+    "barcode": "5055953903057"
+  },
+  {
+    "id": "42",
+    "product_name": "Herbal Tea",
+    "brands": "Pukka",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/506/500/052/3145/front_en.28.200.jpg",
+    "packaging_tags": [
+      "en:cardboard"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "herbs",
+    "barcode": "5065000523145"
+  },
+  {
+    "id": "43",
+    "product_name": "Black Coffee Beans",
+    "brands": "Union Coffee",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/800/007/003/6321/front_en.35.200.jpg",
+    "packaging_tags": [
+      "en:paper"
+    ],
+    "countries_tags": [
+      "en:colombia"
+    ],
+    "manufacturing_places": "Colombia",
+    "ingredients_text": "coffee",
+    "barcode": "8000070036321"
+  },
+  {
+    "id": "44",
+    "product_name": "Sparkling Water",
+    "brands": "San Pellegrino",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/800/227/076/6817/front_fr.19.200.jpg",
+    "packaging_tags": [
+      "en:glass"
+    ],
+    "countries_tags": [
+      "en:italy"
+    ],
+    "manufacturing_places": "Italy",
+    "ingredients_text": "water",
+    "barcode": "8002270766817"
+  },
+  {
+    "id": "45",
+    "product_name": "Still Water",
+    "brands": "Highland Spring",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/501/045/900/5025/front_en.30.200.jpg",
+    "packaging_tags": [
+      "en:plastic"
+    ],
+    "countries_tags": [
+      "en:scotland"
+    ],
+    "manufacturing_places": "Scotland",
+    "ingredients_text": "water",
+    "barcode": "5010459005025"
+  },
+  {
+    "id": "46",
+    "product_name": "Cloudy Apple Juice",
+    "brands": "Copella",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/501/287/610/7313/front_en.10.400.jpg",
+    "packaging_tags": [
+      "en:glass"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "apple juice",
+    "barcode": "5012876107313"
+  },
+  {
+    "id": "47",
+    "product_name": "Orange Juice",
+    "brands": "Innocent",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/503/886/210/2704/front_en.32.200.jpg",
+    "packaging_tags": [
+      "en:carton"
+    ],
+    "countries_tags": [
+      "en:spain"
+    ],
+    "manufacturing_places": "Spain",
+    "ingredients_text": "orange juice",
+    "barcode": "5038862102704"
+  },
+  {
+    "id": "48",
+    "product_name": "Beetroot",
+    "brands": "Tesco",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/000/000/327/8116/front_en.6.200.jpg",
+    "packaging_tags": [
+      "en:glass"
+    ],
+    "countries_tags": [
+      "en:united-kingdom"
+    ],
+    "manufacturing_places": "United Kingdom",
+    "ingredients_text": "beetroot",
+    "barcode": "03278116"
+  },
+  {
+    "id": "49",
+    "product_name": "Sauerkraut",
+    "brands": "Biona",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/503/272/231/7437/front_en.3.200.jpg",
+    "packaging_tags": [
+      "en:glass"
+    ],
+    "countries_tags": [
+      "en:germany"
+    ],
+    "manufacturing_places": "Germany",
+    "ingredients_text": "cabbage, salt",
+    "barcode": "5032722317437"
+  },
+  {
+    "id": "50",
+    "product_name": "Kimchi",
+    "brands": "Yutaka",
+    "imageUrl": "https://images.openfoodfacts.org/images/products/501/427/670/1504/front_en.31.200.jpg",
+    "packaging_tags": [
+      "en:glass"
+    ],
+    "countries_tags": [
+      "en:korea"
+    ],
+    "manufacturing_places": "Korea",
+    "ingredients_text": "cabbage, chilli, garlic",
+    "barcode": "5014276701504"
+  }
 ]

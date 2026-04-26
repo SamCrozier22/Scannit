@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { useState, useCallback, useEffect } from "react";
 import React from "react";
-import { View, Text, Button, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
+import { View, Text, Button, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView } from "react-native";
 
 export default function HomeScreen( { setUser } ) {
   const [products, setProducts] = useState([]);
@@ -60,7 +60,16 @@ useEffect(() => {
   }
 
   return (
-    <View style={styles.MainPage}>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: "#C3B59F" }}
+      contentContainerStyle={{
+      flexGrow: 1,
+      justifyContent: "flex-start",
+      alignItems: "center",
+      backgroundColor: "#C3B59F",
+      paddingBottom: 40,
+    }}
+    >
       <Text style={styles.Title}>GrazeGood</Text>
       <Text style={{color: "#215C3D", fontSize: 20, fontWeight: "bold", textAlign: "left", marginBottom: 10}}>Saved Products ({products.length})</Text>
     <View style={styles.RecentContainer}>
@@ -110,57 +119,52 @@ useEffect(() => {
         />
       )}
     </View>
+      <Text style={{color: "#215C3D",marginTop: 20, fontSize: 20, fontWeight: "bold", textAlign: "center", marginBottom: 10}}>GrazeGood Picks of the Week</Text>
+
     <View style={styles.weeklyContainer}>
-      <Text style={{color: "#215C3D",marginTop: 20, fontSize: 20, fontWeight: "bold", textAlign: "left", marginBottom: 10}}>GrazeGood Picks of the Week 🌱</Text>
-      <FlatList
-        ListEmptyComponent={() => (
-          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <View style={styles.NoProducts}>
-            <Text style={styles.falseText}>No product of the week</Text>
-          </View>
-          </View>
-        )}
-        data={productOfTheWeek}
-        horizontal
-        keyExtractor={(item) => item.id}
-        showsHorizontalScrollIndicator={false}
-        renderItem = {({item}) => (
-          <View style={styles.ProductContainer}>
-            <View style={styles.Product}>
-              {item.imageUrl ? (
-                <Image
-                  style={styles.ProductImage}
-                  source={{ uri: item.imageUrl }}
-                />
-              ) : (
-                <Image
-                  style={styles.ProductImage}
-                  source={require("../assets/product-placeholder.jpg")}
-                />
-              )}
-            <View>
-              <Text style={styles.ProductName}>{item.product_name}</Text>
-              {item.ecoscore != null && (
+        <FlatList
+          data={productOfTheWeek}
+          keyExtractor={(item) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: productOfTheWeek.length <= 2 ? "center" : "flex-start",
+          }}
+          renderItem={({ item }) => (
+            <View style={styles.ProductContainer}>
+              <View style={styles.Product}>
+                {item.imageUrl ? (
+                  <Image
+                    style={styles.ProductImage}
+                    source={{ uri: item.imageUrl }}
+                  />
+                ) : (
+                  <Image
+                    style={styles.ProductImage}
+                    source={require("../assets/product-placeholder.jpg")}
+                  />
+                )} 
+                <Text
+                style={styles.ProductName}
+                numberOfLines={4}
+                ellipsizeMode="tail"
+                >
+                  {item.product_name}
+                </Text>
+                <View style={{flex: 1}}/>
                 <Text style={styles.EcoScore}>Eco Score: {item.ecoScore}</Text>
-              )}
-              <Text style={styles.EcoScore}>Eco Grade: {item.ecoScoreGrade}</Text>
-            </View> 
-          </View>
-          </View>
-        )}
-      />
+                <Text style={styles.EcoScore}>Eco Grade: {item.ecoScoreGrade}</Text>
+              </View>
+            </View>
+          )}
+        />
     </View>
-    </View>
+    </ScrollView>
   );
 
 }
 const styles = StyleSheet.create({
-  MainPage: {
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
-    backgroundColor: "#C3B59F",
-  },
   Title: {
     color: "#215C3D",
     fontSize: 30,
@@ -253,4 +257,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  weeklyContainer: {
+    marginHorizontal: 20,
+    width: "100%",
+    height: 300,
+    backgroundColor: "#215C3D",
+    borderRadius: 10
+  }
 });
