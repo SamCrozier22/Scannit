@@ -59,17 +59,23 @@ function handleDailyReset(user) {
     user.lastScanReset = new Date();
   }
 }
+function isNewDay(date) {
+  const now = new Date();
+  const last = new Date(date);
+
+  return (
+    now.getFullYear() !== last.getFullYear() ||
+    now.getMonth() !== last.getMonth() ||
+    now.getDate() !== last.getDate()
+  );
+}
+
 function handleAdReset(user) {
-  if(!user.lastAdReset) {
+  if (!user.lastAdReset) {
     user.lastAdReset = new Date();
   }
-  const now = new Date();
-  const lastReset = new Date(user.lastAdReset);
 
-  const diffMins = now - lastReset;
-  const diffHours = diffMins / (1000 * 60 * 60);
-
-  if(diffHours >= 24) {
+  if (isNewDay(user.lastAdReset)) {
     user.adsWatchedToday = 0;
     user.lastAdReset = new Date();
   }
@@ -324,6 +330,7 @@ app.get("/user/:username/scans", async (req, res) => {
     
     ensureScanDefaults(user);
     handleDailyReset(user);
+    handleAdReset(user);
     await handlePremiumRenewal(user);
 
     const premium = user.isActivePremium();
