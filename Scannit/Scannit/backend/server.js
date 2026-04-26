@@ -104,6 +104,12 @@ function getEcoGrade(score) {
   if (score >= 30) return "D";
   return "E";
 }
+
+function setWeekNum (date = new Date()) {
+  const Jan = new Date(date.getFullYear(), 0, 1);
+  const days = Math.floor((date - Jan) / (24 * 60 * 60 * 1000));
+  return Math.ceil((days + Jan.getDay() + 1) / 7);
+}
 app.use((req, _res, next) => {
   console.log("REQ:", req.method, req.url);
   next();
@@ -551,16 +557,20 @@ app.get("/products-of-the-week", async (_req, res) => {
       }
     })
 
-    console.log("Total POTWs:", scoredProducts.length);
-    console.log("Good POTWs:", scoredProducts.filter(p => p.ecoScore !== null && p.ecoScore > 70).length);
-
-
     const goodProducts = scoredProducts 
     .filter((p) => p.ecoScore !== null && p.ecoScore > 60)
-    .sort(() => Math.random() - 0.5)
-    .slice(0,5);
 
-    res.json(goodProducts);
+    const week = setWeekNum()
+
+    const shuffle = [...goodProducts].sort((a, b) => {
+      const A = (a.id * 31 + week) % 100;
+      const B = (b.id * 31 + week) % 100;
+      return A - B
+    })
+
+    const weeklyPicks = shuffle.slice(0, 5)
+
+    res.json(weeklyPicks);
   } catch (e) {
     console.error("Error getting products of the week: ", e);
     return res.status(500).json({ error: "Server error" });

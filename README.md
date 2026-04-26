@@ -5,6 +5,7 @@ Scannit
 ├─ Planning Stuff
 │  ├─ Flowchart.pptx
 │  └─ Scanned_20260304-1224.jpg
+├─ README.md
 └─ Scannit
    ├─ .DS_Store
    ├─ .vs
@@ -72,6 +73,8 @@ Scannit
       │  │  └─ POTWs.json
       │  ├─ package-lock.json
       │  ├─ package.json
+      │  ├─ scripts
+      │  │  └─ fetchPOTWs.js
       │  └─ server.js
       ├─ index.js
       ├─ navigation
