@@ -254,7 +254,20 @@ app.get("/product/:barcode", async (req, res) => {
 
 app.post("/save", async (req, res) => {
   try {
-    const {savedBy, barcode,productName, brands, imageUrl, eco, nutriments, nutrition_grades} = req.body;
+    const {
+      savedBy,
+      barcode,
+      productName,
+      brands,
+      imageUrl,
+      eco,
+      nutriments,
+      nutrition_grades,
+      ingredients,
+      ingredients_text,
+      additives_tags,
+      nova_group
+    } = req.body;
     const user = await userData.findOne({username: savedBy});
 
     if(!user) {
@@ -278,6 +291,10 @@ app.post("/save", async (req, res) => {
         ecoReason: eco?.ecoReason ?? null,
         nutriments: nutriments ?? null,
         nutrition_grades: nutrition_grades ?? null,
+        ingredients: ingredients ?? [],
+        ingredients_text: ingredients_text ?? null,
+        additives_tags: additives_tags ?? [],
+        nova_group: nova_group ?? null
       },
       {
         new: true,

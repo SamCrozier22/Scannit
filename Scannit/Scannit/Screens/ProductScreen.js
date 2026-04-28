@@ -144,8 +144,7 @@ export default function ProductScreen({ route }) {
         {ecoReason?.map((flag, index) => (
             <Text key={index} style={[
                 styles.ecoReason,
-                flag.impact === "low" && styles.ecoLow,
-                flag.impact === "medium" && styles.ecoMedium,
+                flag.impact === "low" || flag.impact === "medium" && styles.ecoMedium,
                 flag.impact === "high" && styles.ecoHigh
                 ]}>
                 {flag.message}
@@ -446,9 +445,9 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
     },
-    ecoLow: {
-        color: "green"
-    },
+    // ecoLow: {
+    //     color: "green"
+    // },
     ecoMedium: {
         color: "yellow"
     },

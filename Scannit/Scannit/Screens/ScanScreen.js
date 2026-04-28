@@ -98,6 +98,10 @@ async function saveProduct() {
         imageUrl: product.image_front_small_url ?? null,
         nutriments: product.nutriments ?? null,
         nutrition_grades: product.nutrition_grades ?? null,
+        ingredients: product.ingredients ?? [],
+        ingredients_text: product.ingredients_text ?? null,
+        additives_tags: product.additives_tags ?? [],
+        nova_group: product.nova_group ?? null,
         eco: {
           ecoScore,
           ecoReason,
