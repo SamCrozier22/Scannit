@@ -517,7 +517,12 @@ async function fetchProduct(productCode) {
               source={{ uri: product.image_front_small_url }}
               style={{ width: 200, height: 200 }}
             />
-          ) : null}
+          ) : (
+            <Image
+              source={require("../assets/product-placeholder.jpg")}
+              style={{ width: 200, height: 200 }}  
+            />
+          )}
           <TouchableOpacity
             onPress={saveProduct}
             style={styles.Button}
@@ -735,6 +740,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     right: 0,
+    top: -8
   },
   watchAdsBtnClosed: {
     width: 52,

@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import React from "react";
 import { View, Text, Button, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView } from "react-native";
 
-export default function HomeScreen( { setUser } ) {
+export default function HomeScreen( { setUser, navigation } ) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [productOfTheWeek, setProductOfTheWeek] = useState([]);
@@ -91,30 +91,35 @@ useEffect(() => {
             justifyContent: products.length <= 2 ? "center" : "flex-start",
           }}
           renderItem={({ item }) => (
-            <View style={styles.ProductContainer}>
-              <View style={styles.Product}>
-                {item.imageUrl ? (
-                  <Image
-                    style={styles.ProductImage}
-                    source={{ uri: item.imageUrl }}
-                  />
-                ) : (
-                  <Image
-                    style={styles.ProductImage}
-                    source={require("../assets/product-placeholder.jpg")}
-                  />
-                )} 
-                <Text
-                style={styles.ProductName}
-                numberOfLines={4}
-                ellipsizeMode="tail"
-                >
-                  {item.product_name}
-                </Text>
-                <View style={{flex: 1}}/>
-                <Text style={styles.EcoScore}>Eco Score: {item.ecoScore}</Text>
+            <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate("Product", { barcode: item.barcode })}
+            >
+              <View style={styles.ProductContainer}>
+                <View style={styles.Product}>
+                  {item.imageUrl ? (
+                    <Image
+                      style={styles.ProductImage}
+                      source={{ uri: item.imageUrl }}
+                    />
+                  ) : (
+                    <Image
+                      style={styles.ProductImage}
+                      source={require("../assets/product-placeholder.jpg")}
+                    />
+                  )} 
+                  <Text
+                  style={styles.ProductName}
+                  numberOfLines={4}
+                  ellipsizeMode="tail"
+                  >
+                    {item.product_name}
+                  </Text>
+                  <View style={{flex: 1}}/>
+                  <Text style={styles.EcoScore}>Eco Score: {item.ecoScore}</Text>
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
         />
       )}
@@ -199,7 +204,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     margin: 15,
     maxWidth: 100,
-    flex: 1,
     gap: 5
   },
   ProductName: { 
@@ -228,6 +232,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 20,
     width: 150,
+    height: 250,
     
     shadowColor: "#000",
     shadowOffset: {

@@ -8,7 +8,6 @@ import ScanScreen from "../Screens/ScanScreen";
 import SavedScreen from "../Screens/SavedScreen";
 import PremiumScreen from "../Screens/PremiumScreen";
 
-
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator({ setUser }) {

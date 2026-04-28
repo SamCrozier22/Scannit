@@ -146,7 +146,28 @@ app.get("/product/:barcode", async (req, res) => {
   }
 
   const fields =
-    "product_name,brands,image_front_small_url,nutriments,nutrition_grades,packaging_tags,brand_tags,countries_tags,manufacturing_places";
+    [
+      "product_name",
+      "brands",
+      "image_front_small_url",
+      
+      // nutrition
+      "nutriments",
+      "nutrition_grades",
+      
+      // ingredients / quality
+      "ingredients_text",
+      "additives_tags",
+      "nova_group",
+      
+      // environment
+      "packaging_tags",
+      "countries_tags",
+      "manufacturing_places",
+      
+      // optional extras
+      "categories_tags"
+    ].join(",");
 
   const url =
     `https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(barcode)}` +

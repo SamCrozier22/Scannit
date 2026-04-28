@@ -7,6 +7,7 @@ import TabNavigator from "./TabNavigator";
 import LoginScreen from "../Screens/LoginScreen";
 import RegisterScreen from "../Screens/RegisterScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
+import ProductScreen from "../Screens/ProductScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +63,7 @@ export default function RootNavigator() {
           <Stack.Screen name="Profile">
             {(props) => <ProfileScreen {...props} setUser={setUser} />}
           </Stack.Screen>
+          <Stack.Screen name="Product" component={ProductScreen} />
         </>
       ) : (
         <>
