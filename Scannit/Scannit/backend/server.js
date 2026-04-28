@@ -157,6 +157,7 @@ app.get("/product/:barcode", async (req, res) => {
       
       // ingredients / quality
       "ingredients_text",
+      "ingredients",
       "additives_tags",
       "nova_group",
       

@@ -51,6 +51,7 @@ export default function ProductScreen({ route }) {
         medium: ["pork", "bacon", "ham", "butter", "cheese", "cream", "high fructose corn syrup", "tuna", "shrimp", "prawn", "cocoa", "chocolate"],
         low: ["glucose syrup", "invert sugar", "maltodextrin", "vegetable oil"]
     };
+
     function getIngredientImpact(ingredient) {
         const text = ingredient.toLowerCase();
 
@@ -110,6 +111,9 @@ export default function ProductScreen({ route }) {
       </View>
     );
   }
+    const hasIngredients = 
+    product.ingredients?.length > 0 || 
+    product.ingredients_text?.trim()?.length > 0;
   const nutriments = product.nutriments ?? {};
   return (
     <ScrollView
@@ -204,12 +208,55 @@ export default function ProductScreen({ route }) {
         />
       </View>
       <View style={styles.divider} />
-      <Text style={styles.SectionTitle}>Ingredients</Text>
-      <View style={styles.ingredientsContainer}>
-        {product.ingredients?.length > 0
-        ? product.ingredients.map((ingredient, index) => {
-            const impact = getIngredientImpact(ingredient.text ?? "");
-            return (
+      {hasIngredients && (
+        <>
+        <Text style={styles.SectionTitle}>Ingredients</Text>
+        <View style={styles.ingredientsContainer}>
+            {product.ingredients?.length > 0
+            ? product.ingredients.map((ingredient, index) => {
+                const impact = getIngredientImpact(ingredient.text ?? "");
+                return (
+                    <View
+                    key={index}
+                    style={[
+                        styles.ingredientRow,
+                        impact === "low" && styles.ingredientLow,
+                        impact === "medium" && styles.ingredientMedium,
+                        impact === "high" && styles.ingredientHigh,
+                    ]}
+                    >
+                    <FontAwesome
+                        name={impact !== "none" ? "exclamation-triangle" : "caret-right"}
+                        size={16}
+                        color={
+                        impact === "high"
+                            ? "#FF3B30"
+                            : impact === "medium"
+                            ? "yellow"
+                            : impact === "low"
+                            ? "green"
+                            : "#A0AF84"
+                        }
+                    />
+
+                    <Text
+                        style={[
+                        styles.ingredientText,
+                        impact === "low" && styles.ingredientTextLow,
+                        impact === "medium" && styles.ingredientTextMedium,
+                        impact === "high" && styles.ingredientTextHigh,
+                        ]}
+                    >
+                        {ingredient.text}
+                    </Text>
+                    </View>
+                );
+            })
+            : product.ingredients_text?.split(",").map((ing, index) => {
+                const clean = ing.trim();
+                const impact = getIngredientImpact(clean);
+
+                return (
                 <View
                 key={index}
                 style={[
@@ -241,53 +288,14 @@ export default function ProductScreen({ route }) {
                     impact === "high" && styles.ingredientTextHigh,
                     ]}
                 >
-                    {ingredient.text}
+                    {clean}
                 </Text>
                 </View>
-            );
-        })
-        : product.ingredients_text?.split(",").map((ing, index) => {
-            const clean = ing.trim();
-            const impact = getIngredientImpact(clean);
-
-            return (
-            <View
-            key={index}
-            style={[
-                styles.ingredientRow,
-                impact === "low" && styles.ingredientLow,
-                impact === "medium" && styles.ingredientMedium,
-                impact === "high" && styles.ingredientHigh,
-            ]}
-            >
-            <FontAwesome
-                name={impact !== "none" ? "exclamation-triangle" : "caret-right"}
-                size={16}
-                color={
-                impact === "high"
-                    ? "#FF3B30"
-                    : impact === "medium"
-                    ? "yellow"
-                    : impact === "low"
-                    ? "green"
-                    : "#A0AF84"
-                }
-            />
-
-            <Text
-                style={[
-                styles.ingredientText,
-                impact === "low" && styles.ingredientTextLow,
-                impact === "medium" && styles.ingredientTextMedium,
-                impact === "high" && styles.ingredientTextHigh,
-                ]}
-            >
-                {clean}
-            </Text>
-            </View>
-            )
-        })}
-      </View>
+                )
+            })}
+        </View>
+        </>
+      )}
     </ScrollView>
   );
 }
@@ -462,7 +470,7 @@ const styles = StyleSheet.create({
         borderRadius: 18,
         padding: 18,
         marginTop: 20,
-        
+
         shadowColor: "#000",
         shadowOffset: {
         width: 5,
