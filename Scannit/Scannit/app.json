@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Scannit",
-    "slug": "Scannit",
+    "name": "GrazeGood",
+    "slug": "graze-good",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/GrazeLogo.png",

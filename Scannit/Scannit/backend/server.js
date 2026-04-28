@@ -55,7 +55,9 @@ function handleDailyReset(user) {
   const diffHours = diffMins / (1000 * 60 * 60);
 
   if(diffHours >= 24) {
-    user.scanCredits = 5;
+    if(user.scanCredits < 5) {
+      user.scanCredits = 5;
+    }
     user.lastScanReset = new Date();
   }
 }

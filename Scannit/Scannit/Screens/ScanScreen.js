@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, ActivityIndicator, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, ActivityIndicator, Image, TouchableOpacity, ScrollView, Linking } from 'react-native';
 import {CameraView, useCameraPermissions} from 'expo-camera';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
@@ -26,11 +26,6 @@ export default function ScanScreen( { navigation } ) {
   const [savedBy, setSavedBy] = useState(null);
   const [saving, setSaving] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(false);
-
-  useEffect(() => {
-    if (!permission) return;
-    if (!permission.granted) requestPermission();
-  }, [permission]);
 
 useEffect(() => {
   pingAPI();
@@ -243,7 +238,36 @@ async function fetchProduct(productCode) {
   };
 
   if(!permission) return <Text>Requesting for camera permission</Text>
-  if(!permission.granted) return <Text>No access to camera</Text>
+  if(!permission.granted) {
+    return (
+      <View style={styles.MainContainer}>
+            <View style={styles.prePermissionContainer}>
+              <Text style={styles.prePermissionText}>
+                GrazeGood needs camera access to scan products. Please grant camera permission to use the scanning feature.
+              </Text>
+              <TouchableOpacity style={styles.Button} 
+              onPress={async () => {
+                if(permission?.canAskAgain === false) {
+                  Linking.openSettings();
+                  return;
+                }
+                const result = await requestPermission();
+
+                if (!result.granted) {
+                  Toast.show({
+                    type: "error",
+                    text1: "Camera Permission Needed",
+                    text2: "Please allow camera access",
+                    visibilityTime: 2000,
+                  })
+                }
+              }}>
+                <Text style={styles.ButtonText}>Allow Camera Access</Text>
+              </TouchableOpacity>
+            </View>
+      </View>
+    )
+  }
 
   return (
     <View style={styles.MainContainer}>
@@ -252,16 +276,18 @@ async function fetchProduct(productCode) {
         <>
         {!isPremium && (
           <View style={styles.scanCountContainer}>
-            <Text style={styles.adsLeft}>{adsLeft ?? "..."} ads left</Text>
-            <TouchableOpacity
-              style={styles.watchAdsBtn}
-              onPress = { () => {
-                rewardScans()
-              }}
-            >
-              <FontAwesome5 name="ad" size={30} color="white" />
-            </TouchableOpacity>
-            <Text style={styles.ScanCounter}>Scans Left: {scansLeft ?? "..."}</Text>
+            <View style={styles.adBadge}>
+              <Text style={styles.adsLeft}>{adsLeft ?? "..."}</Text>
+            </View>
+              <TouchableOpacity
+                style={styles.watchAdsBtn}
+                onPress = { () => {
+                  rewardScans()
+                }}
+              >
+                <FontAwesome5 name="ad" size={30} color="white" />
+              </TouchableOpacity>
+              <Text style={styles.ScanCounter}>Scans Left: {scansLeft ?? "..."}</Text>
             </View>
         )}
         <>
@@ -301,15 +327,15 @@ async function fetchProduct(productCode) {
             <View style={styles.scanHeaderContainer}>
               <Text style={styles.scanTitle}>GrazeGood</Text>
               <View style={styles.adCountContainer}>
-                <TouchableOpacity
-                  style={styles.watchAdsBtnClosed}
-                  onPress = { () => {
-                    rewardScans()
-                  }}
-                >
-                  <FontAwesome5 name="ad" size={30} color="white" />
-                </TouchableOpacity>
-                <Text style={styles.adCountClosed}>Ads Left: {adsLeft ?? "..."}</Text>
+                <View style={styles.adButtonWrapper}>
+                  <TouchableOpacity style={styles.watchAdsBtnClosed} onPress={rewardScans}>
+                    <FontAwesome5 name="ad" size={30} color="white" />
+                  </TouchableOpacity>
+
+                  <View style={styles.adBadge}>
+                    <Text style={styles.adBadgeText}>{adsLeft ?? "..."}</Text>
+                  </View>
+                </View>
               </View>
 
             </View>
@@ -328,12 +354,16 @@ async function fetchProduct(productCode) {
             <Text style={styles.text}>
               To start scanning, click the button below
             </Text>
-            <Text style={styles.text}>
-              Please Note, you get 5 scans per day and need to watch ads to get more
-            </Text>
-            <Text style={[styles.text, styles.lastText]}>
-              Buy premium to get unlimited scans <TouchableOpacity onPress={() => navigation.navigate("Premium")}><Text style={styles.premiumNav}>here</Text></TouchableOpacity>
-            </Text>
+            {!isPremium && (
+              <>
+                <Text style={styles.text}>
+                  Please Note, you get 5 scans per day and need to watch ads to get more
+                </Text>
+                <Text style={[styles.text, styles.lastText]}>
+                  Buy premium to get unlimited scans <TouchableOpacity onPress={() => navigation.navigate("Premium")}><Text style={styles.premiumNav}>here</Text></TouchableOpacity>
+                </Text>
+            </>
+            )}
           </View>
           <View style={styles.openScannerContainer}>
               <Text style={styles.scanCountClosed}>Scans Left: {scansLeft ?? "..."}</Text>
@@ -654,16 +684,30 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0
   },
-  adsLeft: {
-    color: "#215C3D",
-    fontSize: 15,
-    fontWeight: "bold",
+  adButtonWrapper: {
+    position: "relative",
+    width: 52,
+    height: 52,
+    overflow: "visible",
+  },
+  adBadge: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: "#FF3B30",
+    justifyContent: "center",
+    alignItems: "center",
     position: "absolute",
-    left: 0,
-    bottom: 0,
-    marginTop: 10,
-    marginBottom: 15,
-    marginVertical: 10
+    right: -5,
+    top: -5,
+    zIndex: 10,
+    elevation: 10,
+  },
+  adBadgeText: {
+    color: "white",
+    fontSize: 14,
+    fontWeight: "bold",
+    lineHeight: 16,
   },
   premiumNav: {
     fontSize: 20,
@@ -692,19 +736,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
   },
-  adCountClosed: {
-    color: '#215C3D',
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
   watchAdsBtnClosed: {
-    padding: 5,
-    backgroundColor: "#108A2C",
+    width: 52,
+    height: 52,
+    backgroundColor: "transparent",
     borderRadius: 10,
-    marginTop: 10,
-    marginVertical: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
   scanCountClosed: {
     color: "#215C3D",
@@ -712,5 +750,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginTop: 'auto'
-  }
+  },
+  prePermissionContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  prePermissionText: {
+    color: "#215C3D",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 20,
+  },
 });
