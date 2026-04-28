@@ -161,7 +161,7 @@ export default function ProductScreen({ route }) {
           value={nutriments["energy-kcal_100g"]}
           unit="kcal"
         />
-        <View style={styles.rowDivider} />
+        {nutriments["energy-kcal_100g"] !== null && <View style={styles.rowDivider} />}
         <NutritionRow
           label="Fat"
           value={nutriments["fat_100g"]}
@@ -174,7 +174,7 @@ export default function ProductScreen({ route }) {
           unit="g"
           sub
         />
-        <View style={styles.rowDivider} />
+        {nutriments["fat_100g"] !== null && <View style={styles.rowDivider} />}
         <NutritionRow
           label="Carbohydrates"
           value={nutriments["carbohydrates_100g"]}
@@ -187,27 +187,27 @@ export default function ProductScreen({ route }) {
           levelType="sugar"
           sub
         />
-        <View style={styles.rowDivider} />
+        {nutriments["carbohydrates_100g"] !== null && <View style={styles.rowDivider} />}
         <NutritionRow
           label="Protein"
           value={nutriments["proteins_100g"]}
           unit="g"
         />
-        <View style={styles.rowDivider} />
+        {nutriments["proteins_100g"] !== null && <View style={styles.rowDivider} />}
         <NutritionRow
           label="Salt"
           value={nutriments["salt_100g"]}
           unit="g"
           levelType="salt"
         />
-        <View style={styles.rowDivider} />
+        {nutriments["salt_100g"] !== null && <View style={styles.rowDivider} />}
         <NutritionRow
           label="Fiber"
           value={nutriments["fiber_100g"]}
           unit="g"
         />
       </View>
-      <View style={styles.divider} />
+      {nutriments["fiber_100g"] !== null && <View style={styles.divider} />}
       {hasIngredients && (
         <>
         <Text style={styles.SectionTitle}>Ingredients</Text>
@@ -485,10 +485,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: "center",
         marginBottom: 5
-    },
-    ingredientText: {
-        color: "#A0AF84",
-        fontSize: 16
     },
     ingredientRow: {
         flexDirection: "row",

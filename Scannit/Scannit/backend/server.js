@@ -137,6 +137,10 @@ app.get("/product/:barcode", async (req, res) => {
       image_front_small_url: cachedProduct.imageUrl,
       nutriments: cachedProduct.nutriments,
       nutrition_grades: cachedProduct.nutrition_grades,
+      ingredients: cachedProduct.ingredients,
+      ingredients_text: cachedProduct.ingredients_text,
+      additives_tags: cachedProduct.additives_tags,
+      nova_group: cachedProduct.nova_group,
       eco: {
         ecoScore: cachedProduct.ecoScore,
         grade: cachedProduct.ecoScoreGrade,
@@ -223,6 +227,10 @@ app.get("/product/:barcode", async (req, res) => {
           ecoReason: eco?.ecoReason ?? null,
           nutriments: data.product.nutriments ?? null,
           nutrition_grades: data.product.nutrition_grades ?? null,
+          ingredients: data.product.ingredients ?? [],
+          ingredients_text: data.product.ingredients_text ?? null,
+          additives_tags: data.product.additives_tags ?? [],
+          nova_group: data.product.nova_group ?? null,
         },
         {
           new: true,
