@@ -30,10 +30,27 @@ const ProductSchema = new Schema(
       type: Object,
       default: null
     },
-    ingredients: { type: Array, default: [] },
-    ingredients_text: { type: String, default: null },
-    additives_tags: { type: [String], default: [] },
-    nova_group: { type: Number, default: null },
+    ingredients: { 
+      type: Array, 
+      default: [] 
+    },
+    ingredients_text: { 
+      type: String, 
+      default: null 
+    },
+    additives_tags: { 
+      type: [String], 
+      default: [] 
+    },
+    nova_group: { 
+      type: Number, 
+      default: null 
+    },
+    ingredients_language: {
+      type: String,
+      default: null,
+      trim: true
+    },
     nutrition_grades: {
       type: String,
       default: null,

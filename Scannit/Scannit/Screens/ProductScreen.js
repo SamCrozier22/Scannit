@@ -131,7 +131,7 @@ export default function ProductScreen({ route }) {
           style={styles.Image}
         />
       )}
-      <Text style={styles.Title}>{product.product_name ?? "Unknown product"}</Text>
+      <Text style={styles.Title}>{product.product_name.replace(/&quot;|&#039;/g, "'") ?? "Unknown product"}</Text>
       <Text style={styles.Brand}>{product.brands ?? "Unknown brand"}</Text>
       <View style={styles.ecoContainer}>
         <Text style={[
@@ -173,7 +173,7 @@ export default function ProductScreen({ route }) {
           unit="g"
           sub
         />
-        {nutriments["fat_100g"] !== null && <View style={styles.rowDivider} />}
+        {nutriments["saturated-fat_100g"] !== null && <View style={styles.rowDivider} />}
         <NutritionRow
           label="Carbohydrates"
           value={nutriments["carbohydrates_100g"]}
@@ -186,7 +186,7 @@ export default function ProductScreen({ route }) {
           levelType="sugar"
           sub
         />
-        {nutriments["carbohydrates_100g"] !== null && <View style={styles.rowDivider} />}
+        {nutriments["sugars_100g"] !== null && <View style={styles.rowDivider} />}
         <NutritionRow
           label="Protein"
           value={nutriments["proteins_100g"]}
@@ -326,6 +326,7 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: "bold",
         textAlign: "center",
+        marginBottom: 10,
     },
     divider: {
         height: 1,

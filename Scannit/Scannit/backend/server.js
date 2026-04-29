@@ -139,6 +139,7 @@ app.get("/product/:barcode", async (req, res) => {
       nutrition_grades: cachedProduct.nutrition_grades,
       ingredients: cachedProduct.ingredients,
       ingredients_text: cachedProduct.ingredients_text,
+      ingredients_language: cachedProduct.ingredients_language,
       additives_tags: cachedProduct.additives_tags,
       nova_group: cachedProduct.nova_group,
       eco: {
@@ -164,6 +165,8 @@ app.get("/product/:barcode", async (req, res) => {
       "ingredients",
       "additives_tags",
       "nova_group",
+      "ingredients_lc",
+      "lang",
       "ingredients_text_en",
       "ingredients_text_fr",
       "ingredients_text_with_allergens",
@@ -187,7 +190,7 @@ app.get("/product/:barcode", async (req, res) => {
     const r = await fetchWithRetry(url, {
       headers: {
         Accept: "application/json",
-        "User-Agent": "Scannit/1.0"
+        "User-Agent": "GrazeGood/1.0 (student project)"
       }
     });
 
@@ -226,7 +229,10 @@ app.get("/product/:barcode", async (req, res) => {
         data.product.ingredients_text_with_allergens_en ??
         data.product.ingredients_text_with_allergens_fr ??
         null;
-      const eco = calculateEcoScore(data.product);
+      const eco = calculateEcoScore({
+        ...data.product, 
+        ingredients_text: ingredientsText
+      });
 
       await Product.findOneAndUpdate(
         { barcode },
@@ -242,6 +248,7 @@ app.get("/product/:barcode", async (req, res) => {
           nutrition_grades: data.product.nutrition_grades ?? null,
           ingredients: data.product.ingredients ?? [],
           ingredients_text: ingredientsText ?? null,
+          ingredients_language: data.product.ingredients_lc ?? data.product.lang ?? null,
           additives_tags: data.product.additives_tags ?? [],
           nova_group: data.product.nova_group ?? data.product.nutriments?.["nova-group"] ?? null,
         },
@@ -255,6 +262,8 @@ app.get("/product/:barcode", async (req, res) => {
       return res.json({
         ...data.product,
         ingredients_text: ingredientsText,
+        ingredients_language: data.product.ingredients_lc ?? data.product.lang ?? null,
+        additives_tags: data.product.additives_tags ?? [],
         nova_group: data.product.nova_group ?? data.product.nutriments?.["nova-group"] ?? null,
         eco,
       });
@@ -280,6 +289,7 @@ app.post("/save", async (req, res) => {
       nutrition_grades,
       ingredients,
       ingredients_text,
+      ingredients_language,
       additives_tags,
       nova_group
     } = req.body;
@@ -308,6 +318,7 @@ app.post("/save", async (req, res) => {
         nutrition_grades: nutrition_grades ?? null,
         ingredients: ingredients ?? [],
         ingredients_text: ingredients_text ?? null,
+        ingredients_language: ingredients_language ?? null,
         additives_tags: additives_tags ?? [],
         nova_group: nova_group ?? nutriments?.["nova-group"] ?? null
       },

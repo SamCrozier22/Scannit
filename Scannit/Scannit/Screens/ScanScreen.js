@@ -100,6 +100,7 @@ async function saveProduct() {
         nutrition_grades: product.nutrition_grades ?? null,
         ingredients: product.ingredients ?? [],
         ingredients_text: product.ingredients_text ?? null,
+        ingredients_language: product.ingredients_language ?? product.ingredients_lc ?? product.lang ?? null,
         additives_tags: product.additives_tags ?? [],
         nova_group: product.nova_group ?? product.nutriments?.["nova-group"] ?? null,
         eco: {
@@ -428,7 +429,7 @@ async function fetchProduct(productCode) {
       {product ? (
         <View style={styles.ProductInfo}>
           <Text style={styles.TitleText}>
-            Product Name: {product.product_name ?? "Unknown"}
+            Product Name: {product.product_name.replace(/&quot;|&#039;/g, "'") ?? "Unknown"}
           </Text>
 
           <Text style={styles.TitleText}>
