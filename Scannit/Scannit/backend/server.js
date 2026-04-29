@@ -164,6 +164,11 @@ app.get("/product/:barcode", async (req, res) => {
       "ingredients",
       "additives_tags",
       "nova_group",
+      "ingredients_text_en",
+      "ingredients_text_fr",
+      "ingredients_text_with_allergens",
+      "ingredients_text_with_allergens_en",
+      "ingredients_text_with_allergens_fr",
       
       // environment
       "packaging_tags",
@@ -176,7 +181,7 @@ app.get("/product/:barcode", async (req, res) => {
 
   const url =
     `https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(barcode)}` +
-    `?fields=${fields}&lang=en`;
+    `?fields=${fields}&lang=en&lc=en`;
 
   try {
     const r = await fetchWithRetry(url, {
@@ -213,6 +218,14 @@ app.get("/product/:barcode", async (req, res) => {
     const data = JSON.parse(bodyText);
 
     if (data?.status === 1 && data?.product) {
+      const ingredientsText =
+        data.product.ingredients_text_en ??
+        data.product.ingredients_text ??
+        data.product.ingredients_text_fr ??
+        data.product.ingredients_text_with_allergens ??
+        data.product.ingredients_text_with_allergens_en ??
+        data.product.ingredients_text_with_allergens_fr ??
+        null;
       const eco = calculateEcoScore(data.product);
 
       await Product.findOneAndUpdate(
@@ -228,9 +241,9 @@ app.get("/product/:barcode", async (req, res) => {
           nutriments: data.product.nutriments ?? null,
           nutrition_grades: data.product.nutrition_grades ?? null,
           ingredients: data.product.ingredients ?? [],
-          ingredients_text: data.product.ingredients_text ?? null,
+          ingredients_text: ingredientsText ?? null,
           additives_tags: data.product.additives_tags ?? [],
-          nova_group: data.product.nova_group ?? null,
+          nova_group: data.product.nova_group ?? data.product.nutriments?.["nova-group"] ?? null,
         },
         {
           new: true,
@@ -241,6 +254,8 @@ app.get("/product/:barcode", async (req, res) => {
 
       return res.json({
         ...data.product,
+        ingredients_text: ingredientsText,
+        nova_group: data.product.nova_group ?? data.product.nutriments?.["nova-group"] ?? null,
         eco,
       });
     }
@@ -294,7 +309,7 @@ app.post("/save", async (req, res) => {
         ingredients: ingredients ?? [],
         ingredients_text: ingredients_text ?? null,
         additives_tags: additives_tags ?? [],
-        nova_group: nova_group ?? null
+        nova_group: nova_group ?? nutriments?.["nova-group"] ?? null
       },
       {
         new: true,

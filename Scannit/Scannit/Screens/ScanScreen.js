@@ -101,7 +101,7 @@ async function saveProduct() {
         ingredients: product.ingredients ?? [],
         ingredients_text: product.ingredients_text ?? null,
         additives_tags: product.additives_tags ?? [],
-        nova_group: product.nova_group ?? null,
+        nova_group: product.nova_group ?? product.nutriments?.["nova-group"] ?? null,
         eco: {
           ecoScore,
           ecoReason,
