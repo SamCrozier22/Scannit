@@ -173,7 +173,7 @@ export default function ProductScreen({ route }) {
           unit="g"
           sub
         />
-        {nutriments["saturated-fat_100g"] !== null && <View style={styles.rowDivider} />}
+        {nutriments["fat_100g"] !== null && nutriments["saturated-fat_100g"] !== null && <View style={styles.rowDivider} />}
         <NutritionRow
           label="Carbohydrates"
           value={nutriments["carbohydrates_100g"]}

@@ -98,19 +98,15 @@ export default function SavedScreen() {
             <View style={styles.savedProductContainer}>
               <View style={styles.savedProduct}>
                 {item.imageUrl ? (
-                  <View>
                     <Image
                       source={{ uri: item.imageUrl }}
                       style={{ width: 150, height: 150, borderRadius: 10 }}
                     />
-                  </View>
                 ) : (
-                  <View>
                     <Image
-                      source={require("../assets/product-placeholder.jpg")}
                       style={{ width: 150, height: 150, borderRadius: 10 }}
+                      source={require("../assets/product-placeholder.jpg")}
                     />
-                  </View>
                 )}
                 <View style={styles.savedProductInfo}>
                   <Text style={{ fontSize: 16, fontWeight: "bold", color: "#A0AF84" }}>
